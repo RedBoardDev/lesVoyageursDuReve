@@ -16,5 +16,5 @@ const API_HOST = process.env.API_HOST;
 const API_PORT = process.env.API_PORT;
 
 app.listen(API_PORT, API_HOST, () => {
-    console.log('Serveur à l écoute')
+    console.log(`App listening at http://${API_HOST}:${API_PORT}`);
 })
