@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/RedBoardDev/hackathon-week/issues"
   },
-  "homepage": "https://github.com/RedBoardDev/hackathon-week#readme"
+  "homepage": "https://github.com/RedBoardDev/hackathon-week#readme",
+  "dependencies": {
+    "package.json": "^2.0.1"
+  }
 }
