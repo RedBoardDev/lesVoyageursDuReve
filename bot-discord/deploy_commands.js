@@ -2,16 +2,16 @@ import dotenv from 'dotenv';
 dotenv.config();
 import { REST, Routes } from 'discord.js';
 import * as fs from 'node:fs';
-// import { loadConfigJson } from './src/utils/global.js';
+import { loadConfigJson } from './src/utils/global.js';
 import * as log from 'nodejs-log-utils';
 
-// const config = await loadConfigJson();
+const config = await loadConfigJson();
 
-// log.info(config.dev ? `Using dev mode` : `Using final mode`);
+log.info(process.env.DEV ? `Using dev mode` : `Using final mode`);
 
-const token = process.env.DISCORD_BOT_TOKEN;
-const clientId = process.env.CLIENT_ID;
-const guildId = process.env.GUILD_ID;
+const token = process.env.DEV ? process.env.DEV_DISCORD_BOT_TOKEN : process.env.FINAL_DISCORD_BOT_TOKEN;
+const clientId = process.env.DEV ? config.dev_client_id : config.final_client_id;
+const guildId = process.env.DEV ? config.dev_server_id : config.final_server_id;
 
 const commands = [];
 const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.js'));
@@ -27,7 +27,7 @@ const rest = new REST({ version: '10' }).setToken(token);
 	try {
 		log.info(`Started refreshing ${commands.length} application (/) commands.`);
 
-		await rest.put(
+		const data = await rest.put(
 			Routes.applicationGuildCommands(clientId, guildId),
 			{ body: commands },
 		);
