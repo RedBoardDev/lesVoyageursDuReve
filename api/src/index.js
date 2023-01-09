@@ -1,20 +1,28 @@
 const express = require('express');
 const bodyParser = require("body-parser");
-const app = express()
-require('dotenv').config();
+const glob = require('./global');
 
-app.use(express.static('static'));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(express.json());
+glob.app.use(bodyParser.urlencoded({ extended: false }));
+glob.app.use(express.static('static'));
+glob.app.use(bodyParser.json());
+glob.app.use(express.json());
 
-app.get("/quoi", (req, res) => {
+glob.con.connect(function(err) {
+    if (err) throw new Error(`Failed to connect to database lesvoyageursdureve`);
+    console.log("Connecté à la base de données lesvoyageursdureve");
+});
+
+glob.app.get("/quoi", (req, res) => {
     res.send("feur");
 });
 
-const API_HOST = process.env.API_HOST;
-const API_PORT = process.env.API_PORT;
+glob.app.get("/", (req, res) => {
+    res.send("MouliBot API");
+});
 
-app.listen(API_PORT, API_HOST, () => {
-    console.log(`App listening at http://${API_HOST}:${API_PORT}`);
-})
+require('./routes/auth/register.js')(glob.app, glob.con);
+require('./routes/auth/login.js')(glob.app, glob.con);
+
+glob.app.listen(process.env.API_PORT, process.env.HOST_NAME, () => {
+    console.log(`App listening at http://${process.env.HOST_NAME}:${process.env.API_PORT}`);
+});
