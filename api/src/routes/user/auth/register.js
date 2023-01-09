@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const glob = require('../../global');
+const glob = require('../../../global');
 
 function checkEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)

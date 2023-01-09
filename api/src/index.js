@@ -17,11 +17,13 @@ glob.app.get("/quoi", (req, res) => {
 });
 
 glob.app.get("/", (req, res) => {
-    res.send("MouliBot API");
+    res.send("API on :)");
 });
 
-require('./routes/auth/register.js')(glob.app, glob.con);
-require('./routes/auth/login.js')(glob.app, glob.con);
+require('./routes/user/auth/register.js')(glob.app, glob.con);
+require('./routes/user/auth/login.js')(glob.app, glob.con);
+require('./routes/user/user.js')(glob.app, glob.con);
+require('./routes/user/user_id.js')(glob.app, glob.con);
 
 glob.app.listen(process.env.API_PORT, process.env.HOST_NAME, () => {
     console.log(`App listening at http://${process.env.HOST_NAME}:${process.env.API_PORT}`);

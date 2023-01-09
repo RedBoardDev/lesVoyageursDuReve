@@ -47,7 +47,6 @@ CREATE TABLE `users` (
     `password` VARCHAR(100) NOT NULL,
     `discord_id` VARCHAR(30) NOT NULL DEFAULT "0",
     `permission_id` INT unsigned NOT NULL DEFAULT 0,
-    `new_user` BOOLEAN NOT NULL DEFAULT 1,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -27,13 +27,6 @@ function decryptString(text) {
     return Buffer.concat([decipher.update(Buffer.from(text.e, 'hex')), decipher.final()]).toString();
 }
 
-function decryptAllCookies(rows) {
-    rows.forEach((element) => {
-        if (element.cookies)
-            element.cookies = decryptString(element.cookies);
-    });
-}
-
 function verifyToken(req, res, next) {
     const bearerHeader = req.headers['authorization'];
 
@@ -48,7 +41,7 @@ function verifyToken(req, res, next) {
         }
         try {
             let decoded = jwt.verify(req.token, process.env.SECRET);
-            con.query(`SELECT id FROM user WHERE id = "${decoded.id}";`, function (err2, rows) {
+            con.query(`SELECT id FROM users WHERE id = "${decoded.id}";`, function (err2, rows) {
                 if (err2) res.status(500).json({ msg: "Internal server error" });
                 if (rows[0] && rows[0].id == decoded.id)
                     next();
@@ -76,7 +69,6 @@ function get_id_with_token(req, res) {
 function verifyAuth(req, res, verifId) {
     if (req.token === process.env.OTHER_APP_TOKEN)
         return true;
-
     if (verifId) {
         let token_id = get_id_with_token(req, res);
         if (token_id === -1)
@@ -94,7 +86,6 @@ exports.app = app;
 exports.con = con;
 exports.encryptString = encryptString;
 exports.decryptString = decryptString;
-exports.decryptAllCookies = decryptAllCookies;
 exports.verifyToken = verifyToken;
 exports.verifyAuth = verifyAuth
 exports.is_num = is_num;
