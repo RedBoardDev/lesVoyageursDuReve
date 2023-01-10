@@ -24,7 +24,7 @@ require('./routes/user/auth/register.js')(glob.app, glob.con);
 require('./routes/user/auth/login.js')(glob.app, glob.con);
 require('./routes/user/user.js')(glob.app, glob.con);
 require('./routes/user/user_id.js')(glob.app, glob.con);
-// require('./routes/event/place.js')(glob.app, glob.con);
+require('./routes/place.js')(glob.app, glob.con);
 require('./routes/permission.js')(glob.app, glob.con);
 
 glob.app.listen(process.env.API_PORT, process.env.HOST_NAME, () => {

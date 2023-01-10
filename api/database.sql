@@ -13,7 +13,7 @@ CREATE TABLE `comments` (
 CREATE TABLE `places` (
     `id` INT unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` VARCHAR(100) NOT NULL UNIQUE,
-    `city` VARCHAR(100) NOT NULL UNIQUE,
+    `city` VARCHAR(100) NOT NULL,
     `adresse` VARCHAR(100) NOT NULL UNIQUE,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -53,8 +53,8 @@ CREATE TABLE `events` (
     `admin_user_id` INT unsigned NOT NULL,
     `message` VARCHAR(1000) NOT NULL,
     `user_registered_array` VARCHAR(1000) NOT NULL,
-    `date` DATETIME NOT NULL,
-    `duration` INT unsigned NOT NULL,
+    `date_start` DATETIME NOT NULL,
+    `date_end` DATETIME NOT NULL,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
