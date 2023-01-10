@@ -1,11 +1,11 @@
-import { SlashCommandBuilder, ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } from 'discord.js';
+import { SlashCommandBuilder, ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { createEmbed } from '../utils/embed.js';
 
 async function sendInfos(interaction) {
     await interaction.reply({embeds: [createEmbed("Test", "test", "#5f85db", "")] });
 }
 
-async function createEventModal(interaction) {
+async function createEvent(interaction) {
     const modal = new ModalBuilder()
         .setCustomId('event-create')
         .setTitle('Créer un évènement');
@@ -52,6 +52,68 @@ async function createEventModal(interaction) {
     await interaction.showModal(modal);
 }
 
+function getEventsMessageArray(data) {
+    let messageArray = [];
+    const nextButton = new ButtonBuilder()
+        .setCustomId(`event-list-next`)
+        .setLabel(`➡️`)
+        .setStyle(ButtonStyle.Primary);
+    const prevButton = new ButtonBuilder()
+        .setCustomId(`event-list-prev`)
+        .setLabel(`⬅️`)
+        .setStyle(ButtonStyle.Primary);
+
+    for (let i = 0; i < data.length; ++i) {
+        const embed = createEmbed(`${i + 1}/${data.length}`, data[i].title, '#000000', '');
+        embed.addFields(
+            { name: 'Créé par', value: data[i].createdBy, inline: true },
+            { name: 'Date', value: data[i].date, inline: true },
+            { name: 'Durée', value: data[i].duration, inline: true },
+            { name: 'ID', value: data[i].id.toString(), inline: true }
+        )
+
+        let row;
+        if (i === 0)
+            row = new ActionRowBuilder().addComponents(nextButton);
+        else if (i === data.length - 1)
+            row = new ActionRowBuilder().addComponents(prevButton);
+        else
+            row = new ActionRowBuilder().addComponents(prevButton, nextButton);
+        messageArray.push({ content: `Evènements à venir :`, embeds: [embed], components: [row], ephemeral: true });
+    }
+    return messageArray;
+}
+
+async function list(interaction) {
+    let currentMessageIndex = 0;
+    const messageArray = getEventsMessageArray([
+        {title: "T1", createdBy: "Moi", date: "11/01/2023", duration: "1h", id: 1},
+        {title: "T2", createdBy: "Moi", date: "12/01/2023", duration: "1h30", id: 2},
+        {title: "T3", createdBy: "Moi", date: "13/01/2023", duration: "2h", id: 3},
+        {title: "T4", createdBy: "Moi", date: "14/01/2023", duration: "2h30", id: 4},
+        {title: "T5", createdBy: "Moi", date: "15/01/2023", duration: "3h", id: 5}     //TODO changer ça par les vraies infos venant de l'api
+    ]);
+    const sent = await interaction.reply(messageArray[currentMessageIndex]);
+
+    const filter = (i) => {return (i.customId === 'event-list-prev' || i.customId === 'event-list-next') && i.user.id === interaction.user.id};
+    const collector = interaction.channel.createMessageComponentCollector({ filter, time: 120000 });
+
+    collector.on('collect', async (i) => {
+        if (i.customId === 'event-list-prev') {
+            currentMessageIndex -= 1;
+            await i.update(messageArray[currentMessageIndex]);
+        }
+        if (i.customId === 'event-list-next') {
+            currentMessageIndex += 1;
+            await i.update(messageArray[currentMessageIndex]);
+        }
+    });
+
+    collector.on('end', async (collected) => {
+        await sent.interaction.editReply({ components: [] });
+    });
+}
+
 export let command = {
 	data: new SlashCommandBuilder()
 		.setName("event")
@@ -77,14 +139,14 @@ export let command = {
 	async execute(interaction) {
         switch (interaction.options.getSubcommand()) {
             case "list":
-                await interaction.reply({ content: `Not implemented yet`, ephemeral: true });
+                await list(interaction);
                 break;
             case "remove":
                 const id = interaction.options.getInteger("id");
                 await interaction.reply({ content: `Not implemented yet`, ephemeral: true });
                 break;
             case "create":
-                await createEventModal(interaction);
+                await createEvent(interaction);
                 break;
             default:
                 break;
