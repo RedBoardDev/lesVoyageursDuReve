@@ -21,8 +21,6 @@ function getUpdateQueryString(req) {
         updateQueryString = addProperty(updateQueryString, 'email', req.body.email);
     if (req.body.hasOwnProperty('discord_id'))
         updateQueryString = addProperty(updateQueryString, 'discord_id', req.body.discord_id);
-    if (req.body.hasOwnProperty('permission_id'))
-        updateQueryString = addProperty(updateQueryString, 'permission_id', req.body.permission_id);
     return updateQueryString;
 }
 

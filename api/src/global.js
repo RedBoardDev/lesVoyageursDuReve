@@ -96,8 +96,8 @@ function is_num(id) {
 
 exports.app = app;
 exports.con = con;
-exports.get_id_with_token = get_id_with_token;
 exports.verifyAuth_without_id = verifyAuth_without_id;
+exports.get_id_with_token = get_id_with_token;
 exports.encryptString = encryptString;
 exports.decryptString = decryptString;
 exports.verifyToken = verifyToken;

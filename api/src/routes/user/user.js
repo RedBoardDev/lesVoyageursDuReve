@@ -1,13 +1,6 @@
 const glob = require('../../global');
 const jwt = require('jsonwebtoken');
 
-function error_handling_body(req) {
-    if (!req.body.hasOwnProperty('token')) {
-        return false;
-    }
-    return true;
-}
-
 module.exports = async function(app, con) {
     app.get("/user", glob.verifyToken, async (req, res) => {
         if (!glob.verifyAuth(req, res, false)) {
@@ -25,7 +18,6 @@ module.exports = async function(app, con) {
     });
 
     app.get("/user/me", glob.verifyToken, async (req, res) => {
-        let token = req.token;
         if (!glob.verifyAuth_without_id(req, res, true)) {
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
             return;
