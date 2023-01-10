@@ -13,16 +13,6 @@ module.exports = async function(app, con) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else {
-                for (let i = 0; i < rows.length; i++) {
-                    glob.Client.grabProfile((rows[i]['discord_id']).toString()).then(User =>
-                        {
-                            rows[i].discord_username = User['username'];
-                            rows[i].discord_avater = (User['avatar']['url']).split("?")[0];
-                        }).catch(Error => {
-                            rows[i].discord_username = "discord";
-                            rows[i].discord_avater = (User['avatar']['url']).split("?")[0];
-                        });
-                }
                 res.send(rows);
             }
         });
@@ -41,14 +31,12 @@ module.exports = async function(app, con) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else if (rows[0]) {
-                console.log((rows[0]['discord_id']).toString())
                 glob.Client.grabProfile((rows[0]['discord_id']).toString()).then(User =>
                     {
                         rows[0].discord_username = User['username'];
                         rows[0].discord_avater = (User['avatar']['url']).split("?")[0];
                         res.send(rows[0]);
                     }).catch(Error => {
-                        console.log("cf");
                         rows[0].discord_username = null;
                         rows[0].discord_avater = null;
                         res.send(rows[0]);
