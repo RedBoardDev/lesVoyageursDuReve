@@ -20,7 +20,7 @@ function error_handling_register(req) {
     if (!req.body.hasOwnProperty('password')) {
         return false;
     }
-    if (!checkEmail(req.body.email) || !checkPassword(req.body.password))
+    if (!checkEmail(req.body.email))
         return false;
     return true;
 }

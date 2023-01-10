@@ -3,8 +3,10 @@ const express = require('express');
 const mysql = require('mysql2');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const { Discord } = require("discord-id");
 
 dotenv.config();
+const Client = new Discord(process.env.DISCORD_BOT_TOKEN);
 
 const app = express();
 const con = mysql.createConnection({
@@ -96,8 +98,9 @@ function is_num(id) {
 
 exports.app = app;
 exports.con = con;
-exports.get_id_with_token = get_id_with_token;
+exports.Client = Client;
 exports.verifyAuth_without_id = verifyAuth_without_id;
+exports.get_id_with_token = get_id_with_token;
 exports.encryptString = encryptString;
 exports.decryptString = decryptString;
 exports.verifyToken = verifyToken;

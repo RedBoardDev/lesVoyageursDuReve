@@ -13,20 +13,13 @@ CREATE TABLE `comments` (
 CREATE TABLE `places` (
     `id` INT unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` VARCHAR(100) NOT NULL UNIQUE,
-    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE `permissions` (
-    `id` INT unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `perm_type` VARCHAR(100) NOT NULL,
-    `level` INT unsigned NOT NULL UNIQUE,
-    `color` VARCHAR(100) NOT NULL,
+    `city` VARCHAR(100) NOT NULL UNIQUE,
+    `adresse` VARCHAR(100) NOT NULL UNIQUE,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `gameType` (
     `id` INT unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `perm_type` VARCHAR(100) NOT NULL,
     `user` VARCHAR(100) NOT NULL,
     `message` VARCHAR(1000) NOT NULL,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -46,7 +39,7 @@ CREATE TABLE `users` (
     `email` VARCHAR(100) NOT NULL UNIQUE,
     `password` VARCHAR(100) NOT NULL,
     `discord_id` VARCHAR(30) NOT NULL DEFAULT "0",
-    `permission_id` INT unsigned NOT NULL DEFAULT 0,
+    `permission_id` INT unsigned NOT NULL DEFAULT 1,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
