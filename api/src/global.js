@@ -78,12 +78,26 @@ function verifyAuth(req, res, verifId) {
     return false;
 }
 
+function verifyAuth_without_id(req, res, verifId) {
+    if (req.token === process.env.OTHER_APP_TOKEN)
+        return true;
+    if (verifId) {
+        let token_id = get_id_with_token(req, res);
+        if (token_id === -1)
+            return false;
+        return true;
+    }
+    return false;
+}
+
 function is_num(id) {
     return (/^\d+$/.test(id));
 }
 
 exports.app = app;
 exports.con = con;
+exports.get_id_with_token = get_id_with_token;
+exports.verifyAuth_without_id = verifyAuth_without_id;
 exports.encryptString = encryptString;
 exports.decryptString = decryptString;
 exports.verifyToken = verifyToken;
