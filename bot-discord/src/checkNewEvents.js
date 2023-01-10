@@ -31,12 +31,11 @@ async function sendNewEvent(client, channelId, gameTitle, color, createdBy, date
 export async function checkNewEvents(client) {
     while (true) {
         let data = await loadDataJson();
-        const lastCreatedEvent = 1;
+        const lastCreatedEvent = 1; //TODO changer ça par les vraies infos venant de l'api
         if (data.lastEventSent !== lastCreatedEvent) {
-            console.log(data);
             data.lastEventSent = lastCreatedEvent;
             console.log(data);
-            await sendNewEvent(client, '1062011025488101399', 'Game title', '#00ff00', 'Moi', '10/01/2023, 18:00', '1h', lastCreatedEvent, '');
+            await sendNewEvent(client, '1062011025488101399', 'Game title', '#00ff00', 'Moi', '10/01/2023, 18:00', '1h', lastCreatedEvent, ''); //TODO changer ça par les vraies infos venant de l'api
             writeDataJson(data);
         }
         await asyncSleep(30000);
