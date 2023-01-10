@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+    <link rel="stylesheet" href="css/nav.css">
+    <script src="js/utils.js"></script>
+    <script src="js/nav.js"></script>
+
+    <link rel="stylesheet" href="css/me.css">
+    <script src="js/me.js"></script>
+    <title>Acceuil</title>
+    <link rel="icon" type="image/x-icon" href="assets/logo.ico">
+</head>
+<body onload="loadPage()">
+    <div class="nav">
+        <div class="navLeft">
+            <div class="NavLesVoyageursDuReve" onclick="window.location.href = '/'">
+                <p>Les Voyageurs du Rêve</p>
+            </div>
+            <div class="NavCalendrier" onclick="window.location.href = '/calendar.html'">
+                <img src="assets/calendar.png">
+            </div>
+            <div class="NavInfo" onclick="window.location.href = '/info.html'">
+                <img src="assets/info.png">
+            </div>
+        </div>
+        <div class="NavRight">
+            <div class="right">
+                <div class="NavConnexion" id="NavHello">
+                    <p></p>
+                </div>
+                <div class="NavConnexion" id="NavConnexion">
+                    <p><a href="/login.html">connexion</a></p>
+                </div>
+                <div class="hide" onclick="logout()"  id="NavDisconnect">
+                    <img src="assets/logout.png">
+                </div>
+                <div class="NavUser" onclick="window.location.href = '/login.html'" id="NavUser">
+                    <img src="assets/user.png">
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="mainDiv">
+        <div class="fullLeft">
+            <div class="left">
+                <div class="data">
+                    <div class="email line">
+                        <label>email</label>
+                            <div class="input">
+                                <input id="email" readonly="readonly">
+                            </div>
+                    </div>
+                    <div class="username line">
+                        <label>identifiant</label>
+                            <div class="input">
+                                <input id="identifiant" readonly="readonly">
+                            </div>
+                    </div>
+                    <div class="password line">
+                        <label>mot de passe</label>
+                            <div class="input">
+                                <input id="password" type="password" readonly="readonly">
+                            </div>
+                    </div>
+                    <div class="discordUsenrname line">
+                        <label>identifiant Discord</label>
+                            <div class="input">
+                                <input id="discord" readonly="readonly">
+                            </div>
+                    </div>
+                    <div class="permission line">
+                        <label>permission</label>
+                            <div class="input">
+                                <input id="perm" readonly="readonly">
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="middle">
+                <div class="edits">
+                    <div class="edit">
+                        <button onclick="openPopUp('email')" id="emailEdit">éditer</button>
+                    </div>
+                    <div class="edit">
+                        <button onclick="openPopUp('identifiant')" id="identifiantEdit">éditer</button>
+                    </div>
+                    <div class="edit">
+                        <button onclick="openPopUp('password')" id="passwordEdit">éditer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right">
+            <div class="box">
+                <!-- <div class="edit">
+                    <button>éditer</button>
+                </div> -->
+                <div class="profil">
+                    <img src="assets/user.png">
+                </div>
+            </div>
+        </div>
+        
+
+    </div>
+
+    <div class="popUp" id="popUp" style="display: none;">
+        <div class="outPopUp">
+            <div class="inPopUp">
+                <h2>Identifiez vous pour éditer votre profile</h2>
+                <div class="popUpinput">
+                    <label class="leftLabel">mot de passe</label>
+                    <input type="password" id="passwordIN">
+                </div>
+                <div class="popUpButtons">
+                    <div class="edit">
+                        <button id="validPassword" class="sendButton" onclick="">valider</button>
+                    </div>
+                    <div class="edit">
+                        <button class="sendButton" onclick="closePopUp()">annuler</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

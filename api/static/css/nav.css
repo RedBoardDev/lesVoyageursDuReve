@@ -1,0 +1,118 @@
+
+@font-face {
+    font-family: "Pattaya";
+    src: url("../assets/Pattaya-Regular.ttf");
+}
+
+
+.nav {
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    height: 80px;
+    background-color: #5F85DB;
+}
+
+
+.navLeft {
+    position: relative;
+    display: flex;
+    width: 50%;
+}
+
+.NavLesVoyageursDuReve {
+    display: flex;
+    margin-left: 25px;
+    margin-right: 35px ;
+    align-items:center;
+    justify-content:center;
+    font: 2em "Pattaya", sans-serif;
+    color: white;
+    cursor: pointer;
+}
+
+.NavCalendrier {
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    margin-right: 25px;
+    cursor: pointer;
+}
+
+.NavCalendrier>img {
+    height: 35px;
+}
+
+.NavInfo {
+    display: flex;
+    margin-top: 2px ;
+    margin-right: 25px;
+    align-items:center;
+    justify-content:center;
+    cursor: pointer;
+}
+
+.NavInfo>img {
+    height: 40px;
+}
+
+.NavRight {
+    position: relative;
+    width: 50%;
+}
+
+.right {
+    display: flex;
+    float: right;
+    height: 100%;
+}
+
+.NavConnexion {
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    margin-right: 27px; 
+    font: 1.6em "Fira Sans", sans-serif;
+}
+
+.NavConnexion>p {
+    margin: 0px;
+    color: white;
+}
+.NavConnexion>p>a{
+    text-decoration:none;
+    color: white;
+}
+
+.NavUser {
+    margin: 7px;
+    border-radius: 65px;
+    width: 65px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.NavUser>img {
+    height: 65px;
+    width: 65px;
+    object-fit: cover;
+    border-radius: 65px;
+}
+
+.NavDisconnect {
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.NavDisconnect>img {
+    height: 40px;
+}
+
+.hide {
+    display: none;
+}

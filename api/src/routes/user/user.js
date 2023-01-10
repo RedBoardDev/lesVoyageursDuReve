@@ -41,6 +41,7 @@ module.exports = async function(app, con) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else if (rows[0]) {
+                console.log((rows[0]['discord_id']).toString())
                 glob.Client.grabProfile((rows[0]['discord_id']).toString()).then(User =>
                     {
                         rows[0].discord_username = User['username'];
