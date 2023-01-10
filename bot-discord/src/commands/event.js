@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { SlashCommandBuilder, ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } from 'discord.js';
 import { createEmbed } from '../utils/embed.js';
 
 async function sendInfos(interaction) {
@@ -12,32 +12,26 @@ async function createEvent(interaction) {
 
     const titleInput = new TextInputBuilder()
         .setCustomId('titleInput')
-        .setLabel("Le titre de l'évènement")
+        .setLabel("Titre")
         .setStyle(TextInputStyle.Short)
         .setRequired(true);
 
     const descriptionInput = new TextInputBuilder()
         .setCustomId('descriptionInput')
-        .setLabel("La description de l'évènement")
+        .setLabel("Description")
         .setStyle(TextInputStyle.Paragraph)
         .setRequired(true);
 
     const startDateInput = new TextInputBuilder()
         .setCustomId('startDateInput')
-        .setLabel("La date de début de l'évènement")
-        .setPlaceholder("Exemple: 01/01/2000")
-        .setStyle(TextInputStyle.Short)
-        .setRequired(true)
-    const startHourInput = new TextInputBuilder()
-        .setCustomId('startHourInput')
-        .setLabel("L'heure de début de l'évènement")
-        .setPlaceholder("Exemple: 23:59")
+        .setLabel("Date / heure de début")
+        .setPlaceholder("Exemple: 01/01/2000 23:59")
         .setStyle(TextInputStyle.Short)
         .setRequired(true)
 
     const durationInput = new TextInputBuilder()
         .setCustomId('durationInput')
-        .setLabel("La date de fin de l'évènement")
+        .setLabel("Durée")
         .setPlaceholder("Exemple: 1h | 45m")
         .setStyle(TextInputStyle.Short)
         .setRequired(true)
@@ -46,7 +40,6 @@ async function createEvent(interaction) {
         new ActionRowBuilder().addComponents(titleInput),
         new ActionRowBuilder().addComponents(descriptionInput),
         new ActionRowBuilder().addComponents(startDateInput),
-        new ActionRowBuilder().addComponents(startHourInput),
         new ActionRowBuilder().addComponents(durationInput)
     );
     await interaction.showModal(modal);
@@ -54,23 +47,23 @@ async function createEvent(interaction) {
 
 function getEventsMessageArray(data) {
     let messageArray = [];
-    const nextButton = new ButtonBuilder()
-        .setCustomId(`event-list-next`)
-        .setLabel(`➡️`)
-        .setStyle(ButtonStyle.Primary);
     const prevButton = new ButtonBuilder()
         .setCustomId(`event-list-prev`)
         .setLabel(`⬅️`)
         .setStyle(ButtonStyle.Primary);
+    const nextButton = new ButtonBuilder()
+        .setCustomId(`event-list-next`)
+        .setLabel(`➡️`)
+        .setStyle(ButtonStyle.Primary);
 
     for (let i = 0; i < data.length; ++i) {
-        const embed = createEmbed(`${i + 1}/${data.length}`, data[i].title, '#000000', '');
+        const embed = createEmbed(data[i].title, 'Description', '#000000', '');
         embed.addFields(
             { name: 'Créé par', value: data[i].createdBy, inline: true },
             { name: 'Date', value: data[i].date, inline: true },
             { name: 'Durée', value: data[i].duration, inline: true },
             { name: 'ID', value: data[i].id.toString(), inline: true }
-        )
+        );
 
         let row;
         if (i === 0)
@@ -79,7 +72,7 @@ function getEventsMessageArray(data) {
             row = new ActionRowBuilder().addComponents(prevButton);
         else
             row = new ActionRowBuilder().addComponents(prevButton, nextButton);
-        messageArray.push({ content: `Evènements à venir :`, embeds: [embed], components: [row], ephemeral: true });
+        messageArray.push({ content: `Evènements à venir : (${i + 1}/${data.length})`, embeds: [embed], components: [row], ephemeral: true });
     }
     return messageArray;
 }
@@ -138,15 +131,15 @@ export let command = {
         ),
 	async execute(interaction) {
         switch (interaction.options.getSubcommand()) {
+            case "create":
+                await createEvent(interaction);
+                break;
             case "list":
                 await list(interaction);
                 break;
             case "remove":
                 const id = interaction.options.getInteger("id");
                 await interaction.reply({ content: `Not implemented yet`, ephemeral: true });
-                break;
-            case "create":
-                await createEvent(interaction);
                 break;
             default:
                 break;
