@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports = async function(app, con) {
     app.get("/user", glob.verifyToken, async (req, res) => {
+        var err = 0;
         if (!glob.verifyAuth(req, res, false)) {
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
             return;
@@ -12,6 +13,16 @@ module.exports = async function(app, con) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else {
+                for (let i = 0; i < rows.length; i++) {
+                    glob.Client.grabProfile((rows[i]['discord_id']).toString()).then(User =>
+                        {
+                            rows[i].discord_username = User['username'];
+                            rows[i].discord_avater = (User['avatar']['url']).split("?")[0];
+                        }).catch(Error => {
+                            rows[i].discord_username = "discord";
+                            rows[i].discord_avater = (User['avatar']['url']).split("?")[0];
+                        });
+                }
                 res.send(rows);
             }
         });
@@ -36,7 +47,10 @@ module.exports = async function(app, con) {
                         rows[0].discord_avater = (User['avatar']['url']).split("?")[0];
                         res.send(rows[0]);
                     }).catch(Error => {
-                        res.status(500).json({ msg: "Internal discord error" });
+                        console.log("cf");
+                        rows[0].discord_username = null;
+                        rows[0].discord_avater = null;
+                        res.send(rows[0]);
                     });
             } else
                 res.sendStatus(404);
