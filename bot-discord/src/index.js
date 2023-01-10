@@ -46,11 +46,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
             const titleInput = interaction.fields.getTextInputValue('titleInput');
             const descriptionInput = interaction.fields.getTextInputValue('descriptionInput');
             const startDateInput = interaction.fields.getTextInputValue('startDateInput');
-            const startHourInput = interaction.fields.getTextInputValue('startHourInput');
             const durationInput = interaction.fields.getTextInputValue('durationInput');
-            console.log({ titleInput, descriptionInput, startDateInput, startHourInput, durationInput });
+            console.log({ titleInput, descriptionInput, startDateInput, durationInput });
             try {
-                const date = new Date(`${startDateInput} ${startHourInput}`);
+                const date = new Date(startDateInput);
                 console.log(date);
                 console.log(date.toLocaleString());
                 await interaction.reply({ content: 'Evènement créé !' });
