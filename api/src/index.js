@@ -27,6 +27,7 @@ require('./routes/user/user_id.js')(glob.app, glob.con);
 require('./routes/place.js')(glob.app, glob.con);
 require('./routes/permission.js')(glob.app, glob.con);
 require('./routes/game/type.js')(glob.app, glob.con);
+require('./routes/game/game.js')(glob.app, glob.con);
 
 glob.app.listen(process.env.API_PORT, process.env.HOST_NAME, () => {
     console.log(`App listening at http://${process.env.HOST_NAME}:${process.env.API_PORT}`);
