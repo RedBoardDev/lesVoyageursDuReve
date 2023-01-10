@@ -30,7 +30,14 @@ module.exports = async function(app, con) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else if (rows[0]) {
-                res.send(rows[0]);
+                glob.Client.grabProfile((rows[0]['discord_id']).toString()).then(User =>
+                    {
+                        rows[0].discord_username = User['username'];
+                        rows[0].discord_avater = (User['avatar']['url']).split("?")[0];
+                        res.send(rows[0]);
+                    }).catch(Error => {
+                        res.status(500).json({ msg: "Internal discord error" });
+                    });
             } else
                 res.sendStatus(404);
         });
