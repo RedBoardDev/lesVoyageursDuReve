@@ -115,14 +115,15 @@ button:active {
 
 .profil {
     border-radius: 30em;
-    border: solid;
-    border-width: 6px;
-    border-color: #90b8f8;
 }
+
 .profil>img {
     border-radius: 30em;
     width: 15em;
     padding: 0px;
+    border: solid;
+    border-width: 6px;
+    border-color: #90b8f8;
 }
 
 .outPopUp {

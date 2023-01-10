@@ -23,6 +23,11 @@ function fillData(user)
     document.getElementById("email").value = user.email
     document.getElementById("identifiant").value = user.username
     document.getElementById("password").value = "aaaaaaaaaaaaa"
+    document.getElementById("perm").value = "Joueur"
+    if (user.discord_username != null) {
+        document.getElementById("discord").value = user.discord_username
+        document.getElementById("profilePicture").setAttribute("src", user.discord_avater)
+    }
     userId = user.id
 }
 
@@ -57,6 +62,7 @@ function validPassword(id)
         dataType :"json",
         success: function(result) {
             document.getElementById(id).removeAttribute("readonly")
+            document.getElementById(id).value = ""
             document.getElementById(id + "Edit").textContent = "Valider"
             document.getElementById(id + "Edit").setAttribute("onclick", "validChange('" + id +"')")
             closePopUp()
@@ -68,32 +74,12 @@ function validPassword(id)
       });
 }
 
-function resetToken(email, password)
-{
-    let data = JSON.stringify({"email" : email, "password" : password})
-
-
-    $.ajax({
-        type: "POST",
-        url: "/user/login",
-        data: data,
-        contentType: "application/json; charset=utf-8",
-        dataType :"json",
-        success: function(result) {
-            sessionStorage.setItem("lvdrToken", result.token)
-
-        },
-        error: function(e){
-            console.log(e)
-        }
-      });
-}
 
 function validChange(id)
 {
     let thing = document.getElementById(id).value
     let data = null
-    
+
     if (id == "email")
         data = JSON.stringify({"email" : thing})
     if (id == "identifiant")
