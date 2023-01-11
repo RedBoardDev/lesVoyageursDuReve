@@ -10,37 +10,37 @@ function addProperty(queryString, property, value) {
 function getUpdateQueryString(req) {
     let updateQueryString = "";
 
-    if (!req.body.hasOwnProperty('title')) {
+    if (req.body.hasOwnProperty('title')) {
         updateQueryString = addProperty(updateQueryString, 'title', req.body.title);
     }
-    if (!req.body.hasOwnProperty('description')) {
+    if (req.body.hasOwnProperty('description')) {
         updateQueryString = addProperty(updateQueryString, 'description', req.body.description);
     }
-    if (!req.body.hasOwnProperty('place_id')) {
+    if (req.body.hasOwnProperty('place_id')) {
         updateQueryString = addProperty(updateQueryString, 'place_id', req.body.place_id);
     }
-    if (!req.body.hasOwnProperty('place_custom')) {
+    if (req.body.hasOwnProperty('place_custom')) {
         updateQueryString = addProperty(updateQueryString, 'place_custom', req.body.place_custom);
     }
-    if (!req.body.hasOwnProperty('game_id')) {
+    if (req.body.hasOwnProperty('game_id')) {
         updateQueryString = addProperty(updateQueryString, 'game_id', req.body.game_id);
     }
-    if (!req.body.hasOwnProperty('game_custom')) {
+    if (req.body.hasOwnProperty('game_custom')) {
         updateQueryString = addProperty(updateQueryString, 'game_custom', req.body.game_custom);
     }
-    if (!req.body.hasOwnProperty('game_type_id')) {
+    if (req.body.hasOwnProperty('game_type_id')) {
         updateQueryString = addProperty(updateQueryString, 'game_type_id', req.body.game_type_id);
     }
-    if (!req.body.hasOwnProperty('game_type_custom')) {
+    if (req.body.hasOwnProperty('game_type_custom')) {
         updateQueryString = addProperty(updateQueryString, 'game_type_custom', req.body.game_type_custom);
     }
-    if (!req.body.hasOwnProperty('register_max')) {
+    if (req.body.hasOwnProperty('register_max')) {
         updateQueryString = addProperty(updateQueryString, 'register_max', req.body.register_max);
     }
-    if (!req.body.hasOwnProperty('date_start')) {
+    if (req.body.hasOwnProperty('date_start')) {
         updateQueryString = addProperty(updateQueryString, 'date_start', req.body.date_start);
     }
-    if (!req.body.hasOwnProperty('date_end')) {
+    if (req.body.hasOwnProperty('date_end')) {
         updateQueryString = addProperty(updateQueryString, 'date_end', req.body.date_end);
     }
     return updateQueryString;
@@ -173,7 +173,7 @@ module.exports = async function(app, con) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
-        if (!glob.verifyAuth(req, res, true)) {
+        if (!glob.verifyAuth_without_id(req, res, true)) {
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
             return;
         }
@@ -183,27 +183,29 @@ module.exports = async function(app, con) {
             return;
         }
 
-        con.query(`SELECT * FROM events WHERE id = ${req.params.id}`, (err1, oldRows) => {
-            if (err1)
-                res.status(500).json({ msg: "Internal server error" })
-            else if (oldRows[0]) {
-                con.query(`UPDATE events SET ${updateQueryString} WHERE id = "${req.params.id}";`, (err2, result) => {
-                    if (err2)
+        let token_id = glob.get_id_with_token(req, res);
+        if (token_id === -1)
+            res.status(403).json({ msg: "Authorization denied" });
+        con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows1) {
+            if (err)
+                res.status(500).json({ msg: "Internal server error" });
+            else {
+                con.query(`SELECT admin_user_id FROM events WHERE id ="${req.params.id}";`, function (err1, rows) {
+                    if (err1)
                         res.status(500).json({ msg: "Internal server error" });
-                    else if (result.affectedRows > 0) {
-                        con.query(`SELECT * FROM users WHERE id = "${req.params.id}";`, (err3, newRows) => {
-                            if (err3)
+                    else if (rows1[0]['permission_id'] === 2 || (rows1[0]['permission_id'] >= 1 && parseInt(token_id) === rows[0]['admin_user_id'])) {
+                        con.query(`UPDATE events SET ${updateQueryString} WHERE id = "${req.params.id}";`, function (err2, result) {
+                            if (err2) {
                                 res.status(500).json({ msg: "Internal server error" });
-                            else {
-                                res.status(200).send(newRows[0]);
-                            }
+                            } else
+                                res.status(200).json( {msg: "event change"} );
                         });
                     } else
-                        res.sendStatus(404);
+                        res.status(403).json({ msg: "Authorization denied" });
                 });
-            } else
-                res.sendStatus(404);
+            }
         });
+
     });
 
     // app.delete("/game/:id", glob.verifyToken, async (req, res) => {
