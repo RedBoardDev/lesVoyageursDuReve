@@ -63,7 +63,7 @@
     width: 50%;
 }
 
-.right {
+.inNavright {
     display: flex;
     float: right;
     height: 100%;

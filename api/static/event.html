@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+    <link rel="stylesheet" href="css/nav.css">
+    <script src="js/utils.js"></script>
+    <script src="js/nav.js"></script>
+
+    <link rel="stylesheet" href="css/event.css">
+    <script src="js/event.js"></script>
+    <title>Acceuil</title>
+    <link rel="icon" type="image/x-icon" href="assets/logo.ico">
+</head>
+<body onload="loadPage()">
+    <div class="nav">
+        <div class="navLeft">
+            <div class="NavLesVoyageursDuReve" onclick="window.location.href = '/'">
+                <p>Les Voyageurs du Rêve</p>
+            </div>
+            <div class="NavCalendrier" onclick="window.location.href = '/calendar.html'">
+                <img src="assets/calendar.png">
+            </div>
+            <div class="NavInfo" onclick="window.location.href = '/info.html'">
+                <img src="assets/info.png">
+            </div>
+        </div>
+        <div class="NavRight">
+            <div class="inNavright">
+                <div class="NavConnexion" id="NavHello">
+                    <p></p>
+                </div>
+                <div class="NavConnexion" id="NavConnexion">
+                    <p><a href="/login.html">connexion</a></p>
+                </div>
+                <div class="hide" onclick="logout()"  id="NavDisconnect">
+                    <img src="assets/logout.png">
+                </div>
+                <div class="NavUser" onclick="window.location.href = '/login.html'" id="NavUser">
+                    <img src="assets/user.png" id="NavProfilePicture">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mainDiv">
+        <div class="left">
+            <div class="type">
+                <div class="color">
+                </div>
+                <div class="typeName">
+                    <p>Jeu de rôle</p>
+                </div>
+            </div>
+            <div class="title">
+                <label></label>
+                <div class="InTitle input">
+                    <input>
+                </div>
+            </div>
+            <div class="descr">
+                <label></label>
+                <div class="InDescr area">
+                    <textarea></textarea>
+                </div>
+            </div>
+            <div class="end">
+                <div class="time">
+                    <div class="start">
+                        <label></label>
+                        <div class="InStart inputTime">
+                            <input>
+                        </div>
+                    </div>
+                    <div class="end">
+                        <label></label>
+                        <div class="InEnd inputTime">
+                            <input>
+                        </div>
+                    </div>
+                </div>
+                <div class="place">
+                    <label></label>
+                    <div class="inPlace inputTime">
+                        <input>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="right">
+            <div class="head">
+                <div class="adminName">
+                    <p>SuperMich</p>
+                </div>
+                <div class="adminHead">
+                    <img id="adminHead">
+                </div>
+            </div>
+            <div class="players">
+
+            </div>
+        </div>
+
+    </div>
+    
+
+</body>
+</html>

@@ -1,5 +1,3 @@
-var colorsId = []
-var colorData = []
 var gameTypes = null
 
 function loadPage ()
@@ -23,31 +21,39 @@ function loadPage ()
 
 function openEvent(eventId)
 {
-
+    window.location.href = "/event.html?id=" + eventId
 }
 
-function getColor(callback)
+function getGameType(callback)
 {
-    let index = colorsId.indexOf(id)
+    $.ajax({
+        type: "GET",
+        url: "/game/type/",
+        contentType: "application/json; charset=utf-8",
+        dataType :"json",
+        success: function(result) {
+            gameTypes = result
+            console.log(gameTypes)
+            callback()
+        },
+        error: function(e){
+            console.log(e)
+        }
+    });
+}
 
-    console.log(colorsId)
-    if (index == -1) {
-        $.ajax({
-            type: "GET",
-            url: "/game/type/",
-            contentType: "application/json; charset=utf-8",
-            dataType :"json",
-            success: function(result) {
-                // gameTypes
-                callback()
-            },
-            error: function(e){
-                console.log(e)
-            }
-        });
+function getColor(id)
+{
+    if (id == -1) {
+        return "#00FF00"
     } else {
-        callback(colorData[index])
+        for (let i  = 0; i < gameTypes.length; ++ i) {
+            if (gameTypes[i].id == id) {
+                return gameTypes[i].color
+            }
+        }
     }
+    return "#00FF00"
 }
 
 function addNow(obj)
@@ -57,7 +63,8 @@ function addNow(obj)
     out.setAttribute("class", "event")
     out.setAttribute("onclick", "openEvent(" + obj.id + ")")
     let color = document.createElement("div")
-    color.setAttribute("class", "Color red")
+    color.setAttribute("class", "Color")
+    color.setAttribute("style", "background-color : " + getColor(obj.game_type_id) + ";")
     let time = document.createElement("div")
     time.setAttribute("class", "Time")
 
@@ -88,7 +95,8 @@ function addToday(obj)
     out.setAttribute("onclick", "openEvent(" + obj.id + ")")
     out.setAttribute("class", "event")
     let color = document.createElement("div")
-    color.setAttribute("class", "Color red")
+    color.setAttribute("class", "Color")
+    color.setAttribute("style", "background-color : " + getColor(obj.game_type_id) + ";")
     let time = document.createElement("div")
     time.setAttribute("class", "Time")
 
@@ -107,7 +115,6 @@ function addToday(obj)
         endMinute = "0" + endMinute
 
     time.textContent = starthour + "H" + startMinute + "-" + endhour + "H" + endMinute
-
     let name = document.createElement("div")
     name.setAttribute("class", "Name")
     name.textContent = obj.title
@@ -125,7 +132,8 @@ function addNext(obj)
     out.setAttribute("onclick", "openEvent(" + obj.id + ")")
     out.setAttribute("class", "event")
     let color = document.createElement("div")
-    color.setAttribute("class", "Color red")
+    color.setAttribute("class", "Color")
+    color.setAttribute("style", "background-color : " + getColor(obj.game_type_id) + ";")
     let time = document.createElement("div")
     time.setAttribute("class", "Time")
     let timeDiv = document.createElement("div")
@@ -179,9 +187,6 @@ function createEvent(obj) {
     let nowStr = now.getFullYear() + "."+  now.getMonth() + "."+ now.getDate()
     let startStr = start.getFullYear() + "."+  start.getMonth() + "."+ start.getDate()
 
-    getColor(obj.game_type_id, (color) => {
-        console.log(color)
-    })
     if (start.getTime() < now.getTime() && end.getTime() > now.getTime()) {
         addNow(obj)
     } else if (start.getTime() > now.getTime() && nowStr == startStr) {
@@ -193,8 +198,9 @@ function createEvent(obj) {
 
 function fillContent(data)
 {
-    // console.log(data)
-    for (let i = 0; i < data.length; ++i) {
-        createEvent(data[i])
-    }
+    getGameType(() => {
+        for (let i = 0; i < data.length; ++i) {
+            createEvent(data[i])
+        }
+    })
 }
