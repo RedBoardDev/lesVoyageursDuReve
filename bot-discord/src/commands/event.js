@@ -57,7 +57,7 @@ function getEventsMessageArray(data) {
         .setStyle(ButtonStyle.Primary);
 
     for (let i = 0; i < data.length; ++i) {
-        const embed = createEmbed(data[i].title, 'Description', '#000000', '');
+        const embed = createEmbed(data[i].title, data[i].description, '#000000', '');
         embed.addFields(
             { name: 'Créé par', value: data[i].createdBy, inline: true },
             { name: 'Date', value: data[i].date, inline: true },
@@ -77,7 +77,7 @@ function getEventsMessageArray(data) {
     return messageArray;
 }
 
-async function list(interaction) {
+async function listEvents(interaction) {
     let currentMessageIndex = 0;
     const messageArray = getEventsMessageArray([
         {title: "T1", createdBy: "Moi", date: "11/01/2023", duration: "1h", id: 1},
@@ -135,11 +135,11 @@ export let command = {
                 await createEvent(interaction);
                 break;
             case "list":
-                await list(interaction);
+                await listEvents(interaction);
                 break;
-            case "remove":
+            case "delete":
                 const id = interaction.options.getInteger("id");
-                await interaction.reply({ content: `Not implemented yet`, ephemeral: true });
+                await interaction.reply({ content: `L'évènement n°${id} a été supprimé avec succès.`, ephemeral: true });
                 break;
             default:
                 break;

@@ -1,4 +1,7 @@
 import { SlashCommandBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } from 'discord.js';
+import { loadConfigJson } from '../utils/global.js';
+
+const config = await loadConfigJson();
 
 export let command = {
 	data: new SlashCommandBuilder()
@@ -6,13 +9,11 @@ export let command = {
 		.setDescription("S'authentifier à son compte Les Voyageurs du Rêve"),
 	async execute(interaction) {
         const row = new ActionRowBuilder()
-        .addComponents(
-            new ButtonBuilder()
-                .setLabel(`S'authentifier`)
-                .setStyle(ButtonStyle.Link)
-                .setURL(`http://localhost:8134/login.html?discordId=${interaction.user.id}`),
+        .addComponents(new ButtonBuilder()
+            .setLabel(`S'authentifier`)
+            .setStyle(ButtonStyle.Link)
+            .setURL(`${config.api_url}/login.html?discordId=${interaction.user.id}`),
         );
-
-        await interaction.reply({ content: `Pour vous authentifier, veuillez cliquer sur le bouton suivant`, components: [row], ephemeral: true });
+        await interaction.reply({ content: `Pour vous authentifier, veuillez cliquer sur le bouton suivant (vous devez déjà avoir un compte **Les voyageurs du rếve**)`, components: [row], ephemeral: true });
 	},
 };
