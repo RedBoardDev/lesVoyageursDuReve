@@ -1,6 +1,9 @@
 import { SlashCommandBuilder, ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } from 'discord.js';
 import { createEmbed, createEventEmbed } from '../utils/embed.js';
 import { executeDBRequest, getEventType, getEvent, getEvents, getUser } from '../utils/api.js';
+import { loadConfigJson } from '../utils/global.js';
+
+const config = await loadConfigJson();
 
 async function sendInfos(interaction) {
     await interaction.reply({embeds: [createEmbed("Test", "test", "#5f85db", "")] });
@@ -128,9 +131,9 @@ async function deleteEvent(interaction) {
     }
 
     executeDBRequest('DELETE', `/event/${event.id}`, config.API_TOKEN).then(async (res) => {
-        await interaction.reply({ content: `L'évènement n°${id} a été supprimé avec succès.`, ephemeral: true });
+        await interaction.reply({ content: `L'évènement n°${event.id} a été supprimé avec succès.`, ephemeral: true });
     }).catch(async (err) => {
-        await interaction.reply({ content: `Une erreur s'est produite lors de la suppression de l'évènement n°${id}.`, ephemeral: true });
+        await interaction.reply({ content: `Une erreur s'est produite lors de la suppression de l'évènement n°${event.id}.`, ephemeral: true });
     });
 }
 
