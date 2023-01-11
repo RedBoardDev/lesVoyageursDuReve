@@ -12,6 +12,7 @@
 
 .right {
     width: 60%;
+    display: flex;
 }
 
 .color {
@@ -110,4 +111,21 @@ input:focus{
     border: solid;
     border-color: #5f85db;
     border-width: 2px;
+}
+
+.head {
+    display: flex;
+    float: right;
+}
+
+.adminHead {
+    /* display: flex; */
+    float: right;
+}
+#adminHead {
+    width: 8em;
+    border-radius: 8em;
+    border: solid;
+    border-width: 4px;
+    border-color: #90B8F8;
 }
