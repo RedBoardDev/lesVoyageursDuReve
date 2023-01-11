@@ -150,6 +150,23 @@ function fillEvent(data)
         document.getElementById("adminHead").setAttribute("src", out.discord_avater)
         document.getElementById("adminName").textContent = out.username
     })
+
+    getMe(sessionStorage.getItem("lvdrToken"), (out) => {
+        let players = []
+        if (Event.user_registered_array != "") {
+            players = JSON.parse(Event.user_registered_array)
+        }
+        let register = document.getElementById("registerButton")
+        if (players.length < Event.register_max && players.indexOf(out.id) == -1) {
+            register.setAttribute("style", "display: block;")
+            register.setAttribute("onclick", "register(" + out.id + ")")
+        }
+        let unregister = document.getElementById("unregisterButton")
+        if (players.indexOf(out.id) != -1) {
+            unregister.setAttribute("style", "display: block;")
+            unregister.setAttribute("onclick", "unregister(" + out.id + ")")
+        }
+    })
     }
 
 function loadEvent(callback)
@@ -221,11 +238,54 @@ function loadPlayers()
                 CreatePLayer({"username" : "______", "discord_avater" : null})
             }
         }
-
-        
     } else {
         for (let i = 0; i < Event.register_max ; ++i) {
             CreatePLayer({"username" : "______", "discord_avater" : null})
         }
     }
+}
+
+function register(id)
+{
+    let data = JSON.stringify({"user" : id.toString()})
+
+    $.ajax({
+        type: "PUT",
+        url: "/event/register/" + Event.id,
+        data: data,
+        contentType: "application/json; charset=utf-8",
+        dataType :"json",
+        headers: {
+            "Authorization":"Bearer " + sessionStorage.getItem("lvdrToken")
+        },
+        success: function(result) {
+            window.location.reload()
+        },
+        error: function(e){
+            console.log(e)
+        }
+    });
+}
+
+function unregister(id)
+{
+    let data = JSON.stringify({"user" : id.toString()})
+
+    $.ajax({
+        type: "PUT",
+        url: "/event/unregister/" + Event.id,
+        data: data,
+        contentType: "application/json; charset=utf-8",
+        dataType :"json",
+        headers: {
+            "Authorization":"Bearer " + sessionStorage.getItem("lvdrToken")
+        },
+        success: function(result) {
+            window.location.reload()
+        },
+        error: function(e){
+            console.log(e)
+        }
+    });
+    console.log(id, Event.id)
 }

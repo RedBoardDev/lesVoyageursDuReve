@@ -1,5 +1,9 @@
 import { SlashCommandBuilder, ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } from 'discord.js';
-import { createEmbed } from '../utils/embed.js';
+import { createEmbed, createEventEmbed } from '../utils/embed.js';
+import { executeDBRequest, getEventType, getEvent, getEvents, getUser } from '../utils/api.js';
+import { loadConfigJson } from '../utils/global.js';
+
+const config = await loadConfigJson();
 
 async function sendInfos(interaction) {
     await interaction.reply({embeds: [createEmbed("Test", "test", "#5f85db", "")] });
@@ -45,7 +49,7 @@ async function createEvent(interaction) {
     await interaction.showModal(modal);
 }
 
-function getEventsMessageArray(data) {
+async function getEventsMessageArray(data) {
     let messageArray = [];
     const prevButton = new ButtonBuilder()
         .setCustomId(`event-list-prev`)
@@ -57,13 +61,7 @@ function getEventsMessageArray(data) {
         .setStyle(ButtonStyle.Primary);
 
     for (let i = 0; i < data.length; ++i) {
-        const embed = createEmbed(data[i].title, data[i].description, '#000000', '');
-        embed.addFields(
-            { name: 'Créé par', value: data[i].createdBy, inline: true },
-            { name: 'Date', value: data[i].date, inline: true },
-            { name: 'Durée', value: data[i].duration, inline: true },
-            { name: 'ID', value: data[i].id.toString(), inline: true }
-        );
+        const embed = await createEventEmbed(data[i]);
 
         let row;
         if (i === 0)
@@ -79,13 +77,20 @@ function getEventsMessageArray(data) {
 
 async function listEvents(interaction) {
     let currentMessageIndex = 0;
-    const messageArray = getEventsMessageArray([
-        {title: "T1", createdBy: "Moi", date: "11/01/2023", duration: "1h", id: 1},
-        {title: "T2", createdBy: "Moi", date: "12/01/2023", duration: "1h30", id: 2},
-        {title: "T3", createdBy: "Moi", date: "13/01/2023", duration: "2h", id: 3},
-        {title: "T4", createdBy: "Moi", date: "14/01/2023", duration: "2h30", id: 4},
-        {title: "T5", createdBy: "Moi", date: "15/01/2023", duration: "3h", id: 5}     //TODO changer ça par les vraies infos venant de l'api
-    ]);
+    let eventsArray = await getEvents();
+
+    if (!eventsArray)
+        return;
+    eventsArray = eventsArray.filter(obj => new Date(obj.date_end) >= new Date()).sort((o1, o2) => {
+        if (o1.date_end > o2.date_end) {
+            return 1;
+        }
+        if (o1.date_end < o2.date_end) {
+            return -1;
+        }
+        return 0;
+    });
+    const messageArray = await getEventsMessageArray(eventsArray);
     const sent = await interaction.reply(messageArray[currentMessageIndex]);
 
     const filter = (i) => {return (i.customId === 'event-list-prev' || i.customId === 'event-list-next') && i.user.id === interaction.user.id};
@@ -104,6 +109,31 @@ async function listEvents(interaction) {
 
     collector.on('end', async (collected) => {
         await sent.interaction.editReply({ components: [] });
+    });
+}
+
+async function deleteEvent(interaction) {
+    const event = await getEvent(interaction.options.getInteger("id"));
+    const discordUserId = interaction.user.id;
+    const dbUserId = (await getUser(discordUserId))?.id;
+
+    if (!event) {
+        await interaction.reply({ content: "Cet évènement n'éxiste pas, veuillez rentrer un identifiant valide.", ephemeral: true });
+        return;
+    }
+    if (!dbUserId) {
+        await interaction.reply({ content: "Votre compte **Les voyageurs du rève** n'est pas lié à discord, veuillez taper `/login` puis vous connecter sur le lien qui vous est envoyé pour lier votre compte", ephemeral: true });
+        return;
+    }
+    if (event.admin_user_id !== dbUserId) {
+        await interaction.reply({ content: "Vous n'êtes pas l'organisateur de cet évènement, vous ne pouvez donc pas le supprimer.", ephemeral: true });
+        return;
+    }
+
+    executeDBRequest('DELETE', `/event/${event.id}`, config.API_TOKEN).then(async (res) => {
+        await interaction.reply({ content: `L'évènement n°${event.id} a été supprimé avec succès.`, ephemeral: true });
+    }).catch(async (err) => {
+        await interaction.reply({ content: `Une erreur s'est produite lors de la suppression de l'évènement n°${event.id}.`, ephemeral: true });
     });
 }
 
@@ -138,8 +168,7 @@ export let command = {
                 await listEvents(interaction);
                 break;
             case "delete":
-                const id = interaction.options.getInteger("id");
-                await interaction.reply({ content: `L'évènement n°${id} a été supprimé avec succès.`, ephemeral: true });
+                await deleteEvent(interaction);
                 break;
             default:
                 break;

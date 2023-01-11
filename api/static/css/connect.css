@@ -97,12 +97,15 @@ input {
     color: #353941;
     font-size: 1.2em;
     border-radius: 2px;
+    padding-left: 0.5em;
 }
 
 input:focus{
     outline-style: solid;
     outline-width: 2px;
     outline-color: #5f85db;
+    
+
 }
 
 label {

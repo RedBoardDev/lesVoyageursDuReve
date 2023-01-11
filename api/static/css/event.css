@@ -84,6 +84,7 @@ textarea {
     color: #353941;
     font-size: 1.2em;
     border-radius: 2px;
+    padding-left: 0.5em;
 }
 
 textarea:focus{
@@ -104,6 +105,7 @@ input {
     color: #353941;
     font-size: 1.2em;
     border-radius: 2px;
+    padding-left: 0.5em;
 }
 
 input:focus{
@@ -181,4 +183,63 @@ input:focus{
     height: 100%;
     color: #26282b;
     font: 1.3em "Fira Sans", sans-serif;
+}
+
+.register {
+    position: relative;
+    display: block;
+    width: 27.5em;
+}
+
+.registerRight {
+    float: right;
+    height: 100%;
+}
+
+.registerButton {
+    height: 100%;
+    display: flex;
+    align-items:center;
+
+}
+
+
+#registerButton{
+    position: relative  ;
+    background-color: #90b8f8;
+    border: none;
+    height: 3em;
+    padding-left: 2em;
+    padding-right: 2em;
+    border-radius: 1em;
+    font: 1.1em "Fira Sans", sans-serif;
+    cursor: pointer;
+}
+#registerButton:hover {
+    background-color: #5f85db;
+}
+
+#registerButton:active {
+    background-color: #353941;
+    color: white;
+}
+
+#unregisterButton{
+    position: relative  ;
+    background-color: #f89090;
+    border: none;
+    height: 3em;
+    padding-left: 2em;
+    padding-right: 2em;
+    border-radius: 1em;
+    font: 1.1em "Fira Sans", sans-serif;
+    cursor: pointer;
+}
+#unregisterButton:hover {
+    background-color: #db5f5f;
+}
+
+#unregisterButton:active {
+    background-color: #353941;
+    color: white;
 }
