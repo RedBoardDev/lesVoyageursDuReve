@@ -29,7 +29,7 @@ CREATE TABLE `users` (
     `username` VARCHAR(100) NOT NULL UNIQUE,
     `email` VARCHAR(100) NOT NULL UNIQUE,
     `password` VARCHAR(100) NOT NULL,
-    `discord_id` VARCHAR(30) NOT NULL DEFAULT "0",
+    `discord_id` VARCHAR(30) NOT NULL DEFAULT "0" UNIQUE,
     `permission_id` INT unsigned NOT NULL DEFAULT 1,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

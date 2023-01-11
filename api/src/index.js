@@ -16,10 +16,6 @@ glob.app.get("/quoi", (req, res) => {
     res.send("feur");
 });
 
-glob.app.get("/", (req, res) => {
-    res.send("API on :)");
-});
-
 require('./routes/user/auth/register.js')(glob.app, glob.con);
 require('./routes/user/auth/login.js')(glob.app, glob.con);
 require('./routes/user/user.js')(glob.app, glob.con);
