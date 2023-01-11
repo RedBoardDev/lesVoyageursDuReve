@@ -64,9 +64,9 @@ input {
 }
 
 input:focus{
-    border: solid;
-    border-color: #5f85db;
-    border-width: 2px;
+    outline-style: solid;
+    outline-width: 2px;
+    outline-color: #5f85db;
 }
 
 

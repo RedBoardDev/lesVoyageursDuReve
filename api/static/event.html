@@ -46,22 +46,28 @@
     <div class="mainDiv">
         <div class="left">
             <div class="type">
-                <div class="color">
+                <div class="color" id="typeColor">
                 </div>
                 <div class="typeName">
-                    <p>Jeu de rôle</p>
+                    <p id="typeName"></p>
                 </div>
             </div>
             <div class="title">
                 <label></label>
                 <div class="InTitle input">
-                    <input>
+                    <input id="titleInput" readonly="readonly">
+                </div>
+            </div>
+            <div class="game">
+                <label></label>
+                <div class="InGame input">
+                    <input id="gameInput" readonly="readonly">
                 </div>
             </div>
             <div class="descr">
                 <label></label>
                 <div class="InDescr area">
-                    <textarea></textarea>
+                    <textarea id="descrInput" readonly="readonly"></textarea>
                 </div>
             </div>
             <div class="end">
@@ -69,20 +75,20 @@
                     <div class="start">
                         <label></label>
                         <div class="InStart inputTime">
-                            <input>
+                            <input id="startInput" readonly="readonly">
                         </div>
                     </div>
                     <div class="end">
                         <label></label>
                         <div class="InEnd inputTime">
-                            <input>
+                            <input id="endInput" readonly="readonly">
                         </div>
                     </div>
                 </div>
                 <div class="place">
                     <label></label>
                     <div class="inPlace inputTime">
-                        <input>
+                        <input id="placeInput" readonly="readonly">
                     </div>
                 </div>
             </div>
@@ -90,18 +96,15 @@
         </div>
         <div class="right">
             <div class="head">
-                <div class="adminName">
-                    <p>SuperMich</p>
-                </div>
                 <div class="adminHead">
                     <img id="adminHead" src="assets/user.png">
                 </div>
+                <div class="adminName">
+                    <p id="adminName"></p>
+                </div>
             </div>
-            <div class="players">
-
-            </div>
+            <div class="players" id="players"></div>
         </div>
-
     </div>
     
 
