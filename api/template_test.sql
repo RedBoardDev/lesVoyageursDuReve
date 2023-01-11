@@ -77,7 +77,7 @@ INSERT INTO games(name, game_type_id) VALUES("game 2", 2);
 -- un jour mek
 
 -- semaine 1
-INSERT INTO events(title, description, place_id, game_id, game_type_id, admin_user_id, date_start, date_end) VALUES("week 1", "Ceci est une description wuw", 1, 1, 2, 2, "2023-01-01 20:00:00", "2023-01-01 22:00:00");
+INSERT INTO events(title, description, place_id, game_id, game_type_id, admin_user_id, date_start, date_end) VALUES("week 1", "Ceci est une description wuw", 1, 1, 2, 2, "2023-01-02 20:00:00", "2023-01-02 22:00:00");
 INSERT INTO events(title, description, place_id, game_id, game_type_id, admin_user_id, date_start, date_end) VALUES("week 1", "Ceci est une description wuw", 2, 2, 1, 2, "2023-01-03 20:00:00", "2023-01-03 22:00:00");
 INSERT INTO events(title, description, place_id, game_id, game_type_id, admin_user_id, date_start, date_end) VALUES("week 1", "Ceci est une description wuw", 1, 1, 1, 3, "2023-01-04 20:00:00", "2023-01-04 22:00:00");
 INSERT INTO events(title, description, place_id, game_id, game_type_id, admin_user_id, date_start, date_end) VALUES("week 1", "Ceci est une description wuw", 1, 2, 2, 3, "2023-01-05 20:00:00", "2023-01-05 22:00:00");

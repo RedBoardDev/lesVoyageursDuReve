@@ -29,7 +29,7 @@ module.exports = async function(app, con) {
         con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
-            else if (rows[0]['permission_id'] >= 2) {
+            else if (rows[0]['permission_id'] >= 1) {
                     con.query(`INSERT INTO comments(event_id, user_id, message) VALUES("${req.body["event_id"]}", "${req.body["user_id"]}", "${req.body["message"]}")`, function (err2, result) {
                         if (err2)
                             res.status(500).json({ msg: "Internal server error" });
@@ -66,7 +66,7 @@ module.exports = async function(app, con) {
         con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
-            else if (rows[0]['permission_id'] === 3) {
+            else if (rows[0]['permission_id'] === 2) {
                 con.query(`DELETE FROM comments WHERE id = "${req.params.id}";`, function (err2, result) {
                     if (err2)
                         res.status(500).json({ msg: "Internal server error" });

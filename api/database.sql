@@ -48,10 +48,9 @@ CREATE TABLE `events` (
     `description` VARCHAR(100) NOT NULL,
     `place_id` INT unsigned NOT NULL,
     `game_id` INT unsigned NOT NULL,
-    `game_title_id` INT unsigned NOT NULL,
+    `game_type_id` INT unsigned NOT NULL,
     `admin_user_id` INT unsigned NOT NULL,
-    `message` VARCHAR(1000) NOT NULL,
-    `user_registered_array` VARCHAR(1000) NOT NULL,
+    `user_registered_array` VARCHAR(1000) NOT NULL DEFAULT "",
     `date_start` DATETIME NOT NULL,
     `date_end` DATETIME NOT NULL,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
