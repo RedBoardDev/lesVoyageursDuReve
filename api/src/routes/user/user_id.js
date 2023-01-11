@@ -66,11 +66,12 @@ module.exports = async function(app, con) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
-        con.query(`SELECT email, discord_id FROM users WHERE id = ${req.params.id}`, async (err1, oldRows) => {
+        con.query(`SELECT email, discord_id, discord_username, discord_avatar FROM users WHERE id = ${req.params.id}`, async (err1, oldRows) => {
             if (err1)
                 res.status(500).json({ msg: "Internal server error1" })
             else if (oldRows[0]) {
-                updateQueryString = await fetchDiscordInfo(updateQueryString, (oldRows[0]['discord_id']).toString());
+                if (oldRows[0]['discord_username'] === "" || oldRows[0]['discord_avatar'] === "")
+                    updateQueryString = await fetchDiscordInfo(updateQueryString, (oldRows[0]['discord_id']).toString());
                 con.query(`UPDATE users SET ${updateQueryString} WHERE id = "${req.params.id}";`, (err2, result) => {
                     if (err2) {
                         res.status(500).json({ msg: "Internal server error2" });
