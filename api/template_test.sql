@@ -64,6 +64,8 @@ CREATE TABLE `events` (
 INSERT INTO users(username, email, password, discord_id, permission_id) VALUES("user 1", "email1@gmail.com", "$2a$10$KU1XpfVv9jWy3MyVCGOWee/C.4URHVHK/WA2cG4hTjTiW609Bd8VG", "617422693008146443", "0");
 INSERT INTO users(username, email, password, discord_id, permission_id) VALUES("user 2", "email2@gmail.com", "$2a$10$KU1XpfVv9jWy3MyVCGOWee/C.4URHVHK/WA2cG4hTjTiW609Bd8VG", "352787867925348354", "1");
 INSERT INTO users(username, email, password, discord_id, permission_id) VALUES("user 3", "email3@gmail.com", "$2a$10$KU1XpfVv9jWy3MyVCGOWee/C.4URHVHK/WA2cG4hTjTiW609Bd8VG", "419926802366988292", "2");
+INSERT INTO users(username, email, password, discord_id, permission_id) VALUES("user 4", "email4@gmail.com", "$2a$10$KU1XpfVv9jWy3MyVCGOWee/C.4URHVHK/WA2cG4hTjTiW609Bd8VG", "1045341766808772638", "2");
+
 
 -- create place
 INSERT INTO places(name, city, adresse) VALUES("place 1", "city 1", "adresse 1");
