@@ -30,6 +30,8 @@ CREATE TABLE `users` (
     `email` VARCHAR(100) NOT NULL UNIQUE,
     `password` VARCHAR(100) NOT NULL,
     `discord_id` VARCHAR(30) NOT NULL DEFAULT "0" UNIQUE,
+    `discord_username` VARCHAR(100) NOT NULL DEFAULT "",
+    `discord_avatar` VARCHAR(100) NOT NULL DEFAULT "",
     `permission_id` INT unsigned NOT NULL DEFAULT 1,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -59,5 +61,3 @@ CREATE TABLE `events` (
     `date_end` DATETIME NOT NULL,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-
-GRANT ALL ON lesvoyageursdureve.* to WEBSITE@'%' IDENTIFIED BY 'password-db';
