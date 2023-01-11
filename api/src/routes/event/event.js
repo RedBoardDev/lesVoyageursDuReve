@@ -100,7 +100,8 @@ module.exports = async function(app, con) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else if (token_id === -2 || rows[0]['permission_id'] >= 1) {
-                con.query(`INSERT INTO events(title, description, place_id, place_custom, game_id, game_custom, game_type_id, game_type_custom, admin_user_id, register_max, date_start, date_end) VALUES("${req.body["title"]}", "${req.body["description"]}", "${req.body["place_id"]}", "${req.body["game_id"]}", "${req.body["game_type_id"]}", "${token_id}", "${req.body["register_max"]}", "${req.body["date_start"]}", "${req.body["date_end"]}")`, function (err2, result) {
+                con.query(`INSERT INTO events(title, description, place_id, place_custom, game_id, game_custom, game_type_id, game_type_custom, admin_user_id, register_max, date_start, date_end)
+                                VALUES("${req.body["title"]}", "${req.body["description"]}", "${req.body["place_id"]}", "${req.body["place_custom"]}", "${req.body["game_id"]}", "${req.body["game_custom"]}", "${req.body["game_type_id"]}", "${req.body["game_type_custom"]}", "${token_id}", "${req.body["register_max"]}", "${req.body["date_start"]}", "${req.body["date_end"]}")`, function (err2, result) {
                     if (err2) {
                         console.log(err2)
                         res.status(500).json({ msg: "Internal server error" });
