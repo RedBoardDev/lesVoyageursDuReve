@@ -64,7 +64,6 @@ CREATE TABLE `events` (
 INSERT INTO users(username, email, password, discord_id, permission_id) VALUES("user 1", "email1@gmail.com", "$2a$10$KU1XpfVv9jWy3MyVCGOWee/C.4URHVHK/WA2cG4hTjTiW609Bd8VG", "617422693008146443", "0");
 INSERT INTO users(username, email, password, discord_id, permission_id) VALUES("user 2", "email2@gmail.com", "$2a$10$KU1XpfVv9jWy3MyVCGOWee/C.4URHVHK/WA2cG4hTjTiW609Bd8VG", "352787867925348354", "1");
 INSERT INTO users(username, email, password, discord_id, permission_id) VALUES("user 3", "email3@gmail.com", "$2a$10$KU1XpfVv9jWy3MyVCGOWee/C.4URHVHK/WA2cG4hTjTiW609Bd8VG", "419926802366988292", "2");
-INSERT INTO users(username, email, password, discord_id, permission_id) VALUES("user 4", "email4@gmail.com", "$2a$10$KU1XpfVv9jWy3MyVCGOWee/C.4URHVHK/WA2cG4hTjTiW609Bd8VG", "1045341766808772638", "2");
 
 
 -- create place
@@ -109,5 +108,5 @@ INSERT INTO events(title, description, place_id, place_custom, game_id, game_cus
 INSERT INTO events(title, description, place_id, place_custom, game_id, game_custom, game_type_id, game_type_custom, admin_user_id, user_registered_array, register_max, date_start, date_end) VALUES("week 4", "Ceci est une description wuw", 2, "", 2, "", 2, "", 2, "[1]", 13, "2023-01-25 20:00:00", "2023-01-25 22:00:00");
 INSERT INTO events(title, description, place_id, place_custom, game_id, game_custom, game_type_id, game_type_custom, admin_user_id, user_registered_array, register_max, date_start, date_end) VALUES("week 4", "Ceci est une description wuw", 1, "", 1, "", 2, "", 3, "[1]", 5, "2023-01-26 20:00:00", "2023-01-26 22:00:00");
 INSERT INTO events(title, description, place_id, place_custom, game_id, game_custom, game_type_id, game_type_custom, admin_user_id, user_registered_array, register_max, date_start, date_end) VALUES("week 4", "Ceci est une description wuw", 1, "", 2, "", 1, "", 3, "[1]", 13, "2023-01-27 20:00:00", "2023-01-27 22:00:00");
-INSERT INTO events(title, description, place_id, place_custom, game_id, game_custom, game_type_id, gameType 1ame_type_custom, admin_user_id, user_registered_array, register_max, date_start, date_end) VALUES("week 4", "Ceci est une description wuw", 2, "", 1, "", 2, "", 2, "[1]", 3, "2023-01-28 20:00:00", "2023-01-28 22:00:00");
+INSERT INTO events(title, description, place_id, place_custom, game_id, game_custom, game_type_id, game_type_custom, admin_user_id, user_registered_array, register_max, date_start, date_end) VALUES("week 4", "Ceci est une description wuw", 2, "", 1, "", 2, "", 2, "[1]", 3, "2023-01-28 20:00:00", "2023-01-28 22:00:00");
 INSERT INTO events(title, description, place_id, place_custom, game_id, game_custom, game_type_id, game_type_custom, admin_user_id, user_registered_array, register_max, date_start, date_end) VALUES("week 4", "Ceci est une description wuw", 2, "", 2, "", 1, "", 3, "[1]", 9, "2023-01-29 20:00:00", "2023-01-29 22:00:00");
