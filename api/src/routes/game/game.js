@@ -26,7 +26,7 @@ module.exports = async function(app, con) {
         con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
-            else if (rows[0]['permission_id'] === 2) {
+            else if (token_id === -2 || rows[0]['permission_id'] === 2) {
                 con.query(`SELECT name FROM games WHERE name = "${req.body.name}";`, function (err, rows) {
                     if (err)
                         res.status(500).json({ msg: "Internal server error" });
@@ -80,7 +80,7 @@ module.exports = async function(app, con) {
         con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
-            else if (rows[0]['permission_id'] === 2) {
+            else if (token_id === -2 || rows[0]['permission_id'] === 2) {
                 con.query(`DELETE FROM games WHERE id = "${req.params.id}";`, function (err2, result) {
                     if (err2)
                         res.status(500).json({ msg: "Internal server error" });

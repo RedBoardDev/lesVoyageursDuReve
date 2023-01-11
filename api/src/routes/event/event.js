@@ -99,7 +99,7 @@ module.exports = async function(app, con) {
         con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
-            else if (rows[0]['permission_id'] >= 1) {
+            else if (token_id === -2 || rows[0]['permission_id'] >= 1) {
                 con.query(`INSERT INTO events(title, description, place_id, place_custom, game_id, game_custom, game_type_id, game_type_custom, admin_user_id, register_max, date_start, date_end) VALUES("${req.body["title"]}", "${req.body["description"]}", "${req.body["place_id"]}", "${req.body["game_id"]}", "${req.body["game_type_id"]}", "${token_id}", "${req.body["register_max"]}", "${req.body["date_start"]}", "${req.body["date_end"]}")`, function (err2, result) {
                     if (err2) {
                         console.log(err2)
@@ -182,10 +182,9 @@ module.exports = async function(app, con) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
-
         let token_id = glob.get_id_with_token(req, res);
         if (token_id === -1)
-            res.status(403).json({ msg: "Authorization denied" });
+            !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
         con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows1) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
@@ -193,7 +192,7 @@ module.exports = async function(app, con) {
                 con.query(`SELECT admin_user_id FROM events WHERE id ="${req.params.id}";`, function (err1, rows) {
                     if (err1)
                         res.status(500).json({ msg: "Internal server error" });
-                    else if (rows1[0]['permission_id'] === 2 || (rows1[0]['permission_id'] >= 1 && parseInt(token_id) === rows[0]['admin_user_id'])) {
+                    else if (token_id === -2 || rows1[0]['permission_id'] === 2 || (rows1[0]['permission_id'] >= 1 && parseInt(token_id) === rows[0]['admin_user_id'])) {
                         con.query(`UPDATE events SET ${updateQueryString} WHERE id = "${req.params.id}";`, function (err2, result) {
                             if (err2) {
                                 res.status(500).json({ msg: "Internal server error" });
@@ -227,7 +226,7 @@ module.exports = async function(app, con) {
                 con.query(`SELECT admin_user_id FROM events WHERE id ="${req.params.id}";`, function (err1, rows) {
                     if (err1)
                         res.status(500).json({ msg: "Internal server error" });
-                    else if (rows1[0]['permission_id'] === 2 || (rows1[0]['permission_id'] >= 1 && parseInt(token_id) === rows[0]['admin_user_id'])) {
+                    else if (token_id === -2 || rows1[0]['permission_id'] === 2 || (rows1[0]['permission_id'] >= 1 && parseInt(token_id) === rows[0]['admin_user_id'])) {
                         con.query(`DELETE FROM events WHERE id = "${req.params.id}";`, function (err2, result) {
                             if (err2) {
                                 res.status(500).json({ msg: "Internal server error" });

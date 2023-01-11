@@ -59,6 +59,8 @@ function verifyToken(req, res, next) {
 }
 
 function get_id_with_token(req, res) {
+    if (req.token === process.env.OTHER_APP_TOKEN)
+        return -2;
     try {
         let decoded = jwt.verify(req.token, process.env.SECRET);
         return (decoded.id);
