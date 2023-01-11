@@ -1,5 +1,51 @@
 const glob = require('../../global');
 
+function addProperty(queryString, property, value) {
+    if (queryString.length > 0)
+        queryString += ", ";
+    queryString += `${property} = '${value}'`;
+    return queryString;
+}
+
+function getUpdateQueryString(req) {
+    let updateQueryString = "";
+
+    if (!req.body.hasOwnProperty('title')) {
+        updateQueryString = addProperty(updateQueryString, 'title', req.body.title);
+    }
+    if (!req.body.hasOwnProperty('description')) {
+        updateQueryString = addProperty(updateQueryString, 'description', req.body.description);
+    }
+    if (!req.body.hasOwnProperty('place_id')) {
+        updateQueryString = addProperty(updateQueryString, 'place_id', req.body.place_id);
+    }
+    if (!req.body.hasOwnProperty('place_custom')) {
+        updateQueryString = addProperty(updateQueryString, 'place_custom', req.body.place_custom);
+    }
+    if (!req.body.hasOwnProperty('game_id')) {
+        updateQueryString = addProperty(updateQueryString, 'game_id', req.body.game_id);
+    }
+    if (!req.body.hasOwnProperty('game_custom')) {
+        updateQueryString = addProperty(updateQueryString, 'game_custom', req.body.game_custom);
+    }
+    if (!req.body.hasOwnProperty('game_type_id')) {
+        updateQueryString = addProperty(updateQueryString, 'game_type_id', req.body.game_type_id);
+    }
+    if (!req.body.hasOwnProperty('game_type_custom')) {
+        updateQueryString = addProperty(updateQueryString, 'game_type_custom', req.body.game_type_custom);
+    }
+    if (!req.body.hasOwnProperty('register_max')) {
+        updateQueryString = addProperty(updateQueryString, 'register_max', req.body.register_max);
+    }
+    if (!req.body.hasOwnProperty('date_start')) {
+        updateQueryString = addProperty(updateQueryString, 'date_start', req.body.date_start);
+    }
+    if (!req.body.hasOwnProperty('date_end')) {
+        updateQueryString = addProperty(updateQueryString, 'date_end', req.body.date_end);
+    }
+    return updateQueryString;
+}
+
 function error_handling_values(req) {
     if (!req.body.hasOwnProperty('title')) {
         return false;
@@ -10,10 +56,22 @@ function error_handling_values(req) {
     if (!req.body.hasOwnProperty('place_id')) {
         return false;
     }
+    if (!req.body.hasOwnProperty('place_custom')) {
+        return false;
+    }
     if (!req.body.hasOwnProperty('game_id')) {
         return false;
     }
+    if (!req.body.hasOwnProperty('game_custom')) {
+        return false;
+    }
     if (!req.body.hasOwnProperty('game_type_id')) {
+        return false;
+    }
+    if (!req.body.hasOwnProperty('game_type_custom')) {
+        return false;
+    }
+    if (!req.body.hasOwnProperty('register_max')) {
         return false;
     }
     if (!req.body.hasOwnProperty('date_start')) {
@@ -42,7 +100,7 @@ module.exports = async function(app, con) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else if (rows[0]['permission_id'] >= 1) {
-                con.query(`INSERT INTO events(title, description, place_id, game_id, game_type_id, admin_user_id, date_start, date_end) VALUES("${req.body["title"]}", "${req.body["description"]}", "${req.body["place_id"]}", "${req.body["game_id"]}", "${req.body["game_type_id"]}", "${token_id}", "${req.body["date_start"]}", "${req.body["date_end"]}")`, function (err2, result) {
+                con.query(`INSERT INTO events(title, description, place_id, place_custom, game_id, game_custom, game_type_id, game_type_custom, admin_user_id, register_max, date_start, date_end) VALUES("${req.body["title"]}", "${req.body["description"]}", "${req.body["place_id"]}", "${req.body["game_id"]}", "${req.body["game_type_id"]}", "${token_id}", "${req.body["register_max"]}", "${req.body["date_start"]}", "${req.body["date_end"]}")`, function (err2, result) {
                     if (err2) {
                         console.log(err2)
                         res.status(500).json({ msg: "Internal server error" });
@@ -69,25 +127,29 @@ module.exports = async function(app, con) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else {
-                const date = (req.params.date);
-                const year = parseInt(date.split("-")[0]);
-                const month = parseInt(date.split("-")[1]);
-                const day = parseInt((date.split("-")[2]).split("T")[0]);
-                var new_row = [];
-                for (let i = 0, a = 0; i < rows.length; i++) {
-                    const elem_date_start = JSON.stringify(rows[i]['date_start']).replace('"', "");
-                    const rows_year = parseInt(elem_date_start.split("-")[0]);
-                    const rows_month = parseInt(elem_date_start.split("-")[1]);
-                    const rows_day = parseInt(((elem_date_start.split("-")[2]) + '').split("T")[0]);
-                    console.log(elem_date_start, rows_year, rows_month, rows_day)
-                    if ((rows_year >= year && rows_year < year + 1)
-                        && (rows_month >= month && rows_month < month + 1)
-                        && (rows_day >= day && rows_day < day + 7)) {
-                        console.log(rows[i])
-                        new_row[a++] = rows[i];
+                try {
+                    const date = (req.params.date);
+                    const year = parseInt(date.split("-")[0]);
+                    const month = parseInt(date.split("-")[1]);
+                    const day = parseInt((date.split("-")[2]).split("T")[0]);
+                    var new_row = [];
+                    for (let i = 0, a = 0; i < rows.length; i++) {
+                        const elem_date_start = JSON.stringify(rows[i]['date_start']).replace('"', "");
+                        const rows_year = parseInt(elem_date_start.split("-")[0]);
+                        const rows_month = parseInt(elem_date_start.split("-")[1]);
+                        const rows_day = parseInt(((elem_date_start.split("-")[2]) + '').split("T")[0]);
+                        console.log(elem_date_start, rows_year, rows_month, rows_day)
+                        if ((rows_year >= year && rows_year < year + 1)
+                            && (rows_month >= month && rows_month < month + 1)
+                            && (rows_day >= day && rows_day < day + 7)) {
+                            console.log(rows[i])
+                            new_row[a++] = rows[i];
+                        }
                     }
+                    res.send(new_row);
+                } catch (error) {
+                    res.status(500).json({ msg: "Internal server error" });
                 }
-                res.send(new_row);
             }
         });
     });
@@ -101,6 +163,45 @@ module.exports = async function(app, con) {
             }
         });
     });
+
+    app.put("/event/:id", glob.verifyToken, async (req, res) => {
+        if (!glob.is_num(req.params.id)) {
+            res.status(400).json({ msg: "Bad parameter" });
+            return;
+        }
+        if (!glob.verifyAuth(req, res, true)) {
+            !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
+            return;
+        }
+        const updateQueryString = getUpdateQueryString(req);
+        if (updateQueryString.length === 0) {
+            res.status(400).json({ msg: "Bad parameter" });
+            return;
+        }
+
+        con.query(`SELECT * FROM events WHERE id = ${req.params.id}`, (err1, oldRows) => {
+            if (err1)
+                res.status(500).json({ msg: "Internal server error" })
+            else if (oldRows[0]) {
+                con.query(`UPDATE events SET ${updateQueryString} WHERE id = "${req.params.id}";`, (err2, result) => {
+                    if (err2)
+                        res.status(500).json({ msg: "Internal server error" });
+                    else if (result.affectedRows > 0) {
+                        con.query(`SELECT * FROM users WHERE id = "${req.params.id}";`, (err3, newRows) => {
+                            if (err3)
+                                res.status(500).json({ msg: "Internal server error" });
+                            else {
+                                res.status(200).send(newRows[0]);
+                            }
+                        });
+                    } else
+                        res.sendStatus(404);
+                });
+            } else
+                res.sendStatus(404);
+        });
+    });
+
     // app.delete("/game/:id", glob.verifyToken, async (req, res) => {
     //     if (!glob.is_num(req.params.id)) {
     //         res.status(400).json({ msg: "Bad parameter" });

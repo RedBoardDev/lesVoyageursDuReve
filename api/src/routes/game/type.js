@@ -60,7 +60,7 @@ module.exports = async function(app, con) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else {
-                res.send(rows);
+                res.send(rows[0]);
             }
         });
     });
