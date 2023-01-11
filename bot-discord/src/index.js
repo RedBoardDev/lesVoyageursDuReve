@@ -34,7 +34,7 @@ async function registerUser(interaction) {
         return;
     }
     // executeDBRequest('PUT', `/event/register/${eventId}`, config.API_TOKEN, {
-    //     users: [dbUserId]
+    //     users: dbUserId
     // }).then(async (res) => {
         await interaction.reply({ content: `Vous êtes maintenant inscrit pour l'activité n°${eventId} !`, ephemeral: true });
     // }).catch(async (err) => {
@@ -52,7 +52,7 @@ async function unregisterUser(interaction) {
         return;
     }
     // executeDBRequest('DELETE', `/event/unregister/${eventId}`, config.API_TOKEN, {
-    //     users: [dbUserId]
+    //     users: dbUserId
     // }).then(async (res) => {
         await interaction.reply({ content: `Vous n'êtes maintenant plus inscrit pour l'activité n°${eventId}.`, ephemeral: true });
     // }).catch(async (err) => {
