@@ -25,11 +25,7 @@ function getUpdateQueryString(req) {
 }
 
 module.exports = async function(app, con) {
-    app.get("/user/id/:id", glob.verifyToken, async (req, res) => {
-        if (!glob.verifyAuth(req, res, true)) {
-            !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
-            return;
-        }
+    app.get("/user/id/:id", async (req, res) => {
         const queryString = (req.token === process.env.OTHER_APP_TOKEN) ? `*` : `id, username, email, discord_id, permission_id, created_at`;
         con.query(`SELECT ${queryString} FROM users WHERE id = "${req.params.id}" OR email = "${req.params.id}";`, function (err, rows) {
             if (err)

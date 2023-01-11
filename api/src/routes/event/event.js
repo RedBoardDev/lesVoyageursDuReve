@@ -154,12 +154,16 @@ module.exports = async function(app, con) {
         });
     });
 
-    app.get("/event/:id", async (req, res) => { // error handlings for params id c:
+    app.get("/event/:id", async (req, res) => {
+        if (!glob.is_num(req.params.id)) {
+            res.status(400).json({ msg: "Bad parameter" });
+            return;
+        }
         con.query(`SELECT * FROM events WHERE id ="${req.params.id}";`, function (err, rows) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else {
-                res.send(rows);
+                res.send(rows[0]);
             }
         });
     });
