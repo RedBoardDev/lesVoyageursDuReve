@@ -1,7 +1,7 @@
 const glob = require('../../global');
 
 module.exports = async function(app, con) {
-    app.put("/event/register/:id", glob.verifyToken, async (req, res) => {
+    app.put("/event/unregister/:id", glob.verifyToken, async (req, res) => {
         if (!glob.is_num(req.params.id) || !req.body.hasOwnProperty('user') || !glob.is_num(req.body.user)) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
@@ -22,11 +22,11 @@ module.exports = async function(app, con) {
                         res.status(500).json({ msg: "Internal server error" });
                     else {
                         var arr = JSON.parse(rows[0]['user_registered_array']);
-                        if (arr.indexOf(parseInt(req.body.user)) != -1) {
-                            res.status(400).json({ msg: "user already register" });
+                        if (arr.indexOf(parseInt(req.body.user)) === -1) {
+                            res.status(400).json({ msg: "user not register" });
                             return;
                         } else
-                            arr.push(parseInt(req.body.user));
+                            arr.splice(arr.indexOf(parseInt(req.body.user)), 1);
                         const user_registered_newList = JSON.stringify(arr);
                         con.query(`UPDATE events SET user_registered_array = '${user_registered_newList}' WHERE id = "${req.params.id}";`, function (err2, result) {
                             if (err2) {
