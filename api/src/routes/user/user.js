@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 
 module.exports = async function(app, con) {
     app.get("/user", glob.verifyToken, async (req, res) => {
-        var err = 0;
         if (!glob.verifyAuth(req, res, false)) {
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
             return;

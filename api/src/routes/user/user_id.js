@@ -31,7 +31,7 @@ module.exports = async function(app, con) {
             return;
         }
         const queryString = (req.token === process.env.OTHER_APP_TOKEN) ? `*` : `id, username, email, discord_id, permission_id, created_at`;
-        con.query(`SELECT ${queryString} FROM users WHERE id = "${req.params.id}" OR email = "${req.params.id}" OR discord_id = "${req.params.discord_id}";`, function (err, rows) {
+        con.query(`SELECT ${queryString} FROM users WHERE id = "${req.params.id}" OR email = "${req.params.id}" OR discord_id = "${req.params.id}";`, function (err, rows) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else if (rows[0]) {
