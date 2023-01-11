@@ -1,0 +1,88 @@
+.box {
+    position: relative;
+    left: 4%;
+    width: 92%;
+    top: 8em;
+    margin-bottom: 3em;
+}
+
+
+.head {
+    position:   relative;
+    display: flex;
+    align-items:center;
+    height: 5em;
+    border-left: solid;
+    background-color: #353941;
+    border-left-color: #90B8F8;
+    border-left-width: 10px;
+}
+
+.bar {
+    position: relative;
+    left: 1%;
+    width: 99%;
+}
+
+h3 {
+    padding: 0px;
+    margin: 0px;
+    color: white;
+    font: 2em "Fira Sans", sans-serif;
+    margin-left: 1em;
+}
+
+.event {
+    display: flex;
+    margin-top: 5px;
+    height: 4.5em;
+    background-color: #D9D9D9;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.Color {
+    width: 4.5em;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.Time {
+    width: 8em;
+    border-left: solid;
+    border-right: solid;
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-color: #353941;
+    font: 1.4em "Fira Sans", sans-serif;
+    display: flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.Name {
+    margin-left: 2em;
+    font: 1.4em "Fira Sans", sans-serif;
+    display: flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.red {
+    background-color: red;
+}
+
+.blue {
+    background-color: blue;
+}
+
+.green {
+    background-color: green;
+}
+
+.end {
+    position: relative;
+    margin-top: 9em;
+    height: 2em;
+    width: 100%;
+}

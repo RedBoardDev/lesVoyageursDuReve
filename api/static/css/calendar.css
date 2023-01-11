@@ -1,0 +1,35 @@
+.calendar {
+    position: relative;
+    top: 7em;
+    left: 4%;
+    width: 92%;
+    display: flex;
+}
+
+.column {
+    width: 14.2857%;
+    border-left: solid;
+    border-left-width: 2px; 
+    border-color: black;
+}
+
+.head {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3em;
+    background-color: #90B8F8;
+    font: 1.1em "Fira Sans", sans-serif;
+    
+}
+
+.dimanche{
+    border-right: solid;
+    border-right-width: 2px;
+}
+
+.body {
+    height: 780px;
+    border-bottom: solid;
+    border-bottom-width: 2px;
+}

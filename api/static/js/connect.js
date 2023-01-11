@@ -1,3 +1,5 @@
+var discordID = null
+
 function loadPage(type) {
     addEventListener('keypress', (event) => {
         if (event.code == "Enter") {
@@ -7,6 +9,31 @@ function loadPage(type) {
                 register()
         }
     });
+    const urlParams = new URLSearchParams(window.location.search);
+    discordID = urlParams.get('discordId');
+}
+
+function putDiscordId(userId)
+{
+    if (discordID != null) {
+
+        let data = JSON.stringify({"discord_id" : discordID})
+        $.ajax({
+            type: "PUT",
+            url: "/user/id/" + userId,
+            data: data,
+            contentType: "application/json; charset=utf-8",
+            dataType :"json",
+            headers: {
+                "Authorization":"Bearer " + sessionStorage.getItem("lvdrToken")
+            },
+            success: function(result) {
+            },
+            error: function(e){
+                console.log(e)
+            }
+          });
+    }
 }
 
 function login() {
@@ -22,6 +49,7 @@ function login() {
         dataType :"json",
         success: function(result) {
             sessionStorage.setItem("lvdrToken", result.token)
+            putDiscordId(result.id)
             window.location.href = "/"
         },
         error: function(e){
@@ -62,6 +90,7 @@ function register() {
         dataType :"json",
         success: function(result) {
             sessionStorage.setItem("lvdrToken", result.token)
+            putDiscordId(result.id)
             window.location.href = "/"
         },
         error: function(e){
