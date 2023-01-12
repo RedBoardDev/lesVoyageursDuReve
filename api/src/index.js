@@ -32,3 +32,37 @@ require('./routes/event/unregister.js')(glob.app, glob.con);
 glob.app.listen(process.env.API_PORT, process.env.HOST_NAME, () => {
     console.log(`App listening at http://${process.env.HOST_NAME}:${process.env.API_PORT}`);
 });
+
+function addProperty(queryString, property, value) {
+    if (queryString.length > 0)
+        queryString += ", ";
+    queryString += `${property} = '${value}'`;
+    return queryString;
+}
+
+async function fetchDiscordInfo(discord_id_str) {
+    var updateQueryString = '';
+    try {
+        const User = await glob.Client.grabProfile(discord_id_str);
+        updateQueryString = addProperty(updateQueryString, 'discord_username', User['username']);
+        updateQueryString = addProperty(updateQueryString, 'discord_avatar', (User['avatar']['url']).split("?")[0]);
+    } catch (Error) {
+        return updateQueryString;
+    }
+    return updateQueryString;
+}
+
+setInterval(async () => {
+    glob.con.query(`SELECT id, discord_id FROM users WHERE discord_username <> "" OR discord_avatar <> "";`, function (err, rows) {
+        if (!err) {
+            for (let i = 0; i < rows.length; i++) {
+                setTimeout(async () => {
+                    const updateQueryString = await fetchDiscordInfo((rows[i]['discord_id']).toString());
+                    if (updateQueryString.length > 0)
+                        glob.con.query(`UPDATE users SET ${updateQueryString} WHERE id = "${rows[i]['id']}";`, (err3, newRows) => {});
+                }, 10000);
+            }
+        } else
+            console.log(err);
+    });
+}, (60000 * 60) * 12);
