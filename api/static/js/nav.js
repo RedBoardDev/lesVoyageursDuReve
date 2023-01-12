@@ -10,6 +10,8 @@ function loadNav (){
                 if (user.discord_avatar != null && user.discord_avatar != "") {
                     document.getElementById("NavProfilePicture").setAttribute("src", user.discord_avatar)
                 }
+                if (user.permission_id >= 2)
+                    document.getElementById("adminLink").setAttribute("style" , "display : flex")
             }
         })
     }

@@ -3,17 +3,25 @@
     top: 8em;
     display: flex;
 }
-/* 
-.right {
-    position: relative;
-    left: 10%;
-    width: 40%;
-
-} */
 
 .left {
     position: relative;
-    left: 40%;
+    width: 50%;
+}
+
+.formLeft {
+    position: relative;
+    float: right;
+    margin-right: 10em;
+}
+
+.right {
+    position: relative;
+    margin-left: 10em;
+}
+
+.name {
+    height: 100%;
 }
 
 .input {
@@ -22,17 +30,13 @@
     margin-bottom: 1em;
 }
 
-.name {
-    height: 100%;
-}
-
-.Delete {
+.GameSelectgameType {
     width: 30em;
     height: 2.5em;
     margin-bottom: 1em;
 }
 
-.GameSelectgameType {
+.delSelect {
     width: 30em;
     height: 2.5em;
     margin-bottom: 1em;
@@ -50,7 +54,7 @@
 
 .Delete {
     margin: 1em;
-    margin-bottom: 3em;
+    margin-bottom: 2em;
     border-left: solid;
     border-color: red;
     border-left-width: 2px;
@@ -68,9 +72,6 @@
     padding: 5px;
 
 }
-/* .select {
-    margin-bottom: 1em;
-} */
 
 input {
     position: relative;
@@ -110,7 +111,6 @@ select {
     padding-left: 0.5em;
 }
 
-
 select:focus{
     outline-style: solid;
     outline-width: 2px;
@@ -120,4 +120,49 @@ select:focus{
 input:disabled {
     background-color: #d9d9d948;
     color: #3539418b;
+}
+
+.delButton {
+    position: relative  ;
+    background-color: #f89090;
+    border: none;
+    height: 2em;
+    width: 20%;
+    border-radius: 0.7em;
+    font: 1em "Fira Sans", sans-serif;
+    cursor: pointer;
+}
+.delButton:hover {
+    background-color: #db5f5f;
+}
+
+.delButton:active {
+    background-color: #353941;
+    color: white;
+}
+
+.addButton {
+    position: relative  ;
+    background-color: #90b8f8;
+    border: none;
+    height: 2em;
+    width: 20%;
+    border-radius: 0.7em;
+    font: 1em "Fira Sans", sans-serif;
+    cursor: pointer;
+}
+.addButton:hover {
+    background-color: #5f85db;
+}
+
+.addButton:active {
+    background-color: #353941;
+    color: white;
+}
+
+label {
+    font: 1em "Fira Sans", sans-serif;
+    width: 100%;
+    margin: 1em;
+    color: #353941;
 }
