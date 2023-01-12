@@ -152,7 +152,7 @@ input:focus{
     height: 26em;
     flex-flow:  wrap;
     justify-content: end;
-    overflow-y: scroll;
+    
 }
 
 .player {

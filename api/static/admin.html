@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+    <link rel="stylesheet" href="css/nav.css">
+    <script src="js/utils.js"></script>
+    <script src="js/nav.js"></script>
+
+    <link rel="stylesheet" href="css/admin.css">
+    <script src="js/admin.js"></script>
+    <title>Acceuil</title>
+    <link rel="icon" type="image/x-icon" href="assets/logo.ico">
+</head>
+<body onload="loadPage()">
+    <div class="nav">
+        <div class="navLeft">
+            <div class="NavLesVoyageursDuReve" onclick="window.location.href = '/'">
+                <p>Les Voyageurs du Rêve</p>
+            </div>
+            <!-- <div class="NavCalendrier" onclick="window.location.href = '/calendar.html'">
+                <img src="assets/calendar.png">
+            </div>
+            <div class="NavInfo" onclick="window.location.href = '/info.html'">
+                <img src="assets/info.png">
+            </div> -->
+        </div>
+        <div class="NavRight">
+            <div class="inNavright">
+                <div class="NavConnexion" id="NavHello">
+                    <p></p>
+                </div>
+                <div class="NavConnexion" id="NavConnexion">
+                    <p><a href="/login.html">connexion</a></p>
+                </div>
+                <div class="hide" onclick="logout()"  id="NavDisconnect">
+                    <img src="assets/logout.png">
+                </div>
+                <div class="NavUser" onclick="window.location.href = '/login.html'" id="NavUser">
+                    <img src="assets/user.png" id="NavProfilePicture">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mainDiv">
+        <div class="right">
+            <div class="GameType">
+                <div class="Delete">
+                    <select class="select"></select>
+                </div>
+                <div class="Add">
+                    <div class="input">
+                        <div class="name">
+                            <input type="text">
+                        </div>
+                    </div>
+                    <div class="color">
+                        <input type="color" id="color">
+                    </div>
+                </div>
+            </div>
+
+            <div class="Game">
+                <div class="Delete">
+                    <select class="select"></select>
+                </div>
+                <div class="Add">
+                    <div class="GameSelectgameType">
+                        <select class="select"></select>
+                    </div>
+                    <div class="input">
+                        <div class="name">
+                            <input type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="Place">
+                <div class="Delete">
+                    <select class="select"></select>
+                </div>
+                <div class="Add">
+                    <div class="input">
+                        <div class="name">
+                            <input type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="left">
+
+        </div>
+    </div>
+</body>
+</html>
