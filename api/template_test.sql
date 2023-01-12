@@ -63,10 +63,10 @@ CREATE TABLE `events` (
 );
 
 -- create some user avec password = Abced68!
+INSERT INTO users(username, email, password, discord_id, discord_username, discord_avatar, permission_id)
+VALUES("user 1", "email1@gmail.com", "$2a$10$KU1XpfVv9jWy3MyVCGOWee/C.4URHVHK/WA2cG4hTjTiW609Bd8VG", "617422693008146443", "RedBoard", "https://cdn.discordapp.com/avatars/419926802366988292/a_b1d9640d5007bb2d528b9e8f952d5900.gif", "0");
 INSERT INTO users(username, email, password, discord_id, permission_id)
-VALUES("user 1", "email1@gmail.com", "$2a$10$KU1XpfVv9jWy3MyVCGOWee/C.4URHVHK/WA2cG4hTjTiW609Bd8VG", "617422693008146443", "0");
-INSERT INTO users(username, email, password, discord_id, permission_id)
-VALUES("user 2", "email2@gmail.com", "$2a$10$KU1XpfVv9jWy3MyVCGOWee/C.4URHVHK/WA2cG4hTjTiW609Bd8VG", "352787867925348354", "1");
+VALUES("user 2", "email2@gmail.com", "$2a$10$KU1XpfVv9jWy3MyVCGOWee/C.4URHVHK/WA2cG4hTjTiW609Bd8VG", "352787867925348354", "RedBoard", "https://cdn.discordapp.com/avatars/419926802366988292/a_b1d9640d5007bb2d528b9e8f952d5900.gif", "1");
 INSERT INTO users(username, email, password, discord_id, permission_id)
 VALUES("user 3", "email3@gmail.com", "$2a$10$KU1XpfVv9jWy3MyVCGOWee/C.4URHVHK/WA2cG4hTjTiW609Bd8VG", "419926802366988292", "2");
 
