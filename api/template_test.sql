@@ -137,3 +137,5 @@ INSERT INTO events(title, description, place_id, place_custom, game_id, game_cus
 VALUES("week 4", "Ceci est une description wuw", 2, "", 1, "", 2, "", 2, "[1]", 3, "2023-01-28 20:00:00", "2023-01-28 22:00:00");
 INSERT INTO events(title, description, place_id, place_custom, game_id, game_custom, game_type_id, game_type_custom, admin_user_id, user_registered_array, register_max, date_start, date_end)
 VALUES("week 4", "Ceci est une description wuw", 2, "", 2, "", 1, "", 3, "[1]", 9, "2023-01-29 20:00:00", "2023-01-29 22:00:00");
+
+GRANT ALL ON lesvoyageursdureve.* to WEBSITE@'%' IDENTIFIED BY 'password-db';
