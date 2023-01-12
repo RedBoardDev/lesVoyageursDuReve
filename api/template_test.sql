@@ -84,7 +84,21 @@ INSERT INTO games(name, game_type_id) VALUES("game 1", 1);
 INSERT INTO games(name, game_type_id) VALUES("game 2", 2);
 
 --  create comment
--- un jour mek
+INSERT INTO comments(event_id, user_id, message, created_at) VALUES( 1, 2, "comments 1 event 1 user 2", "2023-01-02 20:10:00");
+INSERT INTO comments(event_id, user_id, message, created_at) VALUES( 2, 1, "comments 2 event 2 user 1", "2023-01-02 20:50:00");
+INSERT INTO comments(event_id, user_id, message, created_at) VALUES( 1, 1, "comments 3 event 1 user 1", "2023-01-02 20:20:00");
+INSERT INTO comments(event_id, user_id, message, created_at) VALUES( 1, 2, "comments 4 event 1 user 2", "2023-01-02 20:30:00");
+INSERT INTO comments(event_id, user_id, message, created_at) VALUES( 2, 2, "comments 5 event 2 user 2", "2023-01-02 20:37:00");
+INSERT INTO comments(event_id, user_id, message, created_at) VALUES( 1, 1, "comments 6 event 1 user 1", "2023-01-02 20:25:00");
+INSERT INTO comments(event_id, user_id, message, created_at) VALUES( 1, 2, "comments 7 event 1 user 2", "2023-01-02 20:40:00");
+INSERT INTO comments(event_id, user_id, message, created_at) VALUES( 1, 1, "comments 8 event 1 user 1", "2023-01-02 20:15:00");
+INSERT INTO comments(event_id, user_id, message, created_at) VALUES( 2, 2, "comments 9 event 2 user 2", "2023-01-02 20:10:00");
+INSERT INTO comments(event_id, user_id, message, created_at) VALUES( 2, 1, "comments 10 event 2 user 1", "2023-01-02 20:20:00");
+INSERT INTO comments(event_id, user_id, message, created_at) VALUES( 2, 2, "comments 11 event 2 user 2", "2023-01-02 20:30:00");
+INSERT INTO comments(event_id, user_id, message, created_at) VALUES( 2, 1, "comments 12 event 2 user 1", "2023-01-02 20:25:00");
+INSERT INTO comments(event_id, user_id, message, created_at) VALUES( 1, 2, "comments 13 event 1 user 2", "2023-01-02 20:05:00");
+INSERT INTO comments(event_id, user_id, message, created_at) VALUES( 1, 2, "comments 14 event 1 user 3", "2023-01-02 20:55:00");
+INSERT INTO comments(event_id, user_id, message, created_at) VALUES( 1, 1, "comments 15 event 1 user 1", "2023-01-02 20:28:00");
 
 -- semaine 1
 INSERT INTO events(title, description, place_id, place_custom, game_id, game_custom, game_type_id, game_type_custom, admin_user_id, user_registered_array, register_max, date_start, date_end)
