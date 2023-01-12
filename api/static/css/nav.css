@@ -33,16 +33,15 @@
     cursor: pointer;
 }
 
-.NavCalendrier {
-    display: flex;
+.NavAdmin {
     align-items:center;
     justify-content:center;
     margin-right: 25px;
     cursor: pointer;
 }
 
-.NavCalendrier>img {
-    height: 35px;
+.NavAdmin>img {
+    height: 50px;
 }
 
 .NavInfo {

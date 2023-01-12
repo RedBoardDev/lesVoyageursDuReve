@@ -19,12 +19,9 @@
             <div class="NavLesVoyageursDuReve" onclick="window.location.href = '/'">
                 <p>Les Voyageurs du Rêve</p>
             </div>
-            <!-- <div class="NavCalendrier" onclick="window.location.href = '/calendar.html'">
-                <img src="assets/calendar.png">
+            <div class="NavAdmin" onclick="window.location.href = '/admin.html'" id="adminLink" style="display: none;">
+                <img src="assets/admin.png">
             </div>
-            <div class="NavInfo" onclick="window.location.href = '/info.html'">
-                <img src="assets/info.png">
-            </div> -->
         </div>
         <div class="NavRight">
             <div class="inNavright">
@@ -114,6 +111,7 @@
         <div class="outPopUp">
             <div class="inPopUp">
                 <h2>Identifiez vous pour éditer votre profile</h2>
+                <p class="centerP" id="errorP"></p>
                 <div class="popUpinput">
                     <label class="leftLabel">mot de passe</label>
                     <input type="password" id="passwordIN">

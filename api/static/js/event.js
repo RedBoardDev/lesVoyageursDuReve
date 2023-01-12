@@ -80,10 +80,11 @@ function getAdmin(data, callback)
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         success: function(result) {
-            let discord = result.discord_avater
-            if (discord == null)
+            let discord = result.discord_avatar
+            console.log(result)
+            if (discord == null || discord == "")
                 discord = "assets/user.png"
-            callback({"username" : result.username, "discord_avater" : discord})
+            callback({"username" : result.username, "discord_avatar" : discord})
         },
         error: function(e){
             console.log(e)
@@ -94,6 +95,7 @@ function getAdmin(data, callback)
 
 function fillEvent(data)
 {
+    
     let start = new Date(data.date_start)
     let end = new Date(data.date_end)
     document.getElementById("titleInput").value = data.title
@@ -130,6 +132,8 @@ function fillEvent(data)
 
     end = dayEnd + "/"+ monthEnd + "/" + end.getFullYear() + " " + endhour + "H" + endMinute
 
+    
+
     document.getElementById("startInput").value = start
     document.getElementById("endInput").value = end
     getgameType(data ,(out) => {
@@ -146,7 +150,7 @@ function fillEvent(data)
     })
 
     getAdmin(data, (out) => {
-        document.getElementById("adminHead").setAttribute("src", out.discord_avater)
+        document.getElementById("adminHead").setAttribute("src", out.discord_avatar)
         document.getElementById("adminName").textContent = out.username
     })
 
@@ -192,8 +196,8 @@ function CreatePLayer (player)
     let playerPicture = document.createElement("div")
     let playerName = document.createElement("div")
     let img = document.createElement("img")
-    if (player.discord_avater != null)
-        img.setAttribute("src", player.discord_avater)
+    if (player.discord_avatar != null && player.discord_avatar != "")
+        img.setAttribute("src", player.discord_avatar)
     else
         img.setAttribute("src", "assets/user.png")
     playerName.setAttribute("class" , "playerName")
@@ -208,6 +212,10 @@ function CreatePLayer (player)
 
 function loadPlayers()
 {
+    if (Event.register_max > 16) {
+            document.getElementById("players").setAttribute("style" , "overflow-y: scroll;padding-right: 1em;")
+    }
+
     if (Event.user_registered_array != "") {
         let players = JSON.parse(Event.user_registered_array)
         let pass = 0
@@ -223,7 +231,7 @@ function loadPlayers()
                     pass += 1;
                     if (pass == players.length) {
                         for (let i = 0; i < Event.register_max - players.length; ++i) {
-                            CreatePLayer({"username" : "______", "discord_avater" : null})
+                            CreatePLayer({"username" : "______", "discord_avatar" : null})
                         }
                     }
                 },
@@ -234,12 +242,12 @@ function loadPlayers()
         }
         if (players.length == 0) {
             for (let i = 0; i < Event.register_max ; ++i) {
-                CreatePLayer({"username" : "______", "discord_avater" : null})
+                CreatePLayer({"username" : "______", "discord_avatar" : null})
             }
         }
     } else {
         for (let i = 0; i < Event.register_max ; ++i) {
-            CreatePLayer({"username" : "______", "discord_avater" : null})
+            CreatePLayer({"username" : "______", "discord_avatar" : null})
         }
     }
 }

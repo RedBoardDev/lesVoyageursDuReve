@@ -39,7 +39,7 @@ label {
 select {
     position: relative;
     left: 0%;
-    width: 101.8%;
+    width: 102%;
     height: 100%;
     border: none;
     padding: 0px;
@@ -180,3 +180,4 @@ button:active {
     font: 1.1em "Fira Sans", sans-serif;
     color: red;
 }
+

@@ -1,10 +1,20 @@
 function loadPage ()
 {
     loadNav()
-    loadGameType(() => {
-        loadGame()
+    getMe(sessionStorage.getItem("lvdrToken"), (user) => {
+        if (user) {
+            if (user.permission_id >= 1) {
+                loadGameType(() => {
+                    loadGame()
+                })
+                loadPlace()
+            } else {
+                window.location.href = "/"
+            }
+        } else {
+            window.location.href = "/"
+        }
     })
-    loadPlace()
 }
 
 var GameType

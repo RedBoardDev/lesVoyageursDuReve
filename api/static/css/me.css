@@ -150,9 +150,8 @@ button:active {
 .popUpinput {
     width: 25em;
     height: 2.5em;
-    /* margin-bottom: 1.5em; */
     margin: 1.5em;
-    margin-bottom: 2em ;
+    margin-bottom: 3em ;
 }
 
 h2 {
@@ -165,4 +164,12 @@ h2 {
     align-items: center;
     justify-content: center;
     display: flex;
+}
+
+.centerP {
+    color: red;
+    height: 0.5em;
+    padding: 0px;
+    margin:0px;
+    font: 1em "Fira Sans", sans-serif;
 }

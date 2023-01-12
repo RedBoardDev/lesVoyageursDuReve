@@ -69,7 +69,22 @@ h2 {
     top: 3em;
 }
 
-#errorBar {
+#errorBarReg {
+    position: absolute;
+    width: 100em;
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(255, 0, 0, 0.819);
+    font: 1em "Fira Sans", sans-serif;
+}
+
+#errorBarLog {
+    position: absolute;
+    width: 100em;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     color: rgba(255, 0, 0, 0.819);
     font: 1em "Fira Sans", sans-serif;
 }
@@ -104,8 +119,6 @@ input:focus{
     outline-style: solid;
     outline-width: 2px;
     outline-color: #5f85db;
-    
-
 }
 
 label {
@@ -124,6 +137,7 @@ label {
 .link {
     text-decoration:none;
     color: #5f85db;
+    cursor: pointer;
 }
 
 .buttonDiv {

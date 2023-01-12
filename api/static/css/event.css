@@ -152,7 +152,7 @@ input:focus{
     height: 26em;
     flex-flow:  wrap;
     justify-content: end;
-    overflow-y: scroll;
+    margin-top: 4em;
 }
 
 .player {
@@ -250,4 +250,20 @@ label {
     width: 100%;
     margin: 1em;
     color: #353941;
+}
+
+
+.adminHeadLabel {
+    position: absolute;
+    right: 6em;
+    float: right;
+    font: 1.5em "Fira Sans", sans-serif;
+}
+
+.playersLabel {
+    position: absolute;
+    right: 6em;
+    float: right;
+    font: 1.5em "Fira Sans", sans-serif;
+    top: 6em;
 }
