@@ -1,15 +1,21 @@
 import { SlashCommandBuilder, ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } from 'discord.js';
-import { createEmbed, createEventEmbed } from '../utils/embed.js';
+import { createEventEmbed } from '../utils/embed.js';
 import { executeDBRequest, getEventType, getEvent, getEvents, getUser } from '../utils/api.js';
 import { loadConfigJson } from '../utils/global.js';
 
 const config = await loadConfigJson();
 
-async function sendInfos(interaction) {
-    await interaction.reply({embeds: [createEmbed("Test", "test", "#5f85db", "")] });
+async function createEvent(interaction) {
+    const row = new ActionRowBuilder()
+        .addComponents(new ButtonBuilder()
+            .setLabel(`Créer évènement`)
+            .setStyle(ButtonStyle.Link)
+            .setURL(`${config.api_url}/login.html?callbackUrl=createEvent`),
+        );
+    await interaction.reply({ content: `Pour créer un évènement, veuillez cliquer sur le bouton suivant (vous devez déjà avoir un compte **Les voyageurs du rêve**)`, components: [row], ephemeral: true });
 }
 
-async function createEvent(interaction) {
+async function createEventModal(interaction) {
     const modal = new ModalBuilder()
         .setCustomId('event-create')
         .setTitle('Créer un évènement');
