@@ -1,6 +1,18 @@
 var discordID = null
+var callbackUrl = null
 
 function loadPage(type) {
+    const urlParams = new URLSearchParams(window.location.search)
+    discordID = urlParams.get('discordId')
+    callbackUrl = urlParams.get('callbackUrl')
+
+    let token = sessionStorage.getItem("lvdrToken")
+    if (token != null && token != "") {
+        if (callbackUrl)
+            window.location.href = "/" + callbackUrl + ".html"
+    }
+        
+
     addEventListener('keypress', (event) => {
         if (event.code == "Enter") {
             if (type == "login")
@@ -9,8 +21,7 @@ function loadPage(type) {
                 register()
         }
     });
-    const urlParams = new URLSearchParams(window.location.search);
-    discordID = urlParams.get('discordId');
+    
 }
 
 function putDiscordId(userId)
@@ -32,7 +43,7 @@ function putDiscordId(userId)
             error: function(e){
                 console.log(e)
             }
-          });
+        });
     }
 }
 
@@ -50,9 +61,15 @@ function login() {
         success: function(result) {
             sessionStorage.setItem("lvdrToken", result.token)
             putDiscordId(result.id)
-            window.location.href = "/"
+            if (callbackUrl == null)
+                window.location.href = "/"
+            else
+                window.location.href = "/" + callbackUrl + ".html"
         },
         error: function(e){
+            if (e.responseJSON.msg == "Invalid Credentials") {
+                err("bad Auth")
+            }
             console.log(e)
         }
       });
@@ -60,14 +77,15 @@ function login() {
 
 function err(e)
 {
-    let obj = document.getElementById("errorBar")
+    let obj = document.getElementsByClassName("error")[0].children[0]
 
     if (e == "password not match")
         obj.textContent = "Les mot de passe ne correspondent pas"
-    else if (e == "bad auth")
+    else if (e == "bad Auth")
         obj.textContent = "L'identifiant ou le mot de passe est incorrect"
     else if (e == "missing input")
         obj.textContent = "Merci de remplir le formulaire"
+    // else if (e == "")
 }
 
 function register() {
@@ -91,10 +109,30 @@ function register() {
         success: function(result) {
             sessionStorage.setItem("lvdrToken", result.token)
             putDiscordId(result.id)
-            window.location.href = "/"
+            if (callbackUrl == null)
+                window.location.href = "/"
+            else
+                window.location.href = "/" + callbackUrl + ".html"
         },
         error: function(e){
             console.log(e)
         }
       });
+}
+
+function goTo (def)
+{
+    let url = "/" + def + ".html"
+
+    if (callbackUrl || discordID)
+        url += "?"
+
+    console.log(callbackUrl)
+    if (callbackUrl && discordID)
+        url += "callbackUrl=" + callbackUrl + "&discordId=" + discordID
+    else if (callbackUrl)
+        url += "callbackUrl=" + callbackUrl
+    else if (discordID)
+        url += "discordId=" + discordID
+    window.location.href = url
 }
