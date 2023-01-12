@@ -21,7 +21,7 @@ module.exports = async function(app, con) {
         else if (rsp === 0)
             queryString = `id, username, discord_id, permission_id, discord_username, discord_avatar, created_at`;
         else
-        queryString = `id, username, email, discord_id, discord_username, discord_avatar, created_at`;
+        queryString = `id, username, discord_username, discord_avatar`;
         con.query(`SELECT ${queryString} FROM users;`, function (err, rows) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
