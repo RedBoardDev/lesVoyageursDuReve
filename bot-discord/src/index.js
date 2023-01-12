@@ -6,9 +6,6 @@ import * as log from 'nodejs-log-utils';
 import { sendError } from './utils/global.js';
 import { checkNewEvents } from './checkNewEvents.js';
 import { executeDBRequest, getEventType, getUser } from './utils/api.js';
-import { loadConfigJson } from './utils/global.js';
-
-const config = await loadConfigJson();
 
 log.resetLogFile();
 
@@ -33,13 +30,14 @@ async function registerUser(interaction) {
         await interaction.reply({ content: "Votre compte **Les voyageurs du rève** n'est pas lié à discord, veuillez taper `/login` puis vous connecter sur le lien qui vous est envoyé pour lier votre compte", ephemeral: true });
         return;
     }
-    // executeDBRequest('PUT', `/event/register/${eventId}`, config.API_TOKEN, {
-    //     users: dbUserId
-    // }).then(async (res) => {
+    executeDBRequest('PUT', `/event/register/${eventId}`, process.env.API_TOKEN, {
+        user: dbUserId.toString()
+    }).then(async (res) => {
         await interaction.reply({ content: `Vous êtes maintenant inscrit pour l'activité n°${eventId} !`, ephemeral: true });
-    // }).catch(async (err) => {
-    //     await interaction.reply({ content: `Erreur lors de votre inscription à l'évènement n°${eventId} !`, ephemeral: true });
-    // });
+    }).catch(async (err) => {
+        console.log(err);
+        await interaction.reply({ content: `Erreur lors de votre inscription à l'évènement n°${eventId} !`, ephemeral: true });
+    });
 }
 
 async function unregisterUser(interaction) {
@@ -51,13 +49,13 @@ async function unregisterUser(interaction) {
         await interaction.reply({ content: "Votre compte **Les voyageurs du rève** n'est pas lié à discord, veuillez taper `/login` puis vous connecter sur le lien qui vous est envoyé pour lier votre compte", ephemeral: true });
         return;
     }
-    // executeDBRequest('DELETE', `/event/unregister/${eventId}`, config.API_TOKEN, {
-    //     users: dbUserId
-    // }).then(async (res) => {
+    executeDBRequest('PUT', `/event/unregister/${eventId}`, process.env.API_TOKEN, {
+        user: dbUserId.toString()
+    }).then(async (res) => {
         await interaction.reply({ content: `Vous n'êtes maintenant plus inscrit pour l'activité n°${eventId}.`, ephemeral: true });
-    // }).catch(async (err) => {
-    //     await interaction.reply({ content: `Erreur lors de votre désinscription à l'évènement n°${eventId} !`, ephemeral: true });
-    // });
+    }).catch(async (err) => {
+        await interaction.reply({ content: `Erreur lors de votre désinscription à l'évènement n°${eventId} !`, ephemeral: true });
+    });
 }
 
 client.on(Events.InteractionCreate, async (interaction) => {
