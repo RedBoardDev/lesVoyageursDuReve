@@ -96,8 +96,10 @@
                         <input id="placeInput" readonly="readonly">
                     </div>
                 </div>
+                <div class="adress">
+                    <p id="adresse"></p>
+                </div>
             </div>
-            
         </div>
         <div class="right">
             <div class="head">
@@ -108,7 +110,7 @@
                     <img id="adminHead" src="assets/user.png">
                 </div>
                 <div class="adminName">
-                    <p id="adminName"></p>
+                    <p id="adminName"><a></a></p>
                 </div>
             </div>
             <div class="playersLabel">
@@ -117,7 +119,17 @@
             <div class="players" id="players"></div>
         </div>
     </div>
-    
+
+    <label id="CommentLabel">Espace commentaire:</label>
+    <div class="input chatBar">
+        <div class="changeSensButton" onclick="changeSens()">
+            <img id="arrowChange" src="assets/arrow.png">
+        </div>
+        <input type="text" id="chatBar" placeholder="Nouveau commentaire">
+        <button onclick="sendComment()">Envoyer</button>
+        
+    </div>
+    <div id="MainChatDiv" class="ChatTotalDiv"></div>
 
 </body>
 </html>

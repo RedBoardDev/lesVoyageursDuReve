@@ -1,12 +1,19 @@
 var Event 
 var Players
 const urlParams = new URLSearchParams(window.location.search);
+var Users
+var Comment
+var sortOrder = 1
 
 function loadPage ()
 {
     loadNav()
     loadEvent(()=>{
-        loadPlayers(()=>{
+        loadUsers(() => {
+            loadPlayers(()=>{})
+            loadChat(() => {
+                loadComment()
+            })
 
         })
     })
@@ -81,7 +88,6 @@ function getAdmin(data, callback)
         dataType :"json",
         success: function(result) {
             let discord = result.discord_avatar
-            console.log(result)
             if (discord == null || discord == "")
                 discord = "assets/user.png"
             callback({"username" : result.username, "discord_avatar" : discord})
@@ -146,7 +152,11 @@ function fillEvent(data)
     })
     
     getplace(data, (out) => {
-        document.getElementById("placeInput").value = out.name
+        try {
+            document.getElementById("placeInput").value = out.name
+            document.getElementById("adresse").textContent = out.city + "," + out.adresse
+            document.getElementById("adresse").setAttribute("onclick" , "window.open( 'https://www.google.fr/maps/place/" + out.adresse + "," + out.city + "')")
+        } catch {}
     })
 
     getAdmin(data, (out) => {
@@ -213,32 +223,25 @@ function CreatePLayer (player)
 function loadPlayers()
 {
     if (Event.register_max > 16) {
-            document.getElementById("players").setAttribute("style" , "overflow-y: scroll;padding-right: 1em;")
+        document.getElementById("players").setAttribute("style" , "overflow-y: scroll;padding-right: 1em;")
     }
-
     if (Event.user_registered_array != "") {
         let players = JSON.parse(Event.user_registered_array)
         let pass = 0
-
-        for (let i = 0; i < players.length; ++i) {
-            $.ajax({
-                type: "GET",
-                url: "user/id/" + players[i],
-                contentType: "application/json; charset=utf-8",
-                dataType :"json",
-                success: function(result) {
-                    CreatePLayer(result)
-                    pass += 1;
-                    if (pass == players.length) {
-                        for (let i = 0; i < Event.register_max - players.length; ++i) {
-                            CreatePLayer({"username" : "______", "discord_avatar" : null})
-                        }
-                    }
-                },
-                error: function(e){
-                    console.log(e)
+        for (let i = 0; i < Users.length; ++i) {
+            for (let j = 0; j < players.length; ++j) {
+                if (Users[i].id == players[j]) {
+                    ++pass;
+                    CreatePLayer(Users[i])
                 }
-            });
+            }
+            if (pass == players.length) {
+                break
+            }
+        }
+
+        for (let i = 0; i < Event.register_max - players.length ; ++i) {
+            CreatePLayer({"username" : "______", "discord_avatar" : null})
         }
         if (players.length == 0) {
             for (let i = 0; i < Event.register_max ; ++i) {
@@ -295,4 +298,177 @@ function unregister(id)
         }
     });
     console.log(id, Event.id)
+}
+
+
+function loadUsers(callback)
+{
+    $.ajax({
+        type: "GET",
+        url: "/user",
+        contentType: "application/json; charset=utf-8",
+        dataType :"json",
+        success: function(result) {
+            Users = result
+            callback()
+        },
+        error: function(e){
+            console.log(e)
+        }
+    });
+}
+
+function loadChat(callback)
+{
+    $.ajax({
+        type: "GET",
+        url: "/comment/" + Event.id,
+        contentType: "application/json; charset=utf-8",
+        dataType :"json",
+        success: function(result) {
+            result = result.sort((o1, o2) => {
+                if (o1.created_at > o2.created_at) {
+                    return 1;
+                }
+                if (o1.created_at < o2.created_at) {
+                    return -1;
+                }
+                return 0;
+            });
+            Comment = result
+            callback()
+        },
+        error: function(e){
+            console.log(e)
+        }
+    });
+}
+
+
+function genComment(comment)
+{
+    let commentUser = Users.find(element => element.id == comment.user_id)
+
+
+    let MainDiv = document.createElement("div")
+    MainDiv.setAttribute("class" , "MainChatDiv")
+    let Chat = document.createElement("div")
+    Chat.setAttribute("class" , "Chat")
+    let ChatProfil = document.createElement("div")
+    ChatProfil.setAttribute("class" , "ChatProfil")
+    let ChatPicture = document.createElement("div")
+    ChatPicture.setAttribute("class" , "ChatPicture")
+    let img = document.createElement("img")
+
+    if (commentUser.discord_avatar == "")
+        img.setAttribute("src" , "assets/user.png")
+    else
+        img.setAttribute("src" , commentUser.discord_avatar)
+    ChatPicture.append(img)
+    ChatProfil.append(ChatPicture)
+    let ChatProfilName = document.createElement("div")
+    ChatProfilName.setAttribute("class" , "ChatProfilName")
+    let p1 = document.createElement("p")
+    p1.textContent = commentUser.username
+    ChatProfilName.append(p1)
+    ChatProfil.append(ChatProfilName)
+    Chat.append(ChatProfil)
+    let ChatText = document.createElement("div")
+    ChatText.setAttribute("class" , "ChatText")
+    let ChatDate = document.createElement("div")
+    ChatDate.setAttribute("class" , "ChatDate")
+    let p2 = document.createElement("p")
+    let date = new Date(comment.created_at)
+
+    let starthour = date.getHours()
+    let startMinute = date.getMinutes()
+    let dayStart = date.getDate() 
+    let monthStart = (date.getMonth() + 1)
+
+    if (dayStart < 10)
+        dayStart = "0" + dayStart
+    if (monthStart < 10)
+        monthStart = "0" + monthStart
+    if (starthour < 10)
+        starthour = "0" + starthour
+    if (startMinute < 10)
+        startMinute = "0" + startMinute
+
+    date = dayStart + "/"+ monthStart + "/" + date.getFullYear() + " " +  starthour + "H" + startMinute
+
+    p2.textContent = date
+    ChatDate.append(p2)
+    ChatText.append(ChatDate)
+    let ChatTextIn = document.createElement("div")
+    ChatTextIn.setAttribute("class" , "ChatTextIn")
+    let p3 = document.createElement("p")
+    p3.textContent = comment.message
+    ChatTextIn.append(p3)
+    ChatText.append(ChatTextIn)
+    Chat.append(ChatText)
+    MainDiv.append(Chat)
+    document.getElementById("MainChatDiv").append(MainDiv)
+}
+
+function loadComment()
+{
+    document.getElementById("MainChatDiv").textContent = ""
+    if (sortOrder == 1) {
+        for (let i = 0; i < Comment.length; ++i) {
+            genComment(Comment[i])
+        }
+    } else {
+        for (let i = Comment.length - 1; i >= 0; --i) {
+            genComment(Comment[i])
+        }
+    }
+    
+}
+
+function sendComment()
+{
+    let bar = document.getElementById("chatBar").value
+    if(bar == "")
+        return
+    let data = JSON.stringify({
+        "event_id" : Event.id,
+        "message" : bar
+    })
+
+    $.ajax({
+        type: "POST",
+        url: "/comment",
+        data: data,
+        contentType: "application/json; charset=utf-8",
+        dataType :"json",
+        headers: {
+            "Authorization":"Bearer " + sessionStorage.getItem("lvdrToken")
+        },
+        success: function(result) {
+            document.getElementById("chatBar").value = ""
+            loadChat(() => {
+                loadComment()
+            })
+        },
+        error: function(e){
+            console.log(e)
+        }
+    });
+}
+
+function changeSens()
+{
+    if (sortOrder == 1) {
+        sortOrder = 0
+        loadChat(() => {
+            loadComment()
+        })
+        document.getElementById("arrowChange").removeAttribute("style")
+    } else {
+        sortOrder = 1
+        loadChat(() => {
+            loadComment()
+        })
+        document.getElementById("arrowChange").setAttribute("style", "transform: rotate(180deg);")
+    }
 }
