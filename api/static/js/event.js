@@ -89,7 +89,6 @@ function getAdmin(data, callback)
             console.log(e)
         }
     });
-    
 }
 
 

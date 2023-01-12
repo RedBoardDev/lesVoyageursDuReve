@@ -68,21 +68,32 @@ h3 {
     justify-content:center;
 }
 
-.red {
-    background-color: red;
-}
-
-.blue {
-    background-color: blue;
-}
-
-.green {
-    background-color: green;
-}
-
 .end {
     position: relative;
     margin-top: 9em;
     height: 2em;
     width: 100%;
+}
+
+.addEvent {
+    width: 7vh;
+    height: 7vh;
+    border-radius: 3em;
+    background-color: #5f85db;
+    left: 94%;
+    top: 90%;
+    position: fixed;
+    cursor: pointer;
+    z-index: 15;
+    align-items:center;
+    justify-content:center;
+}
+
+.addEvent:active {
+    background-color: #353941;
+}
+
+.addEvent>img {
+    width: 6vh;
+    height: 6vh;
 }

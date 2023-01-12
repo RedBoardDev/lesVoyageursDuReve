@@ -19,12 +19,12 @@
             <div class="NavLesVoyageursDuReve" onclick="window.location.href = '/'">
                 <p>Les Voyageurs du Rêve</p>
             </div>
-            <div class="NavCalendrier" onclick="window.location.href = '/calendar.html'">
+            <!-- <div class="NavCalendrier" onclick="window.location.href = '/calendar.html'">
                 <img src="assets/calendar.png">
             </div>
             <div class="NavInfo" onclick="window.location.href = '/info.html'">
                 <img src="assets/info.png">
-            </div>
+            </div> -->
         </div>
         <div class="NavRight">
             <div class="inNavright">
@@ -41,8 +41,81 @@
                     <img src="assets/user.png" id="NavProfilePicture">
                 </div>
             </div>
-            
         </div>
+    </div>
+
+    <div class="mainDiv">
+        <div class="left">
+            <div class="formLeft">
+                <div class="title">
+                    <label>titre</label>
+                    <div class="InTitle input">
+                        <input id="titleInput">
+                    </div>
+                </div>
+                <div class="time">
+                    <div class="start">
+                        <label>début</label>
+                        <div class="inSrart input">
+                            <input type="datetime-local" id="startInput">
+                        </div>
+                    </div>
+                    <div class="end">
+                        <label>fin</label>
+                        <div class="inEnd input">
+                            <input type="datetime-local" id="endInput">
+                        </div>
+                    </div>
+                </div>
+                <div class="descr">
+                    <label>description</label>
+                    <div class="InDescr input">
+                        <textarea class="descrArea" id="descrInput"></textarea>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="right">
+            <div class="formRight">
+                <div class="gameType">
+                    <label>type de jeu</label>
+                    <div class="inGameType SelectInput">
+                        <select name="inGameType" id="inGameType" onchange="changeGameTypeSelect('inGameType', 'inputGameType')">
+                        </select>
+                        <input class="selectInput" disabled id="inputGameType">
+                    </div>
+                </div>
+                <div class="game ">
+                    <label>jeu</label>
+                    <div class="inGame SelectInput">
+                        <select name="inGame" id="inGame" onchange="changeSelect('inGame', 'inputGame')">
+                        </select>
+                        <input class="selectInput" disabled id="inputGame">
+                    </div>
+                </div>
+                <div class="place">
+                    <label>lieu</label>
+                    <div class="inPLace SelectInput">
+                        <select name="inPLace" id="inPlace" onchange="changeSelect('inPlace', 'inputPlace')">
+                        </select>
+                        <input class="selectInput" disabled id="inputPlace">
+                    </div>
+                </div>
+                <div class="place">
+                    <label>nombre de places</label>
+                    <div class="inNb input">
+                        <input type="number" min="0" max="100" id="inputNb">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="centerP">
+        <p id="ErrorP"></p>
+    </div>
+    <div class="center">
+        <button onclick="submit()">Valider</button>
     </div>
 </body>
 </html>
