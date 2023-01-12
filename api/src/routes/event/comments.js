@@ -23,19 +23,12 @@ module.exports = async function(app, con) {
         let token_id = glob.get_id_with_token(req, res);
         if (token_id === -1)
             res.status(403).json({ msg: "Authorization denied" });
-        // con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows) {
-            // if (err)
-            //     res.status(500).json({ msg: "Internal server error" });
-            // else if (token_id === -2 || rows[0]['permission_id'] === 2) {
                 con.query(`INSERT INTO comments(event_id, user_id, message) VALUES("${req.body["event_id"]}", "${token_id}", "${req.body["message"]}")`, function (err2, result) {
                     if (err2)
                         res.status(500).json({ msg: "Internal server error" });
                     else
                         res.status(200).json( {msg: "comment added"} );
                 });
-            // } else
-            //     res.status(403).json({ msg: "Authorization denied" });
-        // });
     });
 
     app.get("/comment/:event_id", async (req, res) => {
