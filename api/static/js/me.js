@@ -66,7 +66,6 @@ function validPassword(id)
             document.getElementById(id + "Edit").textContent = "Valider"
             document.getElementById(id + "Edit").setAttribute("onclick", "validChange('" + id +"')")
             closePopUp()
-
         },
         error: function(e){
             console.log(e)

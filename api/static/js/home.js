@@ -4,6 +4,14 @@ function loadPage ()
 {
     loadNav()
 
+    
+    if (sessionStorage.getItem("lvdrToken") != "" && sessionStorage.getItem("lvdrToken") != null) {
+        getMe(sessionStorage.getItem("lvdrToken"), (me) => {
+            if (me.permission_id >= 1)
+                document.getElementById("addEvent").setAttribute("style", "display: flex;")
+        })
+    }
+
     $.ajax({
         type: "GET",
         url: "/event/all",
@@ -20,7 +28,7 @@ function loadPage ()
 }
 
 function openEvent(eventId)
-{
+{   
     window.location.href = "/event.html?id=" + eventId
 }
 
@@ -203,4 +211,9 @@ function fillContent(data)
             createEvent(data[i])
         }
     })
+}
+
+function addEvent()
+{
+    window.location.href = "/createEvent.html"
 }

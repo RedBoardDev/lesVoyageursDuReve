@@ -16,8 +16,8 @@
 }
 
 .color {
-    width: 2.5em;
-    height: 2.5em;
+    width: 3em;
+    height: 3em;
     border-radius: 3em;
     border: solid;
     border-color: #353941;
@@ -149,9 +149,10 @@ input:focus{
     display: flex;
     left: 1.5%;
     width: 96%;
-    height: 5em;
+    height: 26em;
     flex-flow:  wrap;
     justify-content: end;
+    overflow-y: scroll;
 }
 
 .player {
@@ -242,4 +243,11 @@ input:focus{
 #unregisterButton:active {
     background-color: #353941;
     color: white;
+}
+
+label {
+    font: 1em "Fira Sans", sans-serif;
+    width: 100%;
+    margin: 1em;
+    color: #353941;
 }
