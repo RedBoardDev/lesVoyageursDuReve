@@ -24,7 +24,7 @@ function loadPage ()
 }
 
 function openEvent(eventId)
-{   
+{
     window.location.href = "/event.html?id=" + eventId
 }
 
@@ -49,7 +49,7 @@ function getGameType(callback)
 function getColor(id)
 {
     if (id == -1) {
-        return "#9d4edd"
+        return "#e0b1cb"
     } else {
         for (let i  = 0; i < gameTypes.length; ++ i) {
             if (gameTypes[i].id == id) {
@@ -57,7 +57,7 @@ function getColor(id)
             }
         }
     }
-    return "#9d4edd"
+    return "#e0b1cb"
 }
 
 function addNow(obj)
@@ -143,7 +143,7 @@ function addNext(obj)
     let timeDiv = document.createElement("div")
     time.setAttribute("style", "text-align : center;")
     let str = document.createElement("p")
-    let day = start.getDate() 
+    let day = start.getDate()
     if (day < 10)
         day = "0" + day
     let month = (start.getMonth() + 1)
