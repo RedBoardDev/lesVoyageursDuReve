@@ -1,6 +1,6 @@
 import dateFormat from "dateformat";
 import { EmbedBuilder, AttachmentBuilder } from 'discord.js';
-import { getEventTypeColor, getEventTypeName } from '../utils/api.js';
+import { getEventTypeColor, getEventTypeName, getUser } from '../utils/api.js';
 import { loadConfigJson } from '../utils/global.js';
 
 const config = await loadConfigJson();
@@ -23,14 +23,14 @@ export async function createEventEmbed(eventData) {
     const description = eventData.description;
     const eventColor = await getEventTypeColor(eventData);
     const eventType = await getEventTypeName(eventData);
-    // const createdBy = (await getUser(eventData.admin_user_id))?.username;
+    const createdBy = (await getUser(eventData.admin_user_id))?.username;
     const startDate = dateFormat(new Date(eventData.date_start), "dd/mm/yyyy HH:MM");
     const endDate = dateFormat(new Date(eventData.date_end), "dd/mm/yyyy HH:MM");
     const eventId = eventData.id.toString();
 
     return createEmbed(title, description, eventColor ?? '#000000', `${config.api_url}/event.html?id=${eventId}`).addFields(
         { name: 'Type', value: eventType ?? '', inline: true },
-        // { name: 'Créé par', value: createdBy ?? '', inline: true },
+        { name: 'Créé par', value: createdBy ?? '', inline: true },
         { name: 'Date début', value: startDate, inline: true },
         { name: 'Date fin', value: endDate, inline: true },
         { name: 'ID', value: eventId, inline: true }

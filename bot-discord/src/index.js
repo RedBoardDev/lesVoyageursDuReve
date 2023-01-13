@@ -77,19 +77,18 @@ client.on(Events.InteractionCreate, async (interaction) => {
         else if (interaction.customId.startsWith("event-unregister-"))
             unregisterUser(interaction);
     } else if (interaction.isModalSubmit()) {
-        if (interaction.customId === 'event-create') {
-            const titleInput = interaction.fields.getTextInputValue('titleInput');
-            const descriptionInput = interaction.fields.getTextInputValue('descriptionInput');
-            const startDateInput = interaction.fields.getTextInputValue('startDateInput');
-            const durationInput = interaction.fields.getTextInputValue('durationInput');
-            // console.log({ titleInput, descriptionInput, startDateInput, durationInput });
-            try {
-                const date = new Date(startDateInput);
-                await interaction.reply({ content: 'Evènement créé !' });
-            } catch (ex) {
-                await interaction.reply({ content: 'Wrong date format.' });
-            }
-        }
+        // if (interaction.customId === 'event-create') {
+        //     const titleInput = interaction.fields.getTextInputValue('titleInput');
+        //     const descriptionInput = interaction.fields.getTextInputValue('descriptionInput');
+        //     const startDateInput = interaction.fields.getTextInputValue('startDateInput');
+        //     const durationInput = interaction.fields.getTextInputValue('durationInput');
+        //     try {
+        //         const date = new Date(startDateInput);
+        //         await interaction.reply({ content: 'Evènement créé !' });
+        //     } catch (ex) {
+        //         await interaction.reply({ content: 'Wrong date format.' });
+        //     }
+        // }
     }
 });
 

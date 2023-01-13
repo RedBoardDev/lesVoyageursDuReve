@@ -1,7 +1,7 @@
 import { loadDataJson, writeDataJson } from './utils/global.js';
 import { createEventEmbed } from './utils/embed.js';
 import { ButtonBuilder, ActionRowBuilder, ButtonStyle } from 'discord.js';
-import { executeDBRequest, getEventType, getUser, getEventTypeColor, getEventTypeName } from './utils/api.js';
+import { executeDBRequest } from './utils/api.js';
 import { loadConfigJson } from './utils/global.js';
 
 const config = await loadConfigJson();
@@ -22,7 +22,7 @@ async function sendNewEvent(client, channelId, eventData) {
                 .setStyle(ButtonStyle.Danger)
         );
 
-    await channel.send({ content: "**@everyon Nouvel évènement !**\n_Cliquez sur le titre pour accéder à la page de l'évènement_", embeds: [embed], components: [row] });
+    await channel.send({ content: "**@everyone Nouvel évènement !**\n_Cliquez sur le titre pour accéder à la page de l'évènement_", embeds: [embed], components: [row] });
 }
 
 export async function checkNewEvents(client) {
@@ -30,7 +30,6 @@ export async function checkNewEvents(client) {
         const data = await loadDataJson();
         executeDBRequest('GET', '/event/all', process.env.API_TOKEN).then(async (res) => {
             const lastEvent = res.data.slice(-1)[0];
-            // console.log(lastEvent);
             if (data.lastEventSent !== lastEvent.id) {
                 await sendNewEvent(client, '1062011025488101399', lastEvent);
                 data.lastEventSent = lastEvent.id;

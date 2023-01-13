@@ -15,45 +15,45 @@ async function createEvent(interaction) {
     await interaction.reply({ content: `Pour créer un évènement, veuillez cliquer sur le bouton suivant (vous devez déjà avoir un compte **Les voyageurs du rêve**)`, components: [row], ephemeral: true });
 }
 
-async function createEventModal(interaction) {
-    const modal = new ModalBuilder()
-        .setCustomId('event-create')
-        .setTitle('Créer un évènement');
+// async function createEventModal(interaction) {
+//     const modal = new ModalBuilder()
+//         .setCustomId('event-create')
+//         .setTitle('Créer un évènement');
 
-    const titleInput = new TextInputBuilder()
-        .setCustomId('titleInput')
-        .setLabel("Titre")
-        .setStyle(TextInputStyle.Short)
-        .setRequired(true);
+//     const titleInput = new TextInputBuilder()
+//         .setCustomId('titleInput')
+//         .setLabel("Titre")
+//         .setStyle(TextInputStyle.Short)
+//         .setRequired(true);
 
-    const descriptionInput = new TextInputBuilder()
-        .setCustomId('descriptionInput')
-        .setLabel("Description")
-        .setStyle(TextInputStyle.Paragraph)
-        .setRequired(true);
+//     const descriptionInput = new TextInputBuilder()
+//         .setCustomId('descriptionInput')
+//         .setLabel("Description")
+//         .setStyle(TextInputStyle.Paragraph)
+//         .setRequired(true);
 
-    const startDateInput = new TextInputBuilder()
-        .setCustomId('startDateInput')
-        .setLabel("Date / heure de début")
-        .setPlaceholder("Exemple: 01/01/2000 23:59")
-        .setStyle(TextInputStyle.Short)
-        .setRequired(true)
+//     const startDateInput = new TextInputBuilder()
+//         .setCustomId('startDateInput')
+//         .setLabel("Date / heure de début")
+//         .setPlaceholder("Exemple: 01/01/2000 23:59")
+//         .setStyle(TextInputStyle.Short)
+//         .setRequired(true)
 
-    const durationInput = new TextInputBuilder()
-        .setCustomId('durationInput')
-        .setLabel("Durée")
-        .setPlaceholder("Exemple: 1h | 45m")
-        .setStyle(TextInputStyle.Short)
-        .setRequired(true)
+//     const durationInput = new TextInputBuilder()
+//         .setCustomId('durationInput')
+//         .setLabel("Durée")
+//         .setPlaceholder("Exemple: 1h | 45m")
+//         .setStyle(TextInputStyle.Short)
+//         .setRequired(true)
 
-    modal.addComponents(
-        new ActionRowBuilder().addComponents(titleInput),
-        new ActionRowBuilder().addComponents(descriptionInput),
-        new ActionRowBuilder().addComponents(startDateInput),
-        new ActionRowBuilder().addComponents(durationInput)
-    );
-    await interaction.showModal(modal);
-}
+//     modal.addComponents(
+//         new ActionRowBuilder().addComponents(titleInput),
+//         new ActionRowBuilder().addComponents(descriptionInput),
+//         new ActionRowBuilder().addComponents(startDateInput),
+//         new ActionRowBuilder().addComponents(durationInput)
+//     );
+//     await interaction.showModal(modal);
+// }
 
 async function getEventsMessageArray(data) {
     let messageArray = [];
