@@ -3,15 +3,12 @@ var gameTypes = null
 function loadPage ()
 {
     loadNav()
-
-    
     if (sessionStorage.getItem("lvdrToken") != "" && sessionStorage.getItem("lvdrToken") != null) {
         getMe(sessionStorage.getItem("lvdrToken"), (me) => {
             if (me.permission_id >= 1)
                 document.getElementById("addEvent").setAttribute("style", "display: flex;")
         })
     }
-
     $.ajax({
         type: "GET",
         url: "/event/all",
@@ -24,7 +21,6 @@ function loadPage ()
             console.log(e)
         }
     });
-
 }
 
 function openEvent(eventId)
@@ -53,7 +49,7 @@ function getGameType(callback)
 function getColor(id)
 {
     if (id == -1) {
-        return "#00FF00"
+        return "#9d4edd"
     } else {
         for (let i  = 0; i < gameTypes.length; ++ i) {
             if (gameTypes[i].id == id) {
@@ -61,7 +57,7 @@ function getColor(id)
             }
         }
     }
-    return "#00FF00"
+    return "#9d4edd"
 }
 
 function addNow(obj)
@@ -207,6 +203,15 @@ function createEvent(obj) {
 function fillContent(data)
 {
     getGameType(() => {
+        data = data.sort((o1, o2) => {
+            if (o1.date_start > o2.date_start) {
+                return 1;
+            }
+            if (o1.date_start < o2.date_start) {
+                return -1;
+            }
+            return 0;
+        });
         for (let i = 0; i < data.length; ++i) {
             createEvent(data[i])
         }

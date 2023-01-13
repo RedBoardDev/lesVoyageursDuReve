@@ -246,6 +246,7 @@ function changeUser()
         let User = Users.find(element => element.id == selector)
         document.getElementById("UserUsername").value = User.username
         document.getElementById("UserEmail").value = User.email
+        document.getElementById("UserPerm").value = User.permission_id
     }
 }
 
@@ -271,4 +272,44 @@ function deleteUser()
             console.log(e)
         }
     });
+}
+
+function updateUser()
+{
+    let value = document.getElementById("UserSelect").value
+    let username = document.getElementById("UserUsername").value
+    let email = document.getElementById("UserEmail").value
+    let perm = document.getElementById("UserPerm").value
+    let password = document.getElementById("UserPassword").value
+
+    if (perm < 0 || perm > 2)
+        return
+
+    let data = {
+        "email" : email,
+        "username" : username,
+        "permission_id" : perm,
+    }
+    if (password != "")
+        data.password = password
+
+
+
+
+    $.ajax({
+        type: "PUT",
+        url: "/user/id/" + value,
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        dataType :"json",
+        headers: {
+            "Authorization":"Bearer " + sessionStorage.getItem("lvdrToken")
+        },
+        success: function(result) {
+            window.location.reload()
+        },
+        error: function(e){
+            console.log(e)
+        }
+      });
 }

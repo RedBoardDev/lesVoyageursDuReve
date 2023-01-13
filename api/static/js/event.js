@@ -35,7 +35,7 @@ function getgameType (data, callback)
             }
         });
     } else {
-        callback({"name" : data.game_type_custom, "color" : "#00FF00"})
+        callback({"name" : data.game_type_custom, "color" : "#9d4edd"})
     }
 }
 
@@ -170,7 +170,7 @@ function fillEvent(data)
             players = JSON.parse(Event.user_registered_array)
         }
         let register = document.getElementById("registerButton")
-        if (players.length < Event.register_max && players.indexOf(out.id) == -1) {
+        if (players.length < Event.register_max && players.indexOf(out.id) == -1 && Event.admin_user_id != out.id) {
             register.setAttribute("style", "display: block;")
             register.setAttribute("onclick", "register(" + out.id + ")")
         }
@@ -239,14 +239,8 @@ function loadPlayers()
                 break
             }
         }
-
         for (let i = 0; i < Event.register_max - players.length ; ++i) {
             CreatePLayer({"username" : "______", "discord_avatar" : null})
-        }
-        if (players.length == 0) {
-            for (let i = 0; i < Event.register_max ; ++i) {
-                CreatePLayer({"username" : "______", "discord_avatar" : null})
-            }
         }
     } else {
         for (let i = 0; i < Event.register_max ; ++i) {
