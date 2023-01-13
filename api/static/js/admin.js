@@ -242,6 +242,7 @@ function changeUser()
     if (selector == -1) {
         document.getElementById("UserUsername").value = ""
         document.getElementById("UserEmail").value = ""
+        document.getElementById("UserPerm").value = ""
     } else {
         let User = Users.find(element => element.id == selector)
         document.getElementById("UserUsername").value = User.username
