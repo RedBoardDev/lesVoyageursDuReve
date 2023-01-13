@@ -8,7 +8,7 @@ function addProperty(queryString, property, value) {
     return queryString;
 }
 
-function getUpdateQueryString(req) {
+function getUpdateQueryString(req, permission) {
     let updateQueryString = "";
 
     if (req.body.hasOwnProperty('password')) {
@@ -21,6 +21,8 @@ function getUpdateQueryString(req) {
         updateQueryString = addProperty(updateQueryString, 'email', req.body.email);
     if (req.body.hasOwnProperty('discord_id'))
         updateQueryString = addProperty(updateQueryString, 'discord_id', req.body.discord_id);
+    if (permission === true && req.body.hasOwnProperty('permission_id'))
+    updateQueryString = addProperty(updateQueryString, 'discord_id', req.body.discord_id);
     return updateQueryString;
 }
 
@@ -57,39 +59,49 @@ module.exports = async function(app, con) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
-        if (!glob.verifyAuth(req, res, true)) {
-            !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
+        let token_id = glob.get_id_with_token(req, res);
+        if (token_id === - 1)
             return;
-        }
-        var updateQueryString = getUpdateQueryString(req);
-        if (updateQueryString.length === 0) {
-            res.status(400).json({ msg: "Bad parameter" });
-            return;
-        }
-        con.query(`SELECT email, discord_id, discord_username, discord_avatar FROM users WHERE id = ${req.params.id}`, async (err1, oldRows) => {
-            if (err1)
-                res.status(500).json({ msg: "Internal server error1" })
-            else if (oldRows[0]) {
-                if (oldRows[0]['discord_username'] === "" || oldRows[0]['discord_avatar'] === "")
-                    updateQueryString = await fetchDiscordInfo(updateQueryString, (oldRows[0]['discord_id']).toString());
-                con.query(`UPDATE users SET ${updateQueryString} WHERE id = "${req.params.id}";`, (err2, result) => {
-                    if (err2) {
-                        res.status(500).json({ msg: "Internal server error2" });
-                    } else if (result.affectedRows > 0) {
-                        const selectQueryString = (req.token === process.env.OTHER_APP_TOKEN) ? `*` : `id, username, email, discord_id, permission_id, discord_username, discord_avatar, created_at`;
-                        con.query(`SELECT ${selectQueryString} FROM users WHERE id = "${req.params.id}";`, (err3, newRows) => {
-                            if (err3)
-                                res.status(500).json({ msg: "Internal server error3" });
-                            else {
-                                res.status(200).send(newRows[0]);
-                            }
+
+        con.query(`SELECT permission_id FROM users WHERE id = ${token_id}`, function (err, rows1) {
+            if (err)
+                res.status(500).json({ msg: "Internal server error" });
+            else if (rows1[0]['permission_id'] === 2 || (rows1[0]['permission_id'] === 1 && token_id === res.params.id)) {
+                con.query(`SELECT email, discord_id, discord_username, discord_avatar FROM users WHERE id = ${req.params.id}`, async (err1, oldRows) => {
+                    if (err1)
+                        res.status(500).json({ msg: "Internal server error" })
+                    else if (oldRows[0]) {
+                        var updateQueryString = getUpdateQueryString(req, rows1[0]['permission_id'] === 2);
+                        if (updateQueryString.length === 0) {
+                            res.status(400).json({ msg: "Bad parameter" });
+                            return;
+                        }
+                        if (oldRows[0]['discord_username'] === "" || oldRows[0]['discord_avatar'] === "")
+                            updateQueryString = await fetchDiscordInfo(updateQueryString, (oldRows[0]['discord_id']).toString());
+                        con.query(`UPDATE users SET ${updateQueryString} WHERE id = "${req.params.id}";`, (err2, result) => {
+                            if (err2) {
+                                console.log(err2)
+                                res.status(500).json({ msg: "Internal server error" });
+                            } else if (result.affectedRows > 0) {
+                                const selectQueryString = (req.token === process.env.OTHER_APP_TOKEN) ? `*` : `id, username, email, discord_id, permission_id, discord_username, discord_avatar, created_at`;
+                                con.query(`SELECT ${selectQueryString} FROM users WHERE id = "${req.params.id}";`, (err3, newRows) => {
+                                    if (err3)
+                                        res.status(500).json({ msg: "Internal server error" });
+                                    else {
+                                        res.status(200).send(newRows[0]);
+                                    }
+                                });
+                            } else
+                                res.sendStatus(404);
                         });
                     } else
                         res.sendStatus(404);
                 });
-            } else
-                res.sendStatus(404);
-        });
+
+        } else
+        res.status(403).json({ msg: "Authorization denied" });
+    });
+
     });
 
     app.delete("/user/id/:id", glob.verifyToken, async (req, res) => {
