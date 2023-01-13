@@ -18,8 +18,7 @@ cd hackathon-week
 ./install.sh
 ```
 
-Remplir les informations des `.env` (dans `api/.env` et dans `bot-discord/.env`)
-Et remplir les informations du `bot-discord/config.json`
+Remplir les informations du `.env` et du `bot-discord/config.json`
 
 ```bash
 ./start.sh
