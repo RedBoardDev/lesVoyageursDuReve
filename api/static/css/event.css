@@ -271,15 +271,13 @@ label {
     top: 8.5em;
 }
 
+
 #adresse {
     font: 1.1em "Fira Sans", sans-serif;
     cursor: pointer;
     color: #5f85db;
+    width: fit-content;
 }
-
-/* .ChatTotalDiv {
-    
-} */
 
 .MainChatDiv {
     border-radius: 5px;
@@ -341,6 +339,11 @@ label {
     overflow-wrap: break-word;
     height: 6.4em;
     font: 1em "Fira Sans", sans-serif;
+}
+
+
+.ChatTextIn::-webkit-scrollbar {
+    display: none;
 }
 
 #CommentLabel {

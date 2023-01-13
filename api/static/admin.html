@@ -81,7 +81,7 @@
                     <label>ajouter un jeu</label>
                     <div class="Add">
                         <div class="GameSelectgameType">
-                            <select id="GameTypeSelect">
+                            <select id="GameTypeSelect" class="basicSelector">
                                 <option value="-1">N/A</option>
                             </select>
                         </div>
@@ -124,6 +124,40 @@
                         </div>
                     </div>
                     <button class="addButton" onclick="createPlace()" >Créer</button>
+                </div>
+            </div>
+            <div class="User">
+                <label>éditer un utilisateur</label>
+                <div class="Add">
+                    <div class="UserSelect">
+                        <select id="UserSelect" class="basicSelector" onchange="changeUser()">
+                            <option value="-1">N/A</option>
+                        </select>
+                    </div>
+                    <div class="input">
+                        <div class="name">
+                            <input type="text" id="UserUsername" placeholder="identifiant">
+                        </div>
+                    </div>
+                    <div class="input">
+                        <div class="name">
+                            <input type="text" id="UserEmail" placeholder="email">
+                        </div>
+                    </div>
+                    <div class="input">
+                        <div class="name">
+                            <input type="text" id="UserPassword" placeholder="Mot de passe">
+                        </div>
+                    </div>
+                    <div class="input">
+                        <div class="name">
+                            <input type="number" id="UserPerm" min="0" max="2" placeholder="niveau de permission">
+                        </div>
+                    </div>
+                    <div class="UserButtons">
+                        <button class="addButton userValidButton" onclick="updateUser()">Valider</button>
+                        <button class="delButton" onclick="deleteUser()">Supprimer</button>
+                    </div>
                 </div>
             </div>
         </div>

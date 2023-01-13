@@ -1,6 +1,6 @@
 .mainDiv {
     position: relative;
-    top: 8em;
+    top: 7.5em;
     display: flex;
 }
 
@@ -36,6 +36,12 @@
     margin-bottom: 1em;
 }
 
+.UserSelect {
+    width: 30em;
+    height: 2.5em;
+    margin-bottom: 1em;
+}
+
 .delSelect {
     width: 30em;
     height: 2.5em;
@@ -48,7 +54,7 @@
     border-color: #5f85db;
     border-left-width: 2px;
     padding-left: 1em;
-    margin-bottom: 4em;
+    margin-bottom: 3em;
 
 }
 
@@ -165,4 +171,8 @@ label {
     width: 100%;
     margin: 1em;
     color: #353941;
+}
+
+.userValidButton {
+    margin-right: 1em;
 }

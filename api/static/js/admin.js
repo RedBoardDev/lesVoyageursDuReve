@@ -8,6 +8,7 @@ function loadPage ()
                 loadGameType()
                 loadGame()
                 loadPlace()
+                loadUsers()
             } else {
                 window.location.href = "/"
             }
@@ -21,6 +22,34 @@ function loadPage ()
 var GameType
 var Game
 var Place
+var Users
+
+function loadUsers()
+{
+    $.ajax({
+        type: "GET",
+        url: "/user",
+        contentType: "application/json; charset=utf-8",
+        dataType :"json",
+        headers: {
+            "Authorization":"Bearer " + sessionStorage.getItem("lvdrToken")
+        },
+        success: function(result) {
+            Users = result
+            let selector = document.getElementById("UserSelect")
+
+            for (let i = 0; i < result.length; ++i) {
+                let option = document.createElement("option")
+                option.setAttribute("value" , result[i].id)
+                option.textContent = result[i].username
+                selector.append(option)
+            }
+        },
+        error: function(e){
+            console.log(e)
+        }
+    });
+}
 
 function loadGameType()
 {
@@ -204,4 +233,80 @@ function createPlace ()
             console.log(e)
         }
     });
+}
+
+function changeUser()
+{
+    let selector = document.getElementById("UserSelect").value
+
+    if (selector == -1) {
+        document.getElementById("UserUsername").value = ""
+        document.getElementById("UserEmail").value = ""
+    } else {
+        let User = Users.find(element => element.id == selector)
+        document.getElementById("UserUsername").value = User.username
+        document.getElementById("UserEmail").value = User.email
+        document.getElementById("UserPerm").value = User.permission_id
+    }
+}
+
+function deleteUser()
+{
+    let value = document.getElementById("UserSelect").value
+
+    if (value == -1)
+        return
+    $.ajax({
+        type: "DELETE",
+        url: "/user/id/" + value,
+        contentType: "application/json; charset=utf-8",
+        dataType :"json",
+        headers: {
+            "Authorization":"Bearer " + sessionStorage.getItem("lvdrToken")
+        },
+        success: function(result) {
+            window.location.reload()
+        },
+        error: function(e){
+            err("error")
+            console.log(e)
+        }
+    });
+}
+
+function updateUser()
+{
+    let value = document.getElementById("UserSelect").value
+    let username = document.getElementById("UserUsername").value
+    let email = document.getElementById("UserEmail").value
+    let perm = document.getElementById("UserPerm").value
+    let password = document.getElementById("UserPassword").value
+
+    if (perm < 0 || perm > 2)
+        return
+
+    let data = {
+        "email" : email,
+        "username" : username,
+        "permission_id" : perm,
+    }
+    if (password != "")
+        data.password = password
+
+    $.ajax({
+        type: "PUT",
+        url: "/user/id/" + value,
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        dataType :"json",
+        headers: {
+            "Authorization":"Bearer " + sessionStorage.getItem("lvdrToken")
+        },
+        success: function(result) {
+            window.location.reload()
+        },
+        error: function(e){
+            console.log(e)
+        }
+      });
 }

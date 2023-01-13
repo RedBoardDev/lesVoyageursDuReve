@@ -85,9 +85,11 @@ INSERT INTO places(name, city, adresse) VALUES("Epitech", "Mulhouse", "30 rue fr
 INSERT INTO places(name, city, adresse) VALUES("Mairie", "Mulhouse", "7 rue des pigeons");
 
 -- create gameType
-INSERT INTO gameType(name, color) VALUES("BloodBowl", "#FF5733");
-INSERT INTO gameType(name, color) VALUES("Jeux de plateaux", "#2DBE19");
-INSERT INTO gameType(name, color) VALUES("Jeux de rôles", "#1555E8");
+INSERT INTO gameType(name, color) VALUES("BloodBowl", "#ffc857");
+INSERT INTO gameType(name, color) VALUES("Jeu de plateau", "#e9724c");
+INSERT INTO gameType(name, color) VALUES("Jeu de figurines", "#c5283d");
+INSERT INTO gameType(name, color) VALUES("Jeu de société", "#481d24");
+INSERT INTO gameType(name, color) VALUES("Jeu de cartes", "#255f85");
 
 -- create game
 INSERT INTO games(name, game_type_id) VALUES("ligue du gateau equipe", 1);
