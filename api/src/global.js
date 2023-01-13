@@ -4,8 +4,10 @@ const mysql = require('mysql2');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const { Discord } = require("discord-id");
+const path = require('path');
 
-dotenv.config();
+
+dotenv.config( {"path" : path.join(__dirname, "../../.env" ) });
 const Client = new Discord(process.env.DISCORD_BOT_TOKEN);
 
 const app = express();
