@@ -5,6 +5,8 @@ var Users
 var Comment
 var sortOrder = 1
 
+var chatBarFocus = false
+
 function loadPage ()
 {
     loadNav()
@@ -17,7 +19,22 @@ function loadPage ()
 
         })
     })
+    document.getElementById("chatBar").addEventListener('focusin', (event) => {
+        chatBarFocus = true
+    });
+
+    document.getElementById("chatBar").addEventListener('focusout', (event) => {
+        chatBarFocus = false
+    });
+
+    addEventListener('keypress', (event) => {
+        if (event.code == "Enter" && chatBarFocus) {
+            sendComment()
+        }
+    });
+
 }
+
 
 function getgameType (data, callback)
 {

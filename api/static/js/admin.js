@@ -293,9 +293,6 @@ function updateUser()
     if (password != "")
         data.password = password
 
-
-
-
     $.ajax({
         type: "PUT",
         url: "/user/id/" + value,
