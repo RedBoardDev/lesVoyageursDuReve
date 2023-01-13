@@ -30,7 +30,7 @@ export async function checkNewEvents(client) {
         const data = await loadDataJson();
         executeDBRequest('GET', '/event/all', process.env.API_TOKEN).then(async (res) => {
             const lastEvent = res.data.slice(-1)[0];
-            if (data.lastEventSent !== lastEvent.id) {
+            if (lastEvent && data.lastEventSent !== lastEvent.id) {
                 await sendNewEvent(client, '1062011025488101399', lastEvent);
                 data.lastEventSent = lastEvent.id;
                 writeDataJson(data);

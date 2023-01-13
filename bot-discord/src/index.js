@@ -16,7 +16,7 @@ import { executeDBRequest, getEventType, getUser } from './utils/api.js';
 
 log.resetLogFile();
 
-const token = process.env.DEV ? process.env.DEV_DISCORD_BOT_TOKEN : process.env.FINAL_DISCORD_BOT_TOKEN;
+const token = process.env.DISCORD_BOT_TOKEN;
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.commands = new Collection();

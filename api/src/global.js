@@ -39,7 +39,7 @@ function verifyToken(req, res, next) {
         const bearerToken = bearer[1];
         req.token = bearerToken;
 
-        if (req.token === process.env.OTHER_APP_TOKEN) {
+        if (req.token === process.env.API_TOKEN) {
             next();
             return;
         }
@@ -61,7 +61,7 @@ function verifyToken(req, res, next) {
 }
 
 function get_id_with_token(req, res) {
-    if (req.token === process.env.OTHER_APP_TOKEN)
+    if (req.token === process.env.API_TOKEN)
         return -2;
     try {
         let decoded = jwt.verify(req.token, process.env.SECRET);
@@ -73,7 +73,7 @@ function get_id_with_token(req, res) {
 }
 
 function verifyAuth(req, res, verifId) {
-    if (req.token === process.env.OTHER_APP_TOKEN)
+    if (req.token === process.env.API_TOKEN)
         return true;
     if (verifId) {
         let token_id = get_id_with_token(req, res);
@@ -85,7 +85,7 @@ function verifyAuth(req, res, verifId) {
 }
 
 function verifyAuth_without_id(req, res, verifId) {
-    if (req.token === process.env.OTHER_APP_TOKEN)
+    if (req.token === process.env.API_TOKEN)
         return true;
     if (verifId) {
         let token_id = get_id_with_token(req, res);
