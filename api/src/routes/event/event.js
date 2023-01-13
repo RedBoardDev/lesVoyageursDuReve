@@ -103,7 +103,6 @@ module.exports = async function(app, con) {
                 con.query(`INSERT INTO events(title, description, place_id, place_custom, game_id, game_custom, game_type_id, game_type_custom, admin_user_id, register_max, date_start, date_end)
                                 VALUES("${req.body["title"]}", "${req.body["description"]}", "${req.body["place_id"]}", "${req.body["place_custom"]}", "${req.body["game_id"]}", "${req.body["game_custom"]}", "${req.body["game_type_id"]}", "${req.body["game_type_custom"]}", "${token_id}", "${req.body["register_max"]}", "${req.body["date_start"]}", "${req.body["date_end"]}")`, function (err2, result) {
                     if (err2) {
-                        console.log(err2)
                         res.status(500).json({ msg: "Internal server error" });
                     } else
                         res.status(200).json( {msg: "event added"} );
@@ -121,39 +120,6 @@ module.exports = async function(app, con) {
                 res.send(rows);
         });
     });
-
-
-    // app.get("/event/week/:date", async (req, res) => { // error handlings for params date c:
-    //     con.query(`SELECT * FROM events;`, function (err, rows) {
-    //         if (err)
-    //             res.status(500).json({ msg: "Internal server error" });
-    //         else {
-    //             try {
-    //                 const date = (req.params.date);
-    //                 const year = parseInt(date.split("-")[0]);
-    //                 const month = parseInt(date.split("-")[1]);
-    //                 const day = parseInt((date.split("-")[2]).split("T")[0]);
-    //                 var new_row = [];
-    //                 for (let i = 0, a = 0; i < rows.length; i++) {
-    //                     const elem_date_start = JSON.stringify(rows[i]['date_start']).replace('"', "");
-    //                     const rows_year = parseInt(elem_date_start.split("-")[0]);
-    //                     const rows_month = parseInt(elem_date_start.split("-")[1]);
-    //                     const rows_day = parseInt(((elem_date_start.split("-")[2]) + '').split("T")[0]);
-    //                     console.log(elem_date_start, rows_year, rows_month, rows_day)
-    //                     if ((rows_year >= year && rows_year < year + 1)
-    //                         && (rows_month >= month && rows_month < month + 1)
-    //                         && (rows_day >= day && rows_day < day + 7)) {
-    //                         console.log(rows[i])
-    //                         new_row[a++] = rows[i];
-    //                     }
-    //                 }
-    //                 res.send(new_row);
-    //             } catch (error) {
-    //                 res.status(500).json({ msg: "Internal server error" });
-    //             }
-    //         }
-    //     });
-    // });
 
     app.get("/event/:id", async (req, res) => {
         if (!glob.is_num(req.params.id)) {

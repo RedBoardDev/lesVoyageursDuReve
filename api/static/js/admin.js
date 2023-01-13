@@ -15,7 +15,7 @@ function loadPage ()
         } else {
             window.location.href = "/"
         }
-        
+
     })
 }
 
@@ -118,10 +118,10 @@ function AddSelect(selectorId, data)
 function remove(selectorId, type)
 {
     let valueToRM = document.getElementById(selectorId).value
-    
-    if(valueToRM == -1) 
+
+    if(valueToRM == -1)
         return
-    
+
     $.ajax({
         type: "DELETE",
         url: "/" + type + "/" + valueToRM,
@@ -207,7 +207,7 @@ function createPlace ()
     let name = document.getElementById("AddPlaceInputName").value
     let city = document.getElementById("AddPlaceInputCity").value
     let adresse = document.getElementById("AddPlaceInputAdresse").value
-    
+
     if (name == "" || city == "" || adresse == "")
         return
 
