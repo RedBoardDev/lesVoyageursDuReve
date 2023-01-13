@@ -66,7 +66,7 @@ module.exports = async function(app, con) {
         con.query(`SELECT permission_id FROM users WHERE id = ${token_id}`, function (err, rows1) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
-            else if (rows1[0]['permission_id'] === 2 || (rows1[0]['permission_id'] === 1 && token_id === res.params.id)) {
+            else if (rows1[0]['permission_id'] === 2 || (rows1[0]['permission_id'] === 1 && token_id === req.params.id)) {
                 con.query(`SELECT email, discord_id, discord_username, discord_avatar FROM users WHERE id = ${req.params.id}`, async (err1, oldRows) => {
                     if (err1)
                         res.status(500).json({ msg: "Internal server error" })
@@ -83,7 +83,13 @@ module.exports = async function(app, con) {
                                 console.log(err2)
                                 res.status(500).json({ msg: "Internal server error" });
                             } else if (result.affectedRows > 0) {
-                                const selectQueryString = (req.token === process.env.OTHER_APP_TOKEN) ? `*` : `id, username, email, discord_id, permission_id, discord_username, discord_avatar, created_at`;
+                                var selectQueryString = '';
+                                if (req.token === process.env.OTHER_APP_TOKEN)
+                                    selectQueryString= `*`;
+                                else if (rows1[0]['permission_id'] === 2)
+                                    selectQueryString = `id, username, email, discord_id, permission_id, discord_username, discord_avatar, created_at`;
+                                else
+                                    selectQueryString = `id, username, email, discord_id, discord_username, discord_avatar, created_at`;
                                 con.query(`SELECT ${selectQueryString} FROM users WHERE id = "${req.params.id}";`, (err3, newRows) => {
                                     if (err3)
                                         res.status(500).json({ msg: "Internal server error" });
