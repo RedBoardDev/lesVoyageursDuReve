@@ -40,7 +40,6 @@ module.exports = async function(app, con) {
             else {
                 con.query(`INSERT INTO users(username, email, password) VALUES("${req.body["username"]}", "${req.body["email"]}", "${passwordHash}")`, function (err2, result) {
                     if (err2) {
-                        console.log(err2);
                         res.status(500).json({ msg: "Internal server error" });
                     } else {
                         con.query(`SELECT * FROM users WHERE email = "${req.body.email}";`, function (err3, rows) {

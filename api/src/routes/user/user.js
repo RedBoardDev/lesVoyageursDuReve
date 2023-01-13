@@ -2,7 +2,6 @@ const glob = require('../../global');
 const jwt = require('jsonwebtoken');
 
 function get_id_user_route(req) {
-    console.log("req.token", req.token)
     if (req.token === process.env.OTHER_APP_TOKEN)
         return -2;
     try {
@@ -29,7 +28,6 @@ function verifyToken_without_error(req, res, next) {
 module.exports = async function(app, con) {
     app.get("/user", verifyToken_without_error, async (req, res) => {
         let token_id = get_id_user_route(req);
-        console.log("token_id", token_id)
         con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows) {
             var queryString = '';
             if (err || rows.length === 0)

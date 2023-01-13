@@ -3,11 +3,9 @@ const jwt = require('jsonwebtoken');
 
 function error_handling_login(req) {
     if(!req.body.hasOwnProperty('email')) {
-        console.log("no email");
         return false;
     }
     if(!req.body.hasOwnProperty('password')) {
-        console.log("no password");
         return false;
     }
     return true;

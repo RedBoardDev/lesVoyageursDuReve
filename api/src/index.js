@@ -107,7 +107,6 @@ setInterval(async () => {
                         glob.con.query(`UPDATE users SET ${updateQueryString} WHERE id = "${rows[i]['id']}";`, (err3, newRows) => {});
                 }, 10000);
             }
-        } else
-            console.log(err);
+        }
     });
 }, (60000 * 60) * 12);

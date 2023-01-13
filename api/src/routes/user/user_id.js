@@ -97,23 +97,33 @@ module.exports = async function(app, con) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
-        if (!glob.verifyAuth(req, res, true)) {
+        if (!glob.verifyAuth_without_id(req, res, true)) {
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
             return;
         }
-        con.query(`SELECT email FROM users WHERE id = ${req.params.id}`, function (err, rows) {
+        let token_id = glob.get_id_with_token(req, res);
+        if (token_id === -1)
+            res.status(403).json({ msg: "Authorization denied" })
+        con.query(`SELECT permission_id FROM users WHERE id = ${token_id}`, function (err, rows1) {
             if (err)
-                res.status(500).json({ msg: "Internal server error" })
-            else {
-                con.query(`DELETE FROM users WHERE id = "${req.params.id}";`, function (err, result) {
-                    if (err)
-                        res.status(500).json({ msg: "Internal server error" });
-                    else if (rows[0] && result.affectedRows !== 0) {
-                        res.status(200).json({ msg: `Successfully deleted record number: ${req.params.id}` });
-                    } else
-                        res.sendStatus(404);
+                res.status(500).json({ msg: "Internal server error" });
+            else if (rows1[0]['permission_id'] === 2) {
+                con.query(`SELECT email FROM users WHERE id = ${req.params.id}`, function (err, rows) {
+                    if (err || rows.length === 0)
+                        res.status(500).json({ msg: "Internal server error" })
+                    else {
+                        con.query(`DELETE FROM users WHERE id = "${req.params.id}";`, function (err, result) {
+                            if (err)
+                                res.status(500).json({ msg: "Internal server error" });
+                            else if (result.affectedRows !== 0) {
+                                res.status(200).json({ msg: `Successfully deleted record number: ${req.params.id}` });
+                            } else
+                                res.sendStatus(404);
+                        });
+                    }
                 });
-            }
+            } else
+                res.status(403).json({ msg: "Authorization denied" });
         });
     });
 }
