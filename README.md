@@ -8,6 +8,7 @@ Le site et le bot discord de l'association [**Les voyageurs du rêve**](https://
 
 - node
 - npm
+- mariadb
 
 # Setup
 
@@ -15,6 +16,12 @@ Le site et le bot discord de l'association [**Les voyageurs du rêve**](https://
 git clone https://github.com/RedBoardDev/hackathon-week.git
 cd hackathon-week
 ./install.sh
+```
+
+Remplir les informations des `.env` (dans `api/.env` et dans `bot-discord/.env`)
+Et remplir les informations du `bot-discord/config.json`
+
+```bash
 ./start.sh
 ```
 
