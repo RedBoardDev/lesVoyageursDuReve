@@ -1,3 +1,4 @@
+./kill.sh
 cd api
 npm run start &
 cd ../bot-discord
