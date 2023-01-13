@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+    <link rel="stylesheet" href="css/nav.css">
+    <script src="js/utils.js"></script>
+    <script src="js/nav.js"></script>
+
+    <link rel="stylesheet" href="css/admin.css">
+    <script src="js/admin.js"></script>
+    <title>Acceuil</title>
+    <link rel="icon" type="image/x-icon" href="assets/logo.ico">
+</head>
+<body onload="loadPage()">
+    <script>
+        function loadPage ()
+        {
+            loadNav()
+        }
+    </script>
+
+
+    <div class="nav">
+        <div class="navLeft">
+            <div class="NavLesVoyageursDuReve" onclick="window.location.href = '/'">
+                <p>Les Voyageurs du Rêve</p>
+            </div>
+            <div class="NavAdmin" onclick="window.location.href = '/admin.html'" id="adminLink" style="display: none;">
+                <img src="assets/admin.png">
+            </div>
+        </div>
+        <div class="NavRight">
+            <div class="inNavright">
+                <div class="NavConnexion" id="NavHello">
+                    <p></p>
+                </div>
+                <div class="NavConnexion" id="NavConnexion">
+                    <p><a href="/login.html">connexion</a></p>
+                </div>
+                <div class="hide" onclick="logout()"  id="NavDisconnect">
+                    <img src="assets/logout.png">
+                </div>
+                <div class="NavUser" onclick="window.location.href = '/login.html'" id="NavUser">
+                    <img src="assets/user.png" id="NavProfilePicture">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        button {
+            position: relative  ;
+            background-color: #90b8f8;
+            border: none;
+            height: 3em;
+            width: 40%;
+            border-radius: 1em;
+            font: 1.1em "Fira Sans", sans-serif;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #5f85db;
+        }
+
+        button:active {
+            background-color: #353941;
+            color: white;
+        }
+    </style>
+    
+    <h1 style="color: #5f85db;font: 4em 'Fira Sans', sans-serif; position : absolute; width: 100%; top: 40%; text-align: center;">Il n'y a rien ici ¯\_(ツ)_/¯</h1>
+    <div class="oui" style="width: 100%; top: 60%;position : absolute;text-align: center ;">
+        <button  style="  width: 17%; " onclick="window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'">retourner à l'acceuil</button>
+    </div>
+
+</body>
+</html>
