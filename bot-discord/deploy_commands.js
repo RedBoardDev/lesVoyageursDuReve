@@ -7,11 +7,9 @@ import * as log from 'nodejs-log-utils';
 
 const config = await loadConfigJson();
 
-log.info(process.env.DEV ? `Using dev mode` : `Using final mode`);
-
-const token = process.env.DEV ? process.env.DEV_DISCORD_BOT_TOKEN : process.env.FINAL_DISCORD_BOT_TOKEN;
-const clientId = process.env.DEV ? config.dev_client_id : config.final_client_id;
-const guildId = process.env.DEV ? config.dev_server_id : config.final_server_id;
+const token = process.env.DISCORD_BOT_TOKEN;
+const clientId = config.client_id;
+const guildId = config.server_id;
 
 const commands = [];
 const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.js'));
