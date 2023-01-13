@@ -4,9 +4,9 @@ USE lesvoyageursdureve;
 
 CREATE TABLE `places` (
     `id` INT unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(100) NOT NULL UNIQUE,
+    `name` VARCHAR(100) NOT NULL,
     `city` VARCHAR(100) NOT NULL,
-    `adresse` VARCHAR(100) NOT NULL UNIQUE,
+    `adresse` VARCHAR(100) NOT NULL,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
