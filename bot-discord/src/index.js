@@ -1,11 +1,18 @@
 import dotenv from 'dotenv';
-dotenv.config();
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import path from 'node:path';
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+dotenv.config( {"path" : path.join(__dirname, "../../.env" ) });
+
 import { Client, Events, Collection, GatewayIntentBits } from 'discord.js';
 import { initCommands } from './initCommands.js';
 import * as log from 'nodejs-log-utils';
 import { sendError } from './utils/global.js';
 import { checkNewEvents } from './checkNewEvents.js';
 import { executeDBRequest, getEventType, getUser } from './utils/api.js';
+
 
 log.resetLogFile();
 
