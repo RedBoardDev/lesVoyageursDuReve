@@ -121,39 +121,6 @@ module.exports = async function(app, con) {
         });
     });
 
-
-    // app.get("/event/week/:date", async (req, res) => { // error handlings for params date c:
-    //     con.query(`SELECT * FROM events;`, function (err, rows) {
-    //         if (err)
-    //             res.status(500).json({ msg: "Internal server error" });
-    //         else {
-    //             try {
-    //                 const date = (req.params.date);
-    //                 const year = parseInt(date.split("-")[0]);
-    //                 const month = parseInt(date.split("-")[1]);
-    //                 const day = parseInt((date.split("-")[2]).split("T")[0]);
-    //                 var new_row = [];
-    //                 for (let i = 0, a = 0; i < rows.length; i++) {
-    //                     const elem_date_start = JSON.stringify(rows[i]['date_start']).replace('"', "");
-    //                     const rows_year = parseInt(elem_date_start.split("-")[0]);
-    //                     const rows_month = parseInt(elem_date_start.split("-")[1]);
-    //                     const rows_day = parseInt(((elem_date_start.split("-")[2]) + '').split("T")[0]);
-    //                     console.log(elem_date_start, rows_year, rows_month, rows_day)
-    //                     if ((rows_year >= year && rows_year < year + 1)
-    //                         && (rows_month >= month && rows_month < month + 1)
-    //                         && (rows_day >= day && rows_day < day + 7)) {
-    //                         console.log(rows[i])
-    //                         new_row[a++] = rows[i];
-    //                     }
-    //                 }
-    //                 res.send(new_row);
-    //             } catch (error) {
-    //                 res.status(500).json({ msg: "Internal server error" });
-    //             }
-    //         }
-    //     });
-    // });
-
     app.get("/event/:id", async (req, res) => {
         if (!glob.is_num(req.params.id)) {
             res.status(400).json({ msg: "Bad parameter" });

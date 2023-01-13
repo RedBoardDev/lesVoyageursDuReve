@@ -11,7 +11,7 @@ function loadPage(type) {
         if (callbackUrl)
             window.location.href = "/" + callbackUrl + ".html"
     }
-        
+
 
     addEventListener('keypress', (event) => {
         if (event.code == "Enter") {
@@ -21,7 +21,7 @@ function loadPage(type) {
                 register()
         }
     });
-    
+
 }
 
 function putDiscordId(userId)
@@ -85,7 +85,6 @@ function err(e)
         obj.textContent = "L'identifiant ou le mot de passe est incorrect"
     else if (e == "missing input")
         obj.textContent = "Merci de remplir le formulaire"
-    // else if (e == "")
 }
 
 function register() {
