@@ -47,7 +47,7 @@ CREATE TABLE `comments` (
 CREATE TABLE `events` (
     `id` INT unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `title` VARCHAR(100) NOT NULL,
-    `description` VARCHAR(100) NOT NULL,
+    `description` VARCHAR(3000) NOT NULL,
     `place_id` INT NOT NULL,
     `place_custom` VARCHAR(1000) NOT NULL,
     `game_id` INT NOT NULL,
