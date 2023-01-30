@@ -52,7 +52,7 @@ function getgameType (data, callback)
             }
         });
     } else {
-        callback({"name" : data.game_type_custom, "color" : "#9d4edd"})
+        callback({"name" : data.game_type_custom, "color" : "#e0b1cb"})
     }
 }
 

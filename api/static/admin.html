@@ -96,67 +96,69 @@
             </div>
         </div>
         <div class="right">
-            <div class="Place">
-                <label>supprimer un lieu</label>
-                <div class="Delete">
-                    <div class="delSelect">
-                        <select id="delPlace">
-                            <option value="-1">N/A</option>
-                        </select>
+            <div class="formRight">
+                <div class="Place">
+                    <label>supprimer un lieu</label>
+                    <div class="Delete">
+                        <div class="delSelect">
+                            <select id="delPlace">
+                                <option value="-1">N/A</option>
+                            </select>
+                        </div>
+                        <button class="delButton" onclick="remove('delPlace', 'place')">Supprimer</button>
                     </div>
-                    <button class="delButton" onclick="remove('delPlace', 'place')">Supprimer</button>
+                    <label>ajouter un lieu</label>
+                    <div class="Add">
+                        <div class="input">
+                            <div class="name">
+                                <input type="text" id="AddPlaceInputName" placeholder="Nom">
+                            </div>
+                        </div>
+                        <div class="input">
+                            <div class="name">
+                                <input type="text" id="AddPlaceInputCity" placeholder="Ville">
+                            </div>
+                        </div>
+                        <div class="input">
+                            <div class="name">
+                                <input type="text" id="AddPlaceInputAdresse" placeholder="Adresse">
+                            </div>
+                        </div>
+                        <button class="addButton" onclick="createPlace()" >Créer</button>
+                    </div>
                 </div>
-                <label>ajouter un lieu</label>
-                <div class="Add">
-                    <div class="input">
-                        <div class="name">
-                            <input type="text" id="AddPlaceInputName" placeholder="Nom">
+                <div class="User">
+                    <label>éditer un utilisateur</label>
+                    <div class="Add">
+                        <div class="UserSelect">
+                            <select id="UserSelect" class="basicSelector" onchange="changeUser()">
+                                <option value="-1">N/A</option>
+                            </select>
                         </div>
-                    </div>
-                    <div class="input">
-                        <div class="name">
-                            <input type="text" id="AddPlaceInputCity" placeholder="Ville">
+                        <div class="input">
+                            <div class="name">
+                                <input type="text" id="UserUsername" placeholder="identifiant">
+                            </div>
                         </div>
-                    </div>
-                    <div class="input">
-                        <div class="name">
-                            <input type="text" id="AddPlaceInputAdresse" placeholder="Adresse">
+                        <div class="input">
+                            <div class="name">
+                                <input type="text" id="UserEmail" placeholder="email">
+                            </div>
                         </div>
-                    </div>
-                    <button class="addButton" onclick="createPlace()" >Créer</button>
-                </div>
-            </div>
-            <div class="User">
-                <label>éditer un utilisateur</label>
-                <div class="Add">
-                    <div class="UserSelect">
-                        <select id="UserSelect" class="basicSelector" onchange="changeUser()">
-                            <option value="-1">N/A</option>
-                        </select>
-                    </div>
-                    <div class="input">
-                        <div class="name">
-                            <input type="text" id="UserUsername" placeholder="identifiant">
+                        <div class="input">
+                            <div class="name">
+                                <input type="text" id="UserPassword" placeholder="Mot de passe">
+                            </div>
                         </div>
-                    </div>
-                    <div class="input">
-                        <div class="name">
-                            <input type="text" id="UserEmail" placeholder="email">
+                        <div class="input">
+                            <div class="name">
+                                <input type="number" id="UserPerm" min="0" max="2" placeholder="niveau de permission">
+                            </div>
                         </div>
-                    </div>
-                    <div class="input">
-                        <div class="name">
-                            <input type="text" id="UserPassword" placeholder="Mot de passe">
+                        <div class="UserButtons">
+                            <button class="addButton userValidButton" onclick="updateUser()">Valider</button>
+                            <button class="delButton" onclick="deleteUser()">Supprimer</button>
                         </div>
-                    </div>
-                    <div class="input">
-                        <div class="name">
-                            <input type="number" id="UserPerm" min="0" max="2" placeholder="niveau de permission">
-                        </div>
-                    </div>
-                    <div class="UserButtons">
-                        <button class="addButton userValidButton" onclick="updateUser()">Valider</button>
-                        <button class="delButton" onclick="deleteUser()">Supprimer</button>
                     </div>
                 </div>
             </div>

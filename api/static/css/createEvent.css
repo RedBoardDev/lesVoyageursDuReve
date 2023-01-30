@@ -1,3 +1,89 @@
+@media screen and (max-width: 1400px) {
+    .mainDiv {
+        position: relative;
+        top: 14em;
+    }
+    .left {
+        position: relative;
+        width: 100%;
+        margin-bottom: 15em;
+        display: flex;
+        justify-content: center;
+        /* padding-top: 1em; */
+    }
+
+    .right {
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .center {
+        position: absolute;
+        text-align: center;
+        top: 80em;
+        left: 50%;
+        transform: translate(-50%, 0%);
+    }
+    
+    .centerP {
+        position: absolute;
+        text-align: center;
+        top: 75em;
+        left: 50%;
+        transform: translate(-50%, 0%);
+    }
+
+}
+
+@media screen and (min-width: 1400px) {
+    .mainDiv {
+        position: relative;
+        top: 14em;
+        display: flex;
+    }
+
+    .left {
+        position: relative;
+        width: 50%;
+        padding-top: 1em;
+    }
+
+    .right {
+        position: relative;
+        width: 50%;
+    }
+
+    .formLeft {
+        position: relative;
+        float: right;
+        margin-right: 5em;
+    }
+    
+    .formRight {
+        position: relative;
+        margin-left: 5em;
+    }
+
+    .center {
+        position: absolute;
+        text-align: center;
+        top: 80%;
+        left: 50%;
+        transform: translate(-50%, 0%);
+    }
+    
+    .centerP {
+        position: absolute;
+        text-align: center;
+        top: 72%;
+        left: 50%;
+        transform: translate(-50%, 0%);
+    }
+    
+}
+
 .input {
     width: 35em;
     height: 2.5em;
@@ -112,49 +198,14 @@ textarea:focus{
     height: 11.8em;
 }
 
-.mainDiv {
-    position: relative;
-    top: 14em;
-    display: flex;
-}
 
-.left {
-    position: relative;
-    width: 50%;
-    padding-top: 1em;
-}
 
-.formLeft {
-    position: relative;
-    float: right;
-    margin-right: 5em;
-}
 
-.formRight {
-    position: relative;
-    margin-left: 5em;
-}
 
-.right {
-    position: relative;
-    width: 50%;
-}
 
-.center {
-    position: absolute;
-    text-align: center;
-    top: 80%;
-    left: 50%;
-    transform: translate(-50%, 0%);
-}
 
-.centerP {
-    position: absolute;
-    text-align: center;
-    top: 72%;
-    left: 50%;
-    transform: translate(-50%, 0%);
-}
+
+
 
 button{
     position: relative  ;

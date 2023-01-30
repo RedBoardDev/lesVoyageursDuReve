@@ -39,12 +39,17 @@ function fillData(user)
     document.getElementById("identifiant").value = user.username
     document.getElementById("password").value = "aaaaaaaaaaaaa"
     document.getElementById("perm").value = "Joueur"
-    if (user.discord_username != null && user.discord_username) {
+    console.log(user.discord_username)
+    if (user.discord_username != null && user.discord_username && user.discord_username != "") {
         document.getElementById("discord").value = user.discord_username
+    } 
+    if (user.discord_avatar != null && user.discord_avatar && user.discord_avatar != ""){
         document.getElementById("profilePicture").setAttribute("src", user.discord_avatar)
     } else {
         document.getElementById("profilePicture").setAttribute("src", "assets/user.png")
     }
+
+
     userId = user.id
 }
 

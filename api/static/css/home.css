@@ -78,9 +78,10 @@ h3 {
 .addEvent {
     width: 7vh;
     height: 7vh;
-    border-radius: 3em;
+    border-radius: 100em;
     background-color: #5f85db;
-    left: 94%;
+    /* left: 94%; */
+    right: 4%;
     top: 90%;
     position: fixed;
     cursor: pointer;
