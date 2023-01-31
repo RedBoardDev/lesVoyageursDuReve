@@ -36,7 +36,7 @@ glob.app.get("*", (req, res) => {
 });
 
 glob.app.listen(process.env.API_PORT, process.env.HOST_NAME, () => {
-    console.log(`App listening at http://${process.env.HOST_NAME}:${process.env.API_PORT}`);
+    console.log(`App listening at https://${process.env.HOST_NAME}:${process.env.API_PORT}`);
 });
 
 function addProperty(queryString, property, value) {
