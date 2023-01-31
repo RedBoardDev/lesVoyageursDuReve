@@ -15,7 +15,7 @@ const con = mysql.createConnection({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
-    database: 'lesvoyageursdureve'
+    database: process.env.MYSQL_DATABASE
 });
 const algorithm = 'aes-256-cbc';
 
@@ -31,6 +31,13 @@ function decryptString(text) {
     return Buffer.concat([decipher.update(Buffer.from(text.e, 'hex')), decipher.final()]).toString();
 }
 
+function checkFullAccessToken(token)
+{
+    if (token === process.env.API_TOKEN)
+        return true;
+    return false;
+}
+
 function verifyToken(req, res, next) {
     const bearerHeader = req.headers['authorization'];
 
@@ -39,7 +46,7 @@ function verifyToken(req, res, next) {
         const bearerToken = bearer[1];
         req.token = bearerToken;
 
-        if (req.token === process.env.API_TOKEN) {
+        if (checkFullAccessToken(req.token)) {
             next();
             return;
         }
@@ -61,7 +68,7 @@ function verifyToken(req, res, next) {
 }
 
 function get_id_with_token(req, res) {
-    if (req.token === process.env.API_TOKEN)
+    if (checkFullAccessToken(req.token))
         return -2;
     try {
         let decoded = jwt.verify(req.token, process.env.SECRET);
@@ -73,7 +80,7 @@ function get_id_with_token(req, res) {
 }
 
 function verifyAuth(req, res, verifId) {
-    if (req.token === process.env.API_TOKEN)
+    if (checkFullAccessToken(req.token))
         return true;
     if (verifId) {
         let token_id = get_id_with_token(req, res);
@@ -85,7 +92,7 @@ function verifyAuth(req, res, verifId) {
 }
 
 function verifyAuth_without_id(req, res, verifId) {
-    if (req.token === process.env.API_TOKEN)
+    if (checkFullAccessToken(req.token))
         return true;
     if (verifId) {
         let token_id = get_id_with_token(req, res);

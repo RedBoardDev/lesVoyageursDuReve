@@ -43,7 +43,7 @@ module.exports = async function(app, con) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
-        const queryString = (req.token === process.env.API_TOKEN) ? `*` : `id, username, email, discord_id, permission_id, discord_username, discord_avatar, created_at`;
+        const queryString = (checkFullAccessToken(req.token)) ? `*` : `id, username, email, discord_id, permission_id, discord_username, discord_avatar, created_at`;
         con.query(`SELECT ${queryString} FROM users WHERE id = "${req.params.id}" OR email = "${req.params.id}" OR discord_id = "${req.params.id}";`, async function (err, rows) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
@@ -84,7 +84,7 @@ module.exports = async function(app, con) {
                                 res.status(500).json({ msg: "Internal server error" });
                             } else if (result.affectedRows > 0) {
                                 var selectQueryString = '';
-                                if (req.token === process.env.API_TOKEN)
+                                if (checkFullAccessToken(req.token))
                                     selectQueryString= `*`;
                                 else if (rows1[0]['permission_id'] === 2)
                                     selectQueryString = `id, username, email, discord_id, permission_id, discord_username, discord_avatar, created_at`;

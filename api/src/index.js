@@ -14,8 +14,8 @@ glob.con.connect(function(err) {
     console.log("Connecté à la base de données lesvoyageursdureve");
 });
 
-glob.app.get("/quoi", (req, res) => {
-    res.send("feur");
+glob.app.get("/health", (req, res) => {
+    res.send("PlaneIsPlaneButPlaneIsn'tPlane");
 });
 
 require('./routes/user/auth/register.js')(glob.app, glob.con);
