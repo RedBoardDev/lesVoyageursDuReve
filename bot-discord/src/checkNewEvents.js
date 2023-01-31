@@ -3,7 +3,6 @@ import { createEventEmbed } from './utils/embed.js';
 import { ButtonBuilder, ActionRowBuilder, ButtonStyle } from 'discord.js';
 import { executeDBRequest } from './utils/api.js';
 
-// const config = await loadConfigJson();
 const asyncSleep = (t) => new Promise(resolve => setTimeout(resolve, t));
 
 async function sendNewEvent(client, channelId, eventData) {

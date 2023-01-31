@@ -2,8 +2,6 @@ import { SlashCommandBuilder, ModalBuilder, TextInputBuilder, ActionRowBuilder, 
 import { createEventEmbed } from '../utils/embed.js';
 import { executeDBRequest, getEventType, getEvent, getEvents, getUser } from '../utils/api.js';
 
-// const config = await loadConfigJson();
-
 async function createEvent(interaction) {
     const row = new ActionRowBuilder()
         .addComponents(new ButtonBuilder()

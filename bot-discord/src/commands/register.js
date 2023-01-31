@@ -1,7 +1,5 @@
 import { SlashCommandBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } from 'discord.js';
 
-// const config = await loadConfigJson();
-
 export let command = {
 	data: new SlashCommandBuilder()
 		.setName("register")

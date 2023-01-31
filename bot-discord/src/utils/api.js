@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-// const config = await loadConfigJson();
-
 export async function executeDBRequest(method, endpoint, token = "", body = {}) {
     return axios({
         method: method,

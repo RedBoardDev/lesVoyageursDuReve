@@ -2,8 +2,6 @@ import dateFormat from "dateformat";
 import { EmbedBuilder, AttachmentBuilder } from 'discord.js';
 import { getEventTypeColor, getEventTypeName, getUser } from '../utils/api.js';
 
-// const config = await loadConfigJson();
-
 export function createEmbed(title, description, color, testUrl) {
     const embed = new EmbedBuilder()
     .setTitle(title)

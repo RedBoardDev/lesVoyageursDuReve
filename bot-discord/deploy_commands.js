@@ -8,8 +8,6 @@ import { REST, Routes } from 'discord.js';
 import * as fs from 'node:fs';
 import * as log from 'nodejs-log-utils';
 
-// const config = await loadConfigJson();
-
 const token = process.env.DISCORD_BOT_TOKEN;
 const clientId = process.env.CLIENT_ID;
 const guildId = process.env.SERVER_ID;
