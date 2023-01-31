@@ -3,7 +3,7 @@ import axios from 'axios';
 export async function executeDBRequest(method, endpoint, token = "", body = {}) {
     return axios({
         method: method,
-        url: process.env.API_URL + endpoint,
+        url: process.env.API_LOCAL_URL + endpoint,
         headers: {
             "Authorization": "Bearer " + token,
             "Content-Type": "application/json"
