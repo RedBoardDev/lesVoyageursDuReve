@@ -7,11 +7,9 @@ function loadPage ()
 
     $(document).on('keydown', function(event) {
         if (popUp) {
-            console.log("ouo")
             if (event.key == "Enter") {
                 validPassword(popUpId)
             }
-            console.log(event.code)
             if (event.key == "Escape") {
                 closePopUp()
             }
@@ -35,6 +33,7 @@ function loadPage ()
 
 function fillData(user)
 {
+    document.getElementById("PageTitle").textContent = user.username
     document.getElementById("email").value = user.email
     document.getElementById("identifiant").value = user.username
     document.getElementById("password").value = "aaaaaaaaaaaaa"

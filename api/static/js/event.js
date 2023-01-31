@@ -118,7 +118,7 @@ function getAdmin(data, callback)
 
 function fillEvent(data)
 {
-    
+    document.getElementById("PageTitle").textContent = data.title;
     let start = new Date(data.date_start)
     let end = new Date(data.date_end)
     document.getElementById("titleInput").value = data.title

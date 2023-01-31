@@ -198,7 +198,9 @@ textarea:focus{
     height: 11.8em;
 }
 
-
+#descrInput {
+    font: 1.2em "Fira Sans", sans-serif;
+}
 
 
 

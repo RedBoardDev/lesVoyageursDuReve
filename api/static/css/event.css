@@ -127,6 +127,7 @@
     width: 40em;
     height: 2.5em;
     margin-bottom: 2em;
+    font: 1em "Fira Sans", sans-serif;
 }
 
 .area {
@@ -308,6 +309,10 @@ input:focus{
 #unregisterButton:active {
     background-color: #353941;
     color: white;
+}
+
+#descrInput {
+    font: 1.2em "Fira Sans", sans-serif;
 }
 
 label {
