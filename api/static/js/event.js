@@ -171,8 +171,10 @@ function fillEvent(data)
     getplace(data, (out) => {
         try {
             document.getElementById("placeInput").value = out.name
-            document.getElementById("adresse").textContent = out.city + "," + out.adresse
-            document.getElementById("adresse").setAttribute("onclick" , "window.open( 'https://www.google.fr/maps/place/" + out.adresse + "," + out.city + "')")
+            if (out.city && out.adresse) {
+                document.getElementById("adresse").textContent = out.city + "," + out.adresse
+                document.getElementById("adresse").setAttribute("onclick" , "window.open( 'https://www.google.fr/maps/place/" + out.adresse + "," + out.city + "')")
+            }
         } catch {}
     })
 

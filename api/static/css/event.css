@@ -39,9 +39,20 @@
         height: 10em;
         margin-bottom: 1em;
     }
+
+    #descrInput {
+        height: 250%;
+    }
+
+    .descr {
+        margin-bottom: 10em;
+    }
 }
 
 @media screen and (min-width: 1700px) {
+    #descrInput {
+        height: 100%;
+    }
     .mainDiv {
         position: relative;
         top: 8em;
@@ -127,13 +138,15 @@
     width: 40em;
     height: 2.5em;
     margin-bottom: 2em;
-    font: 1em "Fira Sans", sans-serif;
+    
 }
 
 .area {
     width: 40em;
     height: 5em;
     margin-bottom: 2em;
+    -webkit-text-size-adjust: 100%;
+    font: 1em "Fira Sans", sans-serif;
 }
 
 .inputTime {
@@ -156,7 +169,7 @@ textarea {
     position: relative;
     left: 1%;
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
     border: none;
     padding: 0px;
     outline: none;
@@ -165,6 +178,8 @@ textarea {
     font-size: 1.2em;
     border-radius: 2px;
     padding-left: 0.5em;
+    
+
 }
 
 textarea:focus{
@@ -174,6 +189,8 @@ textarea:focus{
 }
 
 input {
+    /* font:0.9%"Fira Sans", sans-serif; */
+
     position: relative;
     left: 1%;
     width: 100%;
@@ -311,12 +328,10 @@ input:focus{
     color: white;
 }
 
-#descrInput {
-    font: 1.2em "Fira Sans", sans-serif;
-}
+
 
 label {
-    font: 1em "Fira Sans", sans-serif;
+    font: 1vw "Fira Sans", sans-serif;
     width: 100%;
     margin: 1em;
     color: #353941;
