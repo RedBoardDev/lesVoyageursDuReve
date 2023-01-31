@@ -29,7 +29,7 @@ CREATE TABLE `users` (
     `username` VARCHAR(100) NOT NULL UNIQUE,
     `email` VARCHAR(100) NOT NULL UNIQUE,
     `password` VARCHAR(100) NOT NULL,
-    `discord_id` VARCHAR(30) NOT NULL DEFAULT "0" UNIQUE,
+    `discord_id` VARCHAR(30) NOT NULL DEFAULT "0",
     `discord_username` VARCHAR(100) NOT NULL DEFAULT "",
     `discord_avatar` VARCHAR(100) NOT NULL DEFAULT "",
     `permission_id` INT unsigned NOT NULL DEFAULT 0,
