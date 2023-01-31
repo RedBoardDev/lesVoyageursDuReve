@@ -27,9 +27,9 @@ module.exports = async function(app, con) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else if (token_id === -2 || rows[0]['permission_id'] === 2) {
-                con.query(`SELECT name FROM games WHERE name = "${req.body.name}";`, function (err, rows) {
+                con.query(`SELECT name FROM games WHERE name = "${req.body["name"]}" AND game_type_id = "${req.body["game_type_id"]}";`, function (err, rows) {
                     if (err)
-                        res.status(500).json({ msg: "Internal server error" });
+                        res.status(500).json({ msg: "Internal server error1", err });
                     else if (rows[0] !== undefined)
                         res.status(418).json({ msg: "games already exists" });
                     else {
