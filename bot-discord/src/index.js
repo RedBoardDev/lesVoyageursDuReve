@@ -13,7 +13,6 @@ import { sendError } from './utils/global.js';
 import { checkNewEvents } from './checkNewEvents.js';
 import { executeDBRequest, getEventType, getUser } from './utils/api.js';
 
-
 log.resetLogFile();
 
 const token = process.env.DISCORD_BOT_TOKEN;

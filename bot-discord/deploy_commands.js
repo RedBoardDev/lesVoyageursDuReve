@@ -1,15 +1,18 @@
 import dotenv from 'dotenv';
-dotenv.config();
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import path from 'node:path';
+const __dirname = dirname(fileURLToPath(import.meta.url));
+dotenv.config( {"path" : path.join(__dirname, "../.env" ) });
 import { REST, Routes } from 'discord.js';
 import * as fs from 'node:fs';
-import { loadConfigJson } from './src/utils/global.js';
 import * as log from 'nodejs-log-utils';
 
-const config = await loadConfigJson();
+// const config = await loadConfigJson();
 
 const token = process.env.DISCORD_BOT_TOKEN;
-const clientId = config.client_id;
-const guildId = config.server_id;
+const clientId = process.env.CLIENT_ID;
+const guildId = process.env.SERVER_ID;
 
 const commands = [];
 const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.js'));

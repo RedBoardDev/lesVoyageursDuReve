@@ -1,7 +1,6 @@
 import { SlashCommandBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } from 'discord.js';
-import { loadConfigJson } from '../utils/global.js';
 
-const config = await loadConfigJson();
+// const config = await loadConfigJson();
 
 export let command = {
 	data: new SlashCommandBuilder()
