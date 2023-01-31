@@ -1,12 +1,9 @@
 import axios from 'axios';
-import { loadConfigJson } from '../utils/global.js';
-
-const config = await loadConfigJson();
 
 export async function executeDBRequest(method, endpoint, token = "", body = {}) {
     return axios({
         method: method,
-        url: config.api_url + endpoint,
+        url: process.env.API_LOCAL_URL + endpoint,
         headers: {
             "Authorization": "Bearer " + token,
             "Content-Type": "application/json"

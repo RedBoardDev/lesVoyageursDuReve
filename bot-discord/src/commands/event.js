@@ -1,16 +1,13 @@
 import { SlashCommandBuilder, ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } from 'discord.js';
 import { createEventEmbed } from '../utils/embed.js';
 import { executeDBRequest, getEventType, getEvent, getEvents, getUser } from '../utils/api.js';
-import { loadConfigJson } from '../utils/global.js';
-
-const config = await loadConfigJson();
 
 async function createEvent(interaction) {
     const row = new ActionRowBuilder()
         .addComponents(new ButtonBuilder()
             .setLabel(`Créer évènement`)
             .setStyle(ButtonStyle.Link)
-            .setURL(`${config.api_url}/login.html?callbackUrl=createEvent`),
+            .setURL(`${process.env.API_URL}/login.html?callbackUrl=createEvent`),
         );
     await interaction.reply({ content: `Pour créer un évènement, veuillez cliquer sur le bouton suivant (vous devez déjà avoir un compte **Les voyageurs du rêve**)`, components: [row], ephemeral: true });
 }
@@ -87,6 +84,10 @@ async function listEvents(interaction) {
 
     if (!eventsArray)
         return;
+    if (eventsArray.length === 0) {
+        await interaction.reply({ content: `Aucun évènement à venir`, ephemeral: true });
+        return;
+    }
     eventsArray = eventsArray.filter(obj => new Date(obj.date_end) >= new Date()).sort((o1, o2) => {
         if (o1.date_end > o2.date_end) {
             return 1;
@@ -136,7 +137,7 @@ async function deleteEvent(interaction) {
         return;
     }
 
-    executeDBRequest('DELETE', `/event/${event.id}`, config.API_TOKEN).then(async (res) => {
+    executeDBRequest('DELETE', `/event/${event.id}`, process.env.API_TOKEN).then(async (res) => {
         await interaction.reply({ content: `L'évènement n°${event.id} a été supprimé avec succès.`, ephemeral: true });
     }).catch(async (err) => {
         await interaction.reply({ content: `Une erreur s'est produite lors de la suppression de l'évènement n°${event.id}.`, ephemeral: true });

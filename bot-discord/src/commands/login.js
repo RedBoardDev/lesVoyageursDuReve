@@ -1,7 +1,4 @@
 import { SlashCommandBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } from 'discord.js';
-import { loadConfigJson } from '../utils/global.js';
-
-const config = await loadConfigJson();
 
 export let command = {
 	data: new SlashCommandBuilder()
@@ -12,7 +9,7 @@ export let command = {
         .addComponents(new ButtonBuilder()
             .setLabel(`S'authentifier`)
             .setStyle(ButtonStyle.Link)
-            .setURL(`${config.api_url}/login.html?discordId=${interaction.user.id}`),
+            .setURL(`${process.env.API_URL}/login.html?discordId=${interaction.user.id}`),
         );
         await interaction.reply({ content: `Pour vous authentifier, veuillez cliquer sur le bouton suivant (vous devez déjà avoir un compte **Les voyageurs du rếve**)`, components: [row], ephemeral: true });
 	},
