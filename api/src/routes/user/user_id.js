@@ -1,12 +1,6 @@
 const bcrypt = require('bcryptjs');
 const glob = require('../../global');
-
-function addProperty(queryString, property, value) {
-    if (queryString.length > 0)
-        queryString += ", ";
-    queryString += `${property} = '${value}'`;
-    return queryString;
-}
+const tokenVerify = require('../../tokenVerify');
 
 function getUpdateQueryString(req, permission) {
     let updateQueryString = "";
@@ -54,12 +48,12 @@ module.exports = async function(app, con) {
         });
     });
 
-    app.put("/user/id/:id", glob.verifyToken, async (req, res) => {
-        if (!glob.is_num(req.params.id)) {
+    app.put("/user/id/:id", tokenVerify.verifyToken, async (req, res) => {
+        if (!tokenVerify.is_num(req.params.id)) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
-        let token_id = glob.get_id_with_token(req, res);
+        let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === - 1)
             return;
 
@@ -110,16 +104,16 @@ module.exports = async function(app, con) {
 
     });
 
-    app.delete("/user/id/:id", glob.verifyToken, async (req, res) => {
+    app.delete("/user/id/:id", tokenVerify.verifyToken, async (req, res) => {
         if (!glob.is_num(req.params.id)) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
-        if (!glob.verifyAuth_without_id(req, res, true)) {
+        if (!tokenVerify.verifyAuth_without_id(req, res, true)) {
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
             return;
         }
-        let token_id = glob.get_id_with_token(req, res);
+        let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === -1)
             res.status(403).json({ msg: "Authorization denied" })
         con.query(`SELECT permission_id FROM users WHERE id = ${token_id}`, function (err, rows1) {

@@ -1,5 +1,5 @@
-const glob = require('../../global');
 const jwt = require('jsonwebtoken');
+const tokenVerify = require('../../tokenVerify');
 
 function get_id_user_route(req) {
     if (checkFullAccessToken(req.token))
@@ -9,19 +9,6 @@ function get_id_user_route(req) {
         return (decoded.id);
     } catch (err) {
         return (-1);
-    }
-}
-
-function verifyToken_without_error(req, res, next) {
-    const bearerHeader = req.headers['authorization'];
-
-    if (typeof(bearerHeader) !== 'undefined') {
-        const bearer = bearerHeader.split(' ');
-        const bearerToken = bearer[1];
-        req.token = bearerToken;
-        next();
-    } else {
-        next();
     }
 }
 
@@ -48,8 +35,8 @@ module.exports = async function(app, con) {
         });
     });
 
-    app.get("/user/me", glob.verifyToken, async (req, res) => {
-        let token_id = glob.get_id_with_token(req, res);
+    app.get("/user/me", tokenVerify.verifyToken, async (req, res) => {
+        let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === - 1)
             return;
         const queryString = (checkFullAccessToken(req.token)) ? `*` : `id, username, email, discord_id, permission_id, discord_username, discord_avatar, created_at`;

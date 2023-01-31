@@ -1,4 +1,5 @@
 const glob = require('../../global');
+const tokenVerify = require('../../tokenVerify');
 
 function error_handling_values(req) {
     if (!req.body.hasOwnProperty('event_id')) {
@@ -11,16 +12,16 @@ function error_handling_values(req) {
 }
 
 module.exports = async function(app, con) {
-    app.post("/comment", glob.verifyToken, async (req, res) => {
+    app.post("/comment", tokenVerify.verifyToken, async (req, res) => {
         if (!error_handling_values(req)) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
-        if (!glob.verifyAuth_without_id(req, res, true)) {
+        if (!tokenVerify.verifyAuth_without_id(req, res, true)) {
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
             return;
         }
-        let token_id = glob.get_id_with_token(req, res);
+        let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === -1)
             res.status(403).json({ msg: "Authorization denied" });
                 con.query(`INSERT INTO comments(event_id, user_id, message) VALUES("${req.body["event_id"]}", "${token_id}", "${req.body["message"]}")`, function (err2, result) {
@@ -44,16 +45,16 @@ module.exports = async function(app, con) {
         });
     });
 
-    app.delete("/comment/:comment_id", glob.verifyToken, async (req, res) => {
+    app.delete("/comment/:comment_id", tokenVerify.verifyToken, async (req, res) => {
         if (!glob.is_num(req.params.comment_id)) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
-        if (!glob.verifyAuth_without_id(req, res, true)) {
+        if (!tokenVerify.verifyAuth_without_id(req, res, true)) {
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
             return;
         }
-        let token_id = glob.get_id_with_token(req, res);
+        let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === -1)
             res.status(403).json({ msg: "Authorization denied" });
         con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows1) {

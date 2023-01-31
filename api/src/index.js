@@ -39,13 +39,6 @@ glob.app.listen(process.env.API_PORT, process.env.HOST_NAME, () => {
     console.log(`App listening at https://${process.env.HOST_NAME}:${process.env.API_PORT}`);
 });
 
-function addProperty(queryString, property, value) {
-    if (queryString.length > 0)
-        queryString += ", ";
-    queryString += `${property} = '${value}'`;
-    return queryString;
-}
-
 async function fetchDiscordInfo(discord_id_str) {
     var updateQueryString = '';
     try {

@@ -1,4 +1,5 @@
 const glob = require('../../global');
+const tokenVerify = require('../../tokenVerify');
 
 function error_handling_values(req) {
     if (!req.body.hasOwnProperty('name')) {
@@ -11,16 +12,16 @@ function error_handling_values(req) {
 }
 
 module.exports = async function(app, con) {
-    app.post("/game", glob.verifyToken, async (req, res) => {
+    app.post("/game", tokenVerify.verifyToken, async (req, res) => {
         if (!error_handling_values(req)) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
-        if (!glob.verifyAuth_without_id(req, res, true)) {
+        if (!tokenVerify.verifyAuth_without_id(req, res, true)) {
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
             return;
         }
-        let token_id = glob.get_id_with_token(req, res);
+        let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === -1)
             res.status(403).json({ msg: "Authorization denied" });
         con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows) {
@@ -65,16 +66,16 @@ module.exports = async function(app, con) {
         });
     });
 
-    app.delete("/game/:id", glob.verifyToken, async (req, res) => {
+    app.delete("/game/:id", tokenVerify.verifyToken, async (req, res) => {
         if (!glob.is_num(req.params.id)) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
-        if (!glob.verifyAuth_without_id(req, res, true)) {
+        if (!tokenVerify.verifyAuth_without_id(req, res, true)) {
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
             return;
         }
-        let token_id = glob.get_id_with_token(req, res);
+        let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === -1)
             res.status(403).json({ msg: "Authorization denied" })
         con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows) {

