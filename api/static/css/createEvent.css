@@ -172,6 +172,7 @@ input:disabled {
 }
 
 textarea {
+    font: 1em "Fira Sans", sans-serif;
     resize: none;
     position: relative;
     left: 0%;
@@ -196,6 +197,8 @@ textarea:focus{
 
 .descrArea {
     height: 11.8em;
+    -webkit-text-size-adjust: 100%;
+    font: 1em "Fira Sans", sans-serif;
 }
 
 #descrInput {
