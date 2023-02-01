@@ -24,8 +24,6 @@ require('./routes/user/user.js')(glob.app, glob.con);
 require('./routes/user/user_id.js')(glob.app, glob.con);
 require('./routes/place.js')(glob.app, glob.con);
 require('./routes/permission.js')(glob.app, glob.con);
-require('./routes/game/type.js')(glob.app, glob.con);
-require('./routes/game/game.js')(glob.app, glob.con);
 require('./routes/event/comments.js')(glob.app, glob.con);
 require('./routes/event/event.js')(glob.app, glob.con);
 require('./routes/event/register.js')(glob.app, glob.con);

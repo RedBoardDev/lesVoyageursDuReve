@@ -15,7 +15,7 @@ function existInList(list, element) {
 }
 
 module.exports = async function(app, con) {
-    app.post("/tags", tokenVerify.verifyToken(), async (req, res) => {
+    app.post("/tags", tokenVerify.verifyToken, async (req, res) => {
         if (error_handling_values(req)) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
