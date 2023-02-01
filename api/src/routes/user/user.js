@@ -13,7 +13,7 @@ function get_id_user_route(req) {
 }
 
 module.exports = async function(app, con) {
-    app.get("/user", verifyToken_without_error, async (req, res) => {
+    app.get("/user", tokenVerify.verifyToken_without_error, async (req, res) => {
         let token_id = get_id_user_route(req);
         con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows) {
             var queryString = '';
