@@ -36,7 +36,7 @@ module.exports = async function(app, con) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else if (rows[0] !== undefined)
-                res.status(418).json({ msg: "Account already exists" });
+                res.status(418).json({ msg: "Account already exists"});
             else {
                 con.query(`INSERT INTO users(username, email, password) VALUES("${req.body["username"]}", "${req.body["email"]}", "${passwordHash}")`, function (err2, result) {
                     if (err2) {

@@ -1,0 +1,11 @@
+aws dynamodb scan --table-name Users --endpoint-url http://localhost:8000
+
+aws dynamodb list-tables --endpoint-url http://localhost:8000
+
+java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
+
+
+
+AKIA47W6QK2ODMKWXCAZ
+
+hzNhd0JD7vrZW9DkIGd86vlfSaeve7CmbNzz6Txr

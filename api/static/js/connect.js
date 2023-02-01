@@ -12,7 +12,6 @@ function loadPage(type) {
             window.location.href = "/" + callbackUrl + ".html"
     }
 
-
     addEventListener('keypress', (event) => {
         if (event.code == "Enter") {
             if (type == "login")
@@ -21,13 +20,11 @@ function loadPage(type) {
                 register()
         }
     });
-
 }
 
 function putDiscordId(userId)
 {
     if (discordID != null) {
-
         let data = JSON.stringify({"discord_id" : discordID})
         $.ajax({
             type: "PUT",
@@ -51,7 +48,6 @@ function login() {
     let username = document.getElementById("identifiant").value
     let password = document.getElementById("motDePasse").value
     let data = JSON.stringify({"email" : username, "password" : password})
-
     $.ajax({
         type: "POST",
         url: "/user/login",
@@ -85,6 +81,8 @@ function err(e)
         obj.textContent = "L'identifiant ou le mot de passe est incorrect"
     else if (e == "missing input")
         obj.textContent = "Merci de remplir le formulaire"
+    else if (e == "already exist")
+        obj.textContent = "Cette adresse email est déja utilisé"
 }
 
 function register() {
@@ -97,7 +95,6 @@ function register() {
         err("missing input")
     if (confPassword != password)
         err("password not match")
-
     let data = JSON.stringify({"username" : username, "password" : password, "email": email})
     $.ajax({
         type: "POST",
@@ -114,7 +111,10 @@ function register() {
                 window.location.href = "/" + callbackUrl + ".html"
         },
         error: function(e){
-            console.log(e)
+            if (e.status == 418)
+                err("already exist")
+            else
+                console.log(e)
         }
       });
 }

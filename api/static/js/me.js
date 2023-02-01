@@ -86,7 +86,13 @@ function validPassword(id)
         success: function(result) {
             document.getElementById(id).removeAttribute("readonly")
             document.getElementById(id).value = ""
-            document.getElementById(id + "Edit").textContent = "Valider"
+            let theButton = document.getElementById(id + "Edit")
+            theButton.textContent = "Valider"
+            let editButtons = document.getElementsByClassName("edit")
+            for (let i = 0; i < editButtons.length; ++i) {
+                if (editButtons[i].children[0].id != theButton.id)
+                    editButtons[i].children[0].setAttribute("style", "display: none;")
+            }
             document.getElementById(id + "Edit").setAttribute("onclick", "validChange('" + id +"')")
             closePopUp()
         },
