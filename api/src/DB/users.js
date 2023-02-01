@@ -85,27 +85,27 @@ function deleteUser(id, DB, callback) {
     });
 }
 
-const AWS = require("aws-sdk");
+// const AWS = require("aws-sdk");
 
-AWS.config.update({ region: 'global', endpoint: 'http://localhost:8000' });
+// AWS.config.update({ region: 'global', endpoint: 'http://localhost:8000' });
 
-const DynamoDB = new AWS.DynamoDB();
+// const DynamoDB = new AWS.DynamoDB();
 
-getUserByEmail("oui", DynamoDB, (err, data) => {
-    if (err)
-        console.log("err")
-    else {
-        if (data) {
-            getUserById(data.id.S, DynamoDB, (err, data) => {
-                if (err)
-                    console.log(err)
-                else
-                    console.log(data)
-            })
-        }
+// getUserByEmail("oui", DynamoDB, (err, data) => {
+//     if (err)
+//         console.log("err")
+//     else {
+//         if (data) {
+//             getUserById(data.id.S, DynamoDB, (err, data) => {
+//                 if (err)
+//                     console.log(err)
+//                 else
+//                     console.log(data)
+//             })
+//         }
 
-    }
-})
+//     }
+// })
 
 
 module.exports = {
