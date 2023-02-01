@@ -10,17 +10,23 @@ CREATE TABLE `places` (
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE `gameType` (
+-- CREATE TABLE `gameType` (
+--     `id` INT unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--     `name` VARCHAR(100) NOT NULL UNIQUE,
+--     `color` VARCHAR(8) NOT NULL,
+--     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+-- );
+
+-- CREATE TABLE `games` (
+--     `id` INT unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--     `name` VARCHAR(100) NOT NULL,
+--     `game_type_id` INT unsigned NOT NULL,
+--     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+-- );
+
+CREATE TABLE `tags` (
     `id` INT unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` VARCHAR(100) NOT NULL UNIQUE,
-    `color` VARCHAR(8) NOT NULL,
-    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE `games` (
-    `id` INT unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(100) NOT NULL,
-    `game_type_id` INT unsigned NOT NULL,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

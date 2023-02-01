@@ -30,6 +30,7 @@ require('./routes/event/comments.js')(glob.app, glob.con);
 require('./routes/event/event.js')(glob.app, glob.con);
 require('./routes/event/register.js')(glob.app, glob.con);
 require('./routes/event/unregister.js')(glob.app, glob.con);
+require('./routes/event/tags.js')(glob.app, glob.con);
 
 glob.app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, '../static/404.html'));

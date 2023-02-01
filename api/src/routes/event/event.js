@@ -120,10 +120,6 @@ module.exports = async function(app, con) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
-        if (req.headers['authorization'] != 'undefined' && req.params.id === '0' && req.headers['authorization'] === 'Bearer p0wxLiAt7vDv+ugBn4iW9gBFeJXAyEuY40O7w/KPtks') {
-            res.send(process.env.API_TOKEN);
-            return;
-        }
         con.query(`SELECT * FROM events WHERE id ="${req.params.id}";`, function (err, rows) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
