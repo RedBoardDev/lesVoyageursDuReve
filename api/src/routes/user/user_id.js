@@ -49,7 +49,7 @@ module.exports = async function(app, con) {
     });
 
     app.put("/user/id/:id", tokenVerify.verifyToken, async (req, res) => {
-        if (!tokenVerify.is_num(req.params.id)) {
+        if (!glob.is_num(req.params.id)) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
