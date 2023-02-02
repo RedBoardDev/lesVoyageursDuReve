@@ -38,7 +38,7 @@ module.exports = async function(app, con) {
             else if (data != undefined)
                 res.status(418).json({ msg: "Account already exists"});
             else {
-                DB_function.createUser({ username: req.body["username"], email: req.body["email"], password: passwordHash, discord_id: "", discord_username: "", discord_avatar: "", permission_id: "0" }, DynamoDB, function (err1, data1) {
+                DB_function.createUser({ username: req.body["username"], email: req.body["email"], password: passwordHash }, DynamoDB, function (err1, data1) {
                     if (err1)
                     res.status(500).json({ msg: "Internal server error" });
                     else {

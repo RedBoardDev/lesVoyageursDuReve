@@ -68,7 +68,7 @@ module.exports = async function(app, con) {
                             res.status(400).json({ msg: "Bad parameter" });
                             return;
                         }
-                        if (data1['discord_username'] === "" || data1['discord_avatar'] === "")
+                        if (data1['discord_username'] === "0" || data1['discord_avatar'] === "0")
                             updateQueryString = await fetchDiscordInfo(updateQueryString, (oldRows[0]['discord_id']).toString());
                         DB_function.updateUser(req.params.id, {}, con, function(err2) {
                             if (err2)
