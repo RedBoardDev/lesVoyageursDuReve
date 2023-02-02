@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const tokenVerify = require('../../tokenVerify');
+const DB_function = require('../../DB/users');
 
 function get_id_user_route(req) {
     if (tokenVerify.checkFullAccessToken(req.token))
@@ -15,22 +16,27 @@ function get_id_user_route(req) {
 module.exports = async function(app, con) {
     app.get("/user", tokenVerify.verifyToken_without_error, async (req, res) => {
         let token_id = get_id_user_route(req);
-        con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows) {
+        DB_function.getUserById(["permission_id"], token_id, con, function(err, data) {
             var queryString = '';
-            if (err || rows.length === 0)
-                queryString = `id, username, discord_username, discord_avatar`;
-            else if (token_id === -2)
-                queryString = `*`;
-            else if (rows[0]['permission_id'] === 2)
-                queryString = `id, username, email, discord_id, discord_username, discord_avatar, permission_id, created_at`;
+            if (!err) {
+                res.status(500).json({ msg: "Internal server error" });
+                return;
+            }
+            if (data === undefined) {
+                res.status(500).json({ msg: "User not found" });
+                return;
+            }
+            if (token_id === -2)
+                queryString = ["*"];
+            else if (data['permission_id'] === 2)
+                queryString = ["id", "username", "email", "discord_id", "discord_username", "discord_avatar", "permission_id", "created_at"];
             else
-                queryString = `id, username, discord_username, discord_avatar`;
-            con.query(`SELECT ${queryString} FROM users;`, function (err, rows) {
+                queryString = ["id", "username", "discord_username", "discord_avatar", "created_at"];
+            DB_function.getAllUser(queryString, con, function(err, data1) {
                 if (err)
                     res.status(500).json({ msg: "Internal server error" });
-                else {
-                    res.send(rows);
-                }
+                else
+                    res.send(data1);
             });
         });
     });
@@ -39,14 +45,14 @@ module.exports = async function(app, con) {
         let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === - 1)
             return;
-        const queryString = (tokenVerify.checkFullAccessToken(req.token)) ? `*` : `id, username, email, discord_id, permission_id, discord_username, discord_avatar, created_at`;
-        con.query(`SELECT ${queryString} FROM users WHERE id = "${token_id}";`, function (err, rows) {
+        const queryString = (tokenVerify.checkFullAccessToken(req.token)) ? ["*"] : ["id", "username", "email", "discord_id", "permission_id", "discord_username", "discord_avatar", "created_at"];
+        DB_function.getUserById(queryString, token_id, con, function(err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
-            else if (rows[0]) {
-                res.send(rows[0]);
-            } else
+            else if (!data)
                 res.sendStatus(404);
+            else
+                res.send(data);
         });
     });
 }

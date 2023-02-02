@@ -4,18 +4,22 @@ const mysql = require('mysql2');
 const crypto = require('crypto');
 const { Discord } = require("discord-id");
 const path = require('path');
+const AWS = require("aws-sdk");
 
 dotenv.config( {"path" : path.join(__dirname, "../../.env" ) });
 const Client = new Discord(process.env.DISCORD_BOT_TOKEN);
 
 const app = express();
-const con = mysql.createConnection({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE
-});
 const algorithm = 'aes-256-cbc';
+// const con = mysql.createConnection({
+//     host: process.env.MYSQL_HOST,
+//     user: process.env.MYSQL_USER,
+//     password: process.env.MYSQL_PASSWORD,
+//     database: process.env.MYSQL_DATABASE
+// });
+
+AWS.config.update({ region: 'global', endpoint: 'http://localhost:8000' });
+const con = new AWS.DynamoDB();
 
 function encryptString(text) {
     const iv = crypto.randomBytes(16);

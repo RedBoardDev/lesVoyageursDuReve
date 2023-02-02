@@ -9,10 +9,10 @@ glob.app.use(bodyParser.json());
 glob.app.use(express.json());
 
 
-glob.con.connect(function(err) {
-    if (err) throw new Error(`Failed to connect to database lesvoyageursdureve`);
-    console.log("Connecté à la base de données lesvoyageursdureve");
-});
+// glob.con.connect(function(err) {
+//     if (err) throw new Error(`Failed to connect to database lesvoyageursdureve`);
+//     console.log("Connecté à la base de données lesvoyageursdureve");
+// });
 
 glob.app.get("/health", (req, res) => {
     res.send("PlaneIsPlaneButPlaneIsn'tPlane");

@@ -1,12 +1,27 @@
 let { v1: uuidv1 } = require("uuid")
 
-function getUserById(id, DB, callback) {
+function getAllUser(queryAttributes, DB, callback) {
+    const params = {
+        TableName: "Users",
+    };
+    if (!(queryAttributes && queryAttributes.length === 1 && queryAttributes[0] === "*"))
+        params.ProjectionExpression = queryAttributes.join(", ");
+
+    DB.getItem(params, function (err, data) {
+        if (callback)
+            callback(err, data.Item)
+    });
+}
+
+function getUserById(queryAttributes, id, DB, callback) {
     const params = {
         TableName: "Users",
         Key: {
             id: { S: id },
         }
     };
+    if (!(queryAttributes && queryAttributes.length === 1 && queryAttributes[0] === "*"))
+        params.ProjectionExpression = queryAttributes.join(", ");
 
     DB.getItem(params, function (err, data) {
         if (callback)
@@ -121,6 +136,7 @@ function deleteUser(id, DB, callback) {
 // const DynamoDB = new AWS.DynamoDB();
 
 module.exports = {
+    getAllUser,
     getUserById,            //user by id, return undifined si user existe pas
     getUserByEmail,         //user by email, return undifined si user existe pas
     getUserByUsername,      //user by username, return undifined si user existe pas
