@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const glob = require('../../../global');
 const DB_function = require('../../../DB/users');
 
 function checkEmail(email) {
