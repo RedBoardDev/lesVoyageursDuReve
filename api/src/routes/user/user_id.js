@@ -7,24 +7,24 @@ function getUpdateQueryString(req, permission) {
 
     if (req.body.hasOwnProperty('password')) {
         const passwordHash = bcrypt.hashSync(req.body.password);
-        updateQueryString = addProperty(updateQueryString, 'password', passwordHash);
+        updateQueryString = glob.addProperty(updateQueryString, 'password', passwordHash);
     }
     if (req.body.hasOwnProperty('username'))
-        updateQueryString = addProperty(updateQueryString, 'username', req.body.username);
+        updateQueryString = glob.addProperty(updateQueryString, 'username', req.body.username);
     if (req.body.hasOwnProperty('email'))
-        updateQueryString = addProperty(updateQueryString, 'email', req.body.email);
+        updateQueryString = glob.addProperty(updateQueryString, 'email', req.body.email);
     if (req.body.hasOwnProperty('discord_id'))
-        updateQueryString = addProperty(updateQueryString, 'discord_id', req.body.discord_id);
+        updateQueryString = glob.addProperty(updateQueryString, 'discord_id', req.body.discord_id);
     if (permission === true && req.body.hasOwnProperty('permission_id'))
-    updateQueryString = addProperty(updateQueryString, 'discord_id', req.body.discord_id);
+    updateQueryString = glob.addProperty(updateQueryString, 'discord_id', req.body.discord_id);
     return updateQueryString;
 }
 
 async function fetchDiscordInfo(updateQueryString, discord_id_str) {
     try {
         const User = await glob.Client.grabProfile(discord_id_str);
-        updateQueryString = addProperty(updateQueryString, 'discord_username', User['username']);
-        updateQueryString = addProperty(updateQueryString, 'discord_avatar', (User['avatar']['url']).split("?")[0]);
+        updateQueryString = glob.addProperty(updateQueryString, 'discord_username', User['username']);
+        updateQueryString = glob.addProperty(updateQueryString, 'discord_avatar', (User['avatar']['url']).split("?")[0]);
     } catch (Error) {
         return updateQueryString;
     }
