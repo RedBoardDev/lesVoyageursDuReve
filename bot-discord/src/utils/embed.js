@@ -26,8 +26,8 @@ export async function createEventEmbed(eventData) {
     const eventId = eventData.id.toString();
 
     return createEmbed(title, description, eventColor ?? '#000000', `${process.env.API_URL}/event.html?id=${eventId}`).addFields(
-        { name: 'Type', value: eventType ?? '', inline: true },
-        { name: 'Créé par', value: createdBy ?? '', inline: true },
+        { name: 'Type', value: eventType ?? 'None', inline: true },
+        { name: 'Créé par', value: createdBy ?? 'None', inline: true },
         { name: 'Date début', value: startDate, inline: true },
         { name: 'Date fin', value: endDate, inline: true },
         { name: 'ID', value: eventId, inline: true }

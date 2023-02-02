@@ -20,7 +20,7 @@ async function sendNewEvent(client, channelId, eventData) {
                 .setStyle(ButtonStyle.Danger)
         );
 
-    await channel.send({ content: "**@everyone Nouvel évènement !**\n_Cliquez sur le titre pour accéder à la page de l'évènement_", embeds: [embed], components: [row] });
+    await channel.send({ content: "**Nouvel évènement !**\n_Cliquez sur le titre pour accéder à la page de l'évènement_", embeds: [embed], components: [row] });
 }
 
 export async function checkNewEvents(client) {
@@ -29,7 +29,7 @@ export async function checkNewEvents(client) {
         executeDBRequest('GET', '/event/all', process.env.API_TOKEN).then(async (res) => {
             const lastEvent = res.data.slice(-1)[0];
             if (lastEvent && data.lastEventSent !== lastEvent.id) {
-                await sendNewEvent(client, '1062011025488101399', lastEvent);
+                await sendNewEvent(client, process.env.ANNOUNCEMENTS_CHANNEL, lastEvent);
                 data.lastEventSent = lastEvent.id;
                 writeDataJson(data);
             }

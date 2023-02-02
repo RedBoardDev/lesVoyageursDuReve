@@ -5,3 +5,4 @@ test*
 logs/
 *.log
 package-lock.json
+data.json

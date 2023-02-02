@@ -1,5 +1,12 @@
+import { writeFileSync } from 'fs';
 import { readFile, writeFile } from 'fs/promises';
 import * as log from 'nodejs-log-utils';
+
+try {
+    JSON.parse(await readFile(new URL('../../data.json', import.meta.url)));
+} catch (e) {
+    writeFileSync(new URL('../../data.json', import.meta.url), "{\"lastEventSent\": 0}", { flag: "w" });
+}
 
 export async function loadDataJson() {
     return JSON.parse(await readFile(new URL('../../data.json', import.meta.url)));
