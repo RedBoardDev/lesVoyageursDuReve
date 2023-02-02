@@ -100,7 +100,6 @@ function createTag() {
     })
 }
 
-DynamoDB.deleteTable({ TableName: "Tag" }, function (err, data){})
 
 createUsers();
 createEvents();
