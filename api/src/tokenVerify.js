@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const glob = require('./global');
 
 function checkFullAccessToken(token)
 {
@@ -21,15 +22,16 @@ function verifyToken(req, res, next) {
         }
         try {
             let decoded = jwt.verify(req.token, process.env.SECRET);
-            con.query(`SELECT id FROM users WHERE id = "${decoded.id}";`, function (err2, rows) {
+            glob.   con.query(`SELECT id FROM users WHERE id = "${decoded.id}";`, function (err2, rows) {
                 if (err2) res.status(500).json({ msg: "Internal server error" });
                 if (rows[0] && rows[0].id == decoded.id)
                     next();
                 else
-                    res.status(403).json({ msg: "Token is not valid" });
+                    res.status(403).json({ msg: "Token is not valid 1" });
             });
         } catch (err) {
-            res.status(403).json({ msg: "Token is not valid" });
+            console.log(err);
+            res.status(403).json({ msg: "Token is not valid 2" });
         }
     } else {
         res.status(403).json({ msg: "No token, authorization denied" });
@@ -90,3 +92,4 @@ exports.get_id_with_token = get_id_with_token;
 exports.verifyToken = verifyToken;
 exports.verifyAuth = verifyAuth;
 exports.verifyToken_without_error = verifyToken_without_error;
+exports.checkFullAccessToken = checkFullAccessToken;

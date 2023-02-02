@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const tokenVerify = require('../../tokenVerify');
 
 function get_id_user_route(req) {
-    if (checkFullAccessToken(req.token))
+    if (tokenVerify.checkFullAccessToken(req.token))
         return -2;
     try {
         let decoded = jwt.verify(req.token, process.env.SECRET);
@@ -39,7 +39,7 @@ module.exports = async function(app, con) {
         let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === - 1)
             return;
-        const queryString = (checkFullAccessToken(req.token)) ? `*` : `id, username, email, discord_id, permission_id, discord_username, discord_avatar, created_at`;
+        const queryString = (tokenVerify.checkFullAccessToken(req.token)) ? `*` : `id, username, email, discord_id, permission_id, discord_username, discord_avatar, created_at`;
         con.query(`SELECT ${queryString} FROM users WHERE id = "${token_id}";`, function (err, rows) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
