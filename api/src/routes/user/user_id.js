@@ -34,10 +34,6 @@ async function fetchDiscordInfo(updateQueryString, discord_id_str) {
 
 module.exports = async function(app, con) {
     app.get("/user/id/:id", async (req, res) => { //TODO for email or discord_id ?
-        if (!glob.is_num(req.params.id)) {
-            res.status(400).json({ msg: "Bad parameter" });
-            return;
-        }
         const queryString = (tokenVerify.checkFullAccessToken(req.token)) ? ["*"] : ["id", "username", "email", "discord_id", "permission_id", "discord_username", "discord_avatar", "created_at"];
         DB_function.getUserById(queryString, req.params.id, con, function(err, data) {
             if (err)
@@ -48,10 +44,6 @@ module.exports = async function(app, con) {
     });
 
     app.put("/user/id/:id", tokenVerify.verifyToken, async (req, res) => {
-        if (!glob.is_num(req.params.id)) {
-            res.status(400).json({ msg: "Bad parameter" });
-            return;
-        }
         let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === -1) {
             res.status(403).json({ msg: "Authorization denied" })
@@ -107,10 +99,6 @@ module.exports = async function(app, con) {
     });
 
     app.delete("/user/id/:id", tokenVerify.verifyToken, async (req, res) => {
-        if (!glob.is_num(req.params.id)) {
-            res.status(400).json({ msg: "Bad parameter" });
-            return;
-        }
         if (!tokenVerify.verifyAuth_without_id(req, res, true)) {
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
             return;
