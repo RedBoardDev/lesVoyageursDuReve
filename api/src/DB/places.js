@@ -1,11 +1,38 @@
 let { v1: uuidv1 } = require("uuid")
 
+function getAllPlace(DB, callback)
+{
+    const params = {
+        TableName: "Places"
+    };
+
+    DB.getItem(params, function (err, data) {
+        if (callback)
+            callback(err, data)
+    });
+}
+
 function getPlaceById(id, DB, callback)
 {
     const params = {
         TableName: "Places",
         Key: {
             id: { S: id },
+        }
+    };
+
+    DB.getItem(params, function (err, data) {
+        if (callback)
+            callback(err, data)
+    });
+}
+
+function getPlaceByName(name, DB, callback)
+{
+    const params = {
+        TableName: "Places",
+        Key: {
+            name: { S: name },
         }
     };
 
@@ -79,7 +106,9 @@ function deletePlace(id, DB, callback)
 }
 
 module.exports = {
+    getAllPlace,
     getPlaceById,
+    getPlaceByName,
     createPlace,
     updatePlace,
     deletePlace

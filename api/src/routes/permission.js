@@ -1,4 +1,3 @@
-const glob = require('../global');
 const tokenVerify = require('../tokenVerify');
 const DB_function = require('../DB/users');
 

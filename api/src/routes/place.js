@@ -1,4 +1,5 @@
-const glob = require('../global');
+const DB_Userfunction = require('../DB/users');
+const DB_Placefunction = require('../DB/places');
 const tokenVerify = require('../tokenVerify');
 
 function error_handling_values(req) {
@@ -27,17 +28,17 @@ module.exports = async function(app, con) {
         let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === -1)
             res.status(403).json({ msg: "Authorization denied" })
-        con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows) {
+        DB_Userfunction.getUserById(['permission_id'], token_id, con, function(err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
-            else if (token_id === -2 || rows[0]['permission_id'] === 2) {
-                con.query(`SELECT name, adresse FROM places WHERE name = "${req.body.name}";`, function (err, rows) {
-                    if (err)
+            else if (token_id === -2 || data['permission_id'] === 2) {
+                DB_Placefunction.getPlaceByName(req.body.name, con, function(err1, data1) {
+                    if (err1)
                         res.status(500).json({ msg: "Internal server error" });
-                    else if (rows[0] !== undefined)
+                    else if (data1 !== undefined)
                         res.status(418).json({ msg: "place already exists" });
                     else {
-                        con.query(`INSERT INTO places(name, city, adresse) VALUES("${req.body["name"]}", "${req.body["city"]}", "${req.body["adresse"]}")`, function (err2, result) {
+                        DB_Placefunction.createPlace({ name: req.body["name"], city: req.body["city"], adresse: req.body["adresse"] }, con, function(err2) {
                             if (err2)
                                 res.status(500).json({ msg: "Internal server error" });
                             else
@@ -51,29 +52,24 @@ module.exports = async function(app, con) {
     });
 
     app.get("/place", async (req, res) => {
-        con.query(`SELECT * FROM places;`, function (err, rows) {
+        DB_Placefunction.getAllPlace(con, function(err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else
-                res.send(rows);
+                res.send(data);
         });
     });
 
     app.get("/place/:id", async (req, res) => {
-        con.query(`SELECT * FROM places WHERE id ="${req.params.id}";`, function (err, rows) {
+        DB_Placefunction.getPlaceById(req.params.id, con, function(err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
-            else {
-                res.send(rows);
-            }
+            else
+                res.send(data);
         });
     });
 
     app.delete("/place/:id", tokenVerify.verifyToken, async (req, res) => {
-        if (!glob.is_num(req.params.id)) {
-            res.status(400).json({ msg: "Bad parameter" });
-            return;
-        }
         if (!tokenVerify.verifyAuth_without_id(req, res, true)) {
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
             return;
@@ -81,11 +77,11 @@ module.exports = async function(app, con) {
         let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === -1)
             res.status(403).json({ msg: "Authorization denied" })
-        con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows) {
+        DB_Userfunction.getUserById(["permission_id"], token_id, con, function(err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
-            else if (token_id === -2 || rows[0]['permission_id'] === 2) {
-                con.query(`DELETE FROM places WHERE id = "${req.params.id}";`, function (err2, result) {
+            else if (token_id === -2 || data['permission_id'] === 2) {
+                DB_Placefunction.deletePlace(req.params.id, con, function(err2) {
                     if (err2)
                         res.status(500).json({ msg: "Internal server error" });
                     else
