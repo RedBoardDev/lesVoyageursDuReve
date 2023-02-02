@@ -23,7 +23,7 @@ function createUsers() {
     })
 }
 
-function createEvents() {
+function createEvents(callback) {
     const params = {
         TableName: "Events",
         KeySchema: [{ AttributeName: "id", KeyType: "HASH" }],
@@ -38,6 +38,8 @@ function createEvents() {
         DynamoDB.createTable(params, function (err, data) {
             if (err) {
                 console.error("Unable to create table", err);
+            } else {
+                callback()
             }
         });
     })
@@ -100,9 +102,16 @@ function createTag() {
     })
 }
 
+const {createEvent} = require("../api/src/DB/events")
 
 createUsers();
-createEvents();
+createEvents(() => {
+    createEvent({
+        "date_start": "18"
+    }, DynamoDB, (err) => {
+        console.log(err)
+    })
+});
 createPlaces();
 createComments();
 createTag();

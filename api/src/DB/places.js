@@ -1,6 +1,7 @@
 let { v1: uuidv1 } = require("uuid")
 
-function getPlaceById(id, DB, callback) {
+function getPlaceById(id, DB, callback)
+{
     const params = {
         TableName: "Places",
         Key: {
@@ -14,7 +15,15 @@ function getPlaceById(id, DB, callback) {
     });
 }
 
-function createPlace(obj = { name: "", city: "", adresse: "" }, DB, callback) {
+function createPlace(obj, DB, callback)
+{
+    if (!obj.name)
+        obj["name"] = "0"
+    if (!obj.city)
+        obj["city"] = "0"
+    if (!obj.adresse)
+        obj["adresse"] = "0"
+
     const params = {
         TableName: "Places",
         Item: {
@@ -22,16 +31,18 @@ function createPlace(obj = { name: "", city: "", adresse: "" }, DB, callback) {
             name: { S: obj.name },
             city: { S: obj.city },
             adresse: { S: obj.adresse },
-            created_at: { S: new Date().toISOString() }
+            created_at: { N: new Date().getTime().toString() }
         },
     };
+
     DB.putItem(params, function (err) {
         if (callback)
             callback(err)
     });
 }
 
-function updatePlace(id, obj, DB, callback) {
+function updatePlace(id, obj, DB, callback)
+{
     let params = {
         TableName: "Places",
         Item: {
@@ -52,7 +63,8 @@ function updatePlace(id, obj, DB, callback) {
     });
 }
 
-function deletePlace(id, DB, callback) {
+function deletePlace(id, DB, callback)
+{
     const params = {
         TableName: "Places",
         Key: {
@@ -65,12 +77,6 @@ function deletePlace(id, DB, callback) {
             callback(err)
     });
 }
-
-// const AWS = require("aws-sdk");
-
-// AWS.config.update({ region: 'global', endpoint: 'http://localhost:8000' });
-
-// const DynamoDB = new AWS.DynamoDB();
 
 module.exports = {
     getPlaceById,

@@ -1,6 +1,7 @@
 let { v1: uuidv1 } = require("uuid")
 
-function getEventById(id, DB, callback) {
+function getEventById(id, DB, callback)
+{
     const params = {
         TableName: "Events",
         Key: {
@@ -14,7 +15,54 @@ function getEventById(id, DB, callback) {
     });
 }
 
-function createEvent(obj = { title: "", description: "", place_id: "", place_custom: "", game_id: "", game_custom: "", game_type_id: "", game_type_custom: "", admin_user_id: "", user_registered_array: "", register_max: "", date_start: "", date_end: "" }, DB, callback) {
+function getEventsFrom(from, DB, callback)
+{
+    var params = {
+        ExpressionAttributeValues: {
+            ":a": {
+                N: from
+            }
+        },
+        FilterExpression: "date_start >= :a",
+        TableName: "Events"
+    };
+
+    DB.scan(params, function (err, data) {
+        if (callback) {
+            callback(err, data.Items)
+        }
+    })
+}
+
+function createEvent(obj, DB, callback)
+{
+    if (!obj.title)
+        obj["title"] = "0"
+    if (!obj.description)
+        obj["description"] = "0"
+    if (!obj.place_id)
+        obj["place_id"] = "0"
+    if (!obj.place_custom)
+        obj["place_custom"] = "0"
+    if (!obj.game_id)
+        obj["game_id"] = "0"
+    if (!obj.game_custom)
+        obj["game_custom"] = "0"
+    if (!obj.game_type_id)
+        obj["game_type_id"] = "0"
+    if (!obj.game_type_custom)
+        obj["game_type_custom"] = "0"
+    if (!obj.admin_user_id)
+        obj["admin_user_id"] = "0"
+    if (!obj.user_registered_array)
+        obj["user_registered_array"] = "0"
+    if (!obj.register_max)
+        obj["register_max"] = "0"
+    if (!obj.date_start)
+        obj["date_start"] = "0"
+    if (!obj.date_end)
+        obj["date_end"] = "0"
+
     const params = {
         TableName: "Events",
         Item: {
@@ -30,18 +78,20 @@ function createEvent(obj = { title: "", description: "", place_id: "", place_cus
             admin_user_id: { S: obj.admin_user_id },
             user_registered_array: { S: obj.user_registered_array },
             register_max: { S: obj.register_max },
-            date_start: { S: obj.date_start },
-            date_end: { S: obj.date_end },
-            created_at: { S: new Date().toISOString() },
+            date_start: { N: obj.date_start },
+            date_end: { N: obj.date_end },
+            created_at: { N: new Date().getTime().toString() },
         },
     };
+
     DB.putItem(params, function (err) {
         if (callback)
             callback(err)
     });
 }
 
-function updateEvent(id, obj, DB, callback) {
+function updateEvent(id, obj, DB, callback)
+{
     let params = {
         TableName: "Events",
         Item: {
@@ -72,10 +122,9 @@ function updateEvent(id, obj, DB, callback) {
     if (obj.register_max)
         params.Item["register_max"] = { S: obj.register_max };
     if (obj.date_start)
-        params.Item["date_start"] = { S: obj.date_start };
+        params.Item["date_start"] = { N: obj.date_start };
     if (obj.date_end)
-        params.Item["date_end"] = { S: obj.date_end };
-
+        params.Item["date_end"] = { N: obj.date_end };
 
     DB.putItem(params, function (err) {
         if (callback)
@@ -83,7 +132,8 @@ function updateEvent(id, obj, DB, callback) {
     });
 }
 
-function deleteEvent(id, DB, callback) {
+function deleteEvent(id, DB, callback)
+{
     const params = {
         TableName: "Events",
         Key: {
@@ -97,15 +147,10 @@ function deleteEvent(id, DB, callback) {
     });
 }
 
-// const AWS = require("aws-sdk");
-
-// AWS.config.update({ region: 'global', endpoint: 'http://localhost:8000' });
-
-// const DynamoDB = new AWS.DynamoDB();
-
 module.exports = {
-    getEventById,            //user by id, return undifined si user existe pas
+    getEventById,
     createEvent,
     updateEvent,
-    deleteEvent
+    deleteEvent,
+    getEventsFrom
 }

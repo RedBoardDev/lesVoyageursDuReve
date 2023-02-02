@@ -1,6 +1,7 @@
 let { v1: uuidv1 } = require("uuid")
 
-function getCommentById(id, DB, callback) {
+function getCommentById(id, DB, callback)
+{
     const params = {
         TableName: "Comments",
         Key: {
@@ -14,7 +15,15 @@ function getCommentById(id, DB, callback) {
     });
 }
 
-function createComment(obj = { event_id: "", user_id: "", message: "" }, DB, callback) {
+function createComment(obj, DB, callback)
+{
+    if (!obj.event_id)
+        obj["event_id"] = "0"
+    if (!obj.user_id)
+        obj["user_id"] = "0"
+    if (!obj.message)
+        obj["message"] = "0"
+
     const params = {
         TableName: "Comments",
         Item: {
@@ -22,16 +31,18 @@ function createComment(obj = { event_id: "", user_id: "", message: "" }, DB, cal
             event_id: { S: obj.event_id },
             user_id: { S: obj.user_id },
             message: { S: obj.message },
-            created_at: { S: new Date().toISOString() }
+            created_at: { N: new Date().getTime().toString() }
         },
     };
+
     DB.putItem(params, function (err) {
         if (callback)
             callback(err)
     });
 }
 
-function updateComment(id, obj, DB, callback) {
+function updateComment(id, obj, DB, callback)
+{
     let params = {
         TableName: "Comments",
         Item: {
@@ -52,7 +63,8 @@ function updateComment(id, obj, DB, callback) {
     });
 }
 
-function deleteComment(id, DB, callback) {
+function deleteComment(id, DB, callback)
+{
     const params = {
         TableName: "Comments",
         Key: {

@@ -1,6 +1,7 @@
 let { v1: uuidv1 } = require("uuid")
 
-function getTagById(id, DB, callback) {
+function getTagById(id, DB, callback)
+{
     const params = {
         TableName: "Tags",
         Key: {
@@ -14,22 +15,28 @@ function getTagById(id, DB, callback) {
     });
 }
 
-function createTag(obj = { name: ""}, DB, callback) {
+function createTag(obj, DB, callback)
+{
+    if (!obj.name)
+        obj["name"] = "0"
+
     const params = {
         TableName: "Tags",
         Item: {
             id: { S: uuidv1() },
             name: { S: obj.name },
-            created_at: { S: new Date().toISOString() },
+            created_at: { N: new Date().getTime().toString() },
         },
     };
+
     DB.putItem(params, function (err) {
         if (callback)
             callback(err)
     });
 }
 
-function updateTag(id, obj, DB, callback) {
+function updateTag(id, obj, DB, callback)
+{
     let params = {
         TableName: "Tags",
         Item: {
@@ -46,7 +53,8 @@ function updateTag(id, obj, DB, callback) {
     });
 }
 
-function deleteTag(id, DB, callback) {
+function deleteTag(id, DB, callback)
+{
     const params = {
         TableName: "Tags",
         Key: {
@@ -60,14 +68,8 @@ function deleteTag(id, DB, callback) {
     });
 }
 
-// const AWS = require("aws-sdk");
-
-// AWS.config.update({ region: 'global', endpoint: 'http://localhost:8000' });
-
-// const DynamoDB = new AWS.DynamoDB();
-
 module.exports = {
-    getTagById,            //tag by id, return undifined si tag existe pas
+    getTagById,
     createTag,
     updateTag,
     deleteTag

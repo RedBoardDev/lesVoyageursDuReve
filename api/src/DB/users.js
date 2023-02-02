@@ -1,6 +1,7 @@
 let { v1: uuidv1 } = require("uuid")
 
-function getAllUser(queryAttributes, DB, callback) {
+function getAllUser(queryAttributes, DB, callback)
+{
     const params = {
         TableName: "Users",
     };
@@ -13,7 +14,8 @@ function getAllUser(queryAttributes, DB, callback) {
     });
 }
 
-function getUserById(queryAttributes, id, DB, callback) {
+function getUserById(queryAttributes, id, DB, callback)
+{
     const params = {
         TableName: "Users",
         Key: {
@@ -29,7 +31,8 @@ function getUserById(queryAttributes, id, DB, callback) {
     });
 }
 
-function getUserByEmail(email, DB, callback) {
+function getUserByEmail(email, DB, callback)
+{
     var params = {
         ExpressionAttributeValues: {
             ":a": {
@@ -46,7 +49,8 @@ function getUserByEmail(email, DB, callback) {
     })
 }
 
-function getUserByUsername(username, DB, callback) {
+function getUserByUsername(username, DB, callback)
+{
     var params = {
         ExpressionAttributeValues: {
             ":a": {
@@ -63,7 +67,24 @@ function getUserByUsername(username, DB, callback) {
     })
 }
 
-function createUser(obj = { username: "", email: "", password: "", discord_id: "", discord_username: "", discord_avatar: "", permission_id: "" }, DB, callback) {
+function createUser(obj, DB, callback)
+{
+
+    if (!obj.username)
+        obj["username"] = "0"
+    if (!obj.email)
+        obj["email"] = "0"
+    if (!obj.password)
+        obj["password"] = "0"
+    if (!obj.discord_id)
+        obj["discord_id"] = "0"
+    if (!obj.discord_username)
+        obj["discord_username"] = "0"
+    if (!obj.discord_avatar)
+        obj["discord_avatar"] = "0"
+    if (!obj.permission_id)
+        obj["permission_id"] = "0"
+
     const params = {
         TableName: "Users",
         Item: {
@@ -75,16 +96,18 @@ function createUser(obj = { username: "", email: "", password: "", discord_id: "
             discord_username: { S: obj.discord_username },
             discord_avatar: { S: obj.discord_avatar },
             permission_id: { S: obj.permission_id },
-            created_at: { S: new Date().toISOString() },
+            created_at: { N: new Date().getTime().toString() },
         },
     };
+
     DB.putItem(params, function (err) {
         if (callback)
             callback(err)
     });
 }
 
-function updateUser(id, obj, DB, callback) {
+function updateUser(id, obj, DB, callback)
+{
     let params = {
         TableName: "Users",
         Item: {
@@ -106,8 +129,6 @@ function updateUser(id, obj, DB, callback) {
         params.Item["discord_avatar"] = { S: obj.discord_avatar };
     if (obj.permission_id)
         params.Item["permission_id"] = { S: obj.permission_id };
-    if (obj.created_at)
-        params.Item["created_at"] = { S: obj.created_at };
 
     DB.putItem(params, function (err) {
         if (callback)
@@ -115,7 +136,8 @@ function updateUser(id, obj, DB, callback) {
     });
 }
 
-function deleteUser(id, DB, callback) {
+function deleteUser(id, DB, callback)
+{
     const params = {
         TableName: "Users",
         Key: {
@@ -129,17 +151,11 @@ function deleteUser(id, DB, callback) {
     });
 }
 
-// const AWS = require("aws-sdk");
-
-// AWS.config.update({ region: 'global', endpoint: 'http://localhost:8000' });
-
-// const DynamoDB = new AWS.DynamoDB();
-
 module.exports = {
     getAllUser,
-    getUserById,            //user by id, return undifined si user existe pas
-    getUserByEmail,         //user by email, return undifined si user existe pas
-    getUserByUsername,      //user by username, return undifined si user existe pas
+    getUserById,
+    getUserByEmail,
+    getUserByUsername,
     createUser,
     updateUser,
     deleteUser
