@@ -11,12 +11,6 @@ const Client = new Discord(process.env.DISCORD_BOT_TOKEN);
 
 const app = express();
 const algorithm = 'aes-256-cbc';
-// const con = mysql.createConnection({
-//     host: process.env.MYSQL_HOST,
-//     user: process.env.MYSQL_USER,
-//     password: process.env.MYSQL_PASSWORD,
-//     database: process.env.MYSQL_DATABASE
-// });
 
 AWS.config.update({ region: 'global', endpoint: 'http://localhost:8000' });
 const con = new AWS.DynamoDB();

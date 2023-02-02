@@ -18,7 +18,7 @@ module.exports = async function(app, con) {
         let token_id = get_id_user_route(req);
         DB_function.getUserById(["permission_id"], token_id, con, function(err, data) {
             var queryString = '';
-            if (!err) {
+            if (err) {
                 res.status(500).json({ msg: "Internal server error" });
                 return;
             }
@@ -32,8 +32,8 @@ module.exports = async function(app, con) {
                 queryString = ["id", "username", "email", "discord_id", "discord_username", "discord_avatar", "permission_id", "created_at"];
             else
                 queryString = ["id", "username", "discord_username", "discord_avatar", "created_at"];
-            DB_function.getAllUser(queryString, con, function(err, data1) {
-                if (err)
+            DB_function.getAllUser(queryString, con, function(err1, data1) {
+                if (err1)
                     res.status(500).json({ msg: "Internal server error" });
                 else
                     res.send(data1);
