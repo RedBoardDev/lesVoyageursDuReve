@@ -18,9 +18,10 @@ module.exports = async function(app, con) {
             return;
         }
         con.query(`SELECT * FROM users WHERE email = "${req.body.email}";`, function (err, rows) {
-            if (err)
+            if (err) {
+                console.log("oui")  // laaaaa
                 res.status(500).json({ msg: "Internal server error" });
-            else if (rows[0] === undefined)
+            } else if (rows[0] === undefined)
                 res.status(400).json({ msg: "Invalid Credentials" });
             else if (bcrypt.compareSync(req.body.password, rows[0].password)) {
                 let token = jwt.sign({ id: `${rows[0].id}` }, process.env.SECRET, { expiresIn: '1w' });

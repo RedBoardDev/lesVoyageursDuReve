@@ -1,7 +1,5 @@
 let { v1: uuidv1 } = require("uuid")
 
-
-
 function getUserById(id, DB, callback) {
     const params = {
         TableName: "Users",
@@ -71,9 +69,40 @@ function createUser(obj = { username: "", email: "", password: "", discord_id: "
     });
 }
 
+function updateUser(id, obj, DB, callback) {
+    let params = {
+        TableName: "Users",
+        Item: {
+            id: { S: id }
+        },
+    };
+
+    if (obj.username)
+        params.Item["username"] = { S: obj.username };
+    if (obj.email)
+        params.Item["email"] = { S: obj.email };
+    if (obj.password)
+        params.Item["password"] = { S: obj.password };
+    if (obj.discord_id)
+        params.Item["discord_id"] = { S: obj.discord_id };
+    if (obj.discord_username)
+        params.Item["discord_username"] = { S: obj.discord_username };
+    if (obj.discord_avatar)
+        params.Item["discord_avatar"] = { S: obj.discord_avatar };
+    if (obj.permission_id)
+        params.Item["permission_id"] = { S: obj.permission_id };
+    if (obj.created_at)
+        params.Item["created_at"] = { S: obj.created_at };
+
+    DB.putItem(params, function (err) {
+        if (callback)
+            callback(err)
+    });
+}
+
 function deleteUser(id, DB, callback) {
     const params = {
-        TableName: "Movies",
+        TableName: "Users",
         Key: {
             id: { S: id },
         },
@@ -91,27 +120,11 @@ function deleteUser(id, DB, callback) {
 
 // const DynamoDB = new AWS.DynamoDB();
 
-// getUserByEmail("oui", DynamoDB, (err, data) => {
-//     if (err)
-//         console.log("err")
-//     else {
-//         if (data) {
-//             getUserById(data.id.S, DynamoDB, (err, data) => {
-//                 if (err)
-//                     console.log(err)
-//                 else
-//                     console.log(data)
-//             })
-//         }
-
-//     }
-// })
-
-
 module.exports = {
     getUserById,            //user by id, return undifined si user existe pas
     getUserByEmail,         //user by email, return undifined si user existe pas
     getUserByUsername,      //user by username, return undifined si user existe pas
     createUser,
+    updateUser,
     deleteUser
 }
