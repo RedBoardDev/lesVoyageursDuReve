@@ -6,13 +6,18 @@ const { Discord } = require("discord-id");
 const path = require('path');
 const AWS = require("aws-sdk");
 
-dotenv.config( {"path" : path.join(__dirname, "../../.env" ) });
+dotenv.config({ "path": path.join(__dirname, "../../.env") });
 const Client = new Discord(process.env.DISCORD_BOT_TOKEN);
 
 const app = express();
 const algorithm = 'aes-256-cbc';
 
-AWS.config.update({ region: 'global', endpoint: 'http://localhost:8000' });
+if (process.env.DB_LOCALHOST == '1')
+    AWS.config.update({ region: 'global', endpoint: 'http://localhost:8000' });
+else
+    AWS.config.update({ region: 'eu-west-3', accessKeyId: process.env.DB_ACCESS_KEY, secretAccessKey: process.env.DB_SECRET_KEY});
+
+
 const con = new AWS.DynamoDB();
 
 function encryptString(text) {
