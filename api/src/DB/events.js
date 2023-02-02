@@ -1,6 +1,18 @@
 let { v1: uuidv1 } = require("uuid")
 
-function getEventById(id, DB, callback)
+function getAllEvent(DB, callback)
+{
+    const params = {
+        TableName: "Events"
+    };
+
+    DB.getItem(params, function (err, data) {
+        if (callback)
+            callback(err, data)
+    });
+}
+
+function getEventById(queryAttributes, id, DB, callback)
 {
     const params = {
         TableName: "Events",
@@ -8,6 +20,8 @@ function getEventById(id, DB, callback)
             id: { S: id },
         }
     };
+    if (!(queryAttributes && queryAttributes.length === 1 && queryAttributes[0] === "*"))
+        params.ProjectionExpression = queryAttributes.join(", ");
 
     DB.getItem(params, function (err, data) {
         if (callback)
@@ -44,14 +58,8 @@ function createEvent(obj, DB, callback)
         obj["place_id"] = "0"
     if (!obj.place_custom)
         obj["place_custom"] = "0"
-    if (!obj.game_id)
-        obj["game_id"] = "0"
-    if (!obj.game_custom)
-        obj["game_custom"] = "0"
-    if (!obj.game_type_id)
-        obj["game_type_id"] = "0"
-    if (!obj.game_type_custom)
-        obj["game_type_custom"] = "0"
+    if (!obj.tags)
+        obj["tags"] = "0";
     if (!obj.admin_user_id)
         obj["admin_user_id"] = "0"
     if (!obj.user_registered_array)
@@ -71,10 +79,7 @@ function createEvent(obj, DB, callback)
             description: { S: obj.description },
             place_id: { S: obj.place_id },
             place_custom: { S: obj.place_custom },
-            game_id: { S: obj.game_id },
-            game_custom: { S: obj.game_custom },
-            game_type_id: { S: obj.game_type_id },
-            game_type_custom: { S: obj.game_type_custom },
+            tags: { S: obj.tags },
             admin_user_id: { S: obj.admin_user_id },
             user_registered_array: { S: obj.user_registered_array },
             register_max: { S: obj.register_max },
@@ -107,15 +112,8 @@ function updateEvent(id, obj, DB, callback)
         params.Item["place_id"] = { S: obj.place_id };
     if (obj.place_custom)
         params.Item["place_custom"] = { S: obj.place_custom };
-    if (obj.game_id)
-        params.Item["game_id"] = { S: obj.game_id };
-    if (obj.game_custom)
-        params.Item["game_custom"] = { S: obj.game_custom };
-    if (obj.game_type_id)
-        params.Item["game_type_id"] = { S: obj.game_type_id };
-    if (obj.game_type_custom)
-        params.Item["game_type_custom"] = { S: obj.game_type_custom };
-    if (obj.admin_user_id)
+    if (obj.tags)
+        params.Item["tags"] = { S: obj.tags };
         params.Item["admin_user_id"] = { S: obj.admin_user_id };
     if (obj.user_registered_array)
         params.Item["user_registered_array"] = { S: obj.user_registered_array };
@@ -148,6 +146,7 @@ function deleteEvent(id, DB, callback)
 }
 
 module.exports = {
+    getAllEvent,
     getEventById,
     createEvent,
     updateEvent,
