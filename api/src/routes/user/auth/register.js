@@ -1,14 +1,15 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const glob = require('../../../global');
+const DB_function = require('../../../DB/users');
 
 function checkEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
-function checkPassword(password) {
-    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(password)
-}
+// function checkPassword(password) {
+//     return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(password)
+// }
 
 function error_handling_register(req) {
     if (!req.body.hasOwnProperty('username')) {
@@ -32,24 +33,24 @@ module.exports = async function(app, con) {
             return;
         }
         const passwordHash = bcrypt.hashSync(req.body['password']);
-        con.query(`SELECT * FROM users WHERE email = "${req.body.email}";`, function (err, rows) {
+        DB_function.getUserByEmail(req.body.email, con, function(err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
-            else if (rows[0] !== undefined)
+            else if (data != undefined)
                 res.status(418).json({ msg: "Account already exists"});
             else {
-                con.query(`INSERT INTO users(username, email, password) VALUES("${req.body["username"]}", "${req.body["email"]}", "${passwordHash}")`, function (err2, result) {
-                    if (err2) {
-                        res.status(500).json({ msg: "Internal server error" });
-                    } else {
-                        con.query(`SELECT * FROM users WHERE email = "${req.body.email}";`, function (err3, rows) {
-                            if (err3)
+                DB_function.createUser({ username: req.body["username"], email: req.body["email"], password: passwordHash, discord_id: "", discord_username: "", discord_avatar: "", permission_id: "0" }, DynamoDB, function (err1, data1) {
+                    if (err1)
+                    res.status(500).json({ msg: "Internal server error" });
+                    else {
+                        //TODO doing getUserByEmail and getUserByUsername with queryAttributes in argument and do not return all information
+                        DB_function.getUserByEmail(req.body.email, con, function(err2, data2) {
+                            if (err2)
                                 res.status(500).json({ msg: "Internal server error" });
-                            else if (rows !== undefined && rows[0] !== undefined) {
-                                let token = jwt.sign({ id: `${rows[0].id}` }, process.env.SECRET, { expiresIn: '1w' });
-                                res.status(201).json({token: token, id: rows[0].id});
-                            } else
-                                res.sendStatus(404);
+                            else {
+                                let token = jwt.sign({ id: `${data2['id']}` }, process.env.SECRET, { expiresIn: '1w' });
+                                res.status(201).json({token: token, id: data2['id']});
+                            }
                         });
                     }
                 });

@@ -33,7 +33,7 @@ async function fetchDiscordInfo(updateQueryString, discord_id_str) {
 }
 
 module.exports = async function(app, con) {
-    app.get("/user/id/:id", async (req, res) => { // too see for email or discord_id ?
+    app.get("/user/id/:id", async (req, res) => { //TODO for email or discord_id ?
         if (!glob.is_num(req.params.id)) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
