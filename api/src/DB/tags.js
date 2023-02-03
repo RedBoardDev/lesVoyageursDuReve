@@ -1,5 +1,17 @@
 let { v1: uuidv1 } = require("uuid")
 
+function getAllTag(DB, callback)
+{
+    const params = {
+        TableName: "Tags"
+    };
+
+    DB.getItem(params, function (err, data) {
+        if (callback)
+            callback(err, data)
+    });
+}
+
 function getTagById(id, DB, callback)
 {
     const params = {
@@ -69,6 +81,7 @@ function deleteTag(id, DB, callback)
 }
 
 module.exports = {
+    getAllTag,
     getTagById,
     createTag,
     updateTag,

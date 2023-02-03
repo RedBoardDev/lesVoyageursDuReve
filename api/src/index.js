@@ -50,16 +50,16 @@ async function fetchDiscordInfo(discord_id_str) {
     return updateQueryString;
 }
 
-setInterval(async () => {
-    glob.con.query(`SELECT id, discord_id FROM users WHERE discord_username <> "" OR discord_avatar <> "";`, function (err, rows) {
-        if (!err) {
-            for (let i = 0; i < rows.length; i++) {
-                setTimeout(async () => {
-                    const updateQueryString = await fetchDiscordInfo((rows[i]['discord_id']).toString());
-                    if (updateQueryString.length > 0)
-                        glob.con.query(`UPDATE users SET ${updateQueryString} WHERE id = "${rows[i]['id']}";`, (err3, newRows) => {});
-                }, 10000);
-            }
-        }
-    });
-}, (60000 * 60) * 12);
+// setInterval(async () => {
+//     glob.con.query(`SELECT id, discord_id FROM users WHERE discord_username <> "" OR discord_avatar <> "";`, function (err, rows) {
+//         if (!err) {
+//             for (let i = 0; i < rows.length; i++) {
+//                 setTimeout(async () => {
+//                     const updateQueryString = await fetchDiscordInfo((rows[i]['discord_id']).toString());
+//                     if (updateQueryString.length > 0)
+//                         glob.con.query(`UPDATE users SET ${updateQueryString} WHERE id = "${rows[i]['id']}";`, (err3, newRows) => {});
+//                 }, 10000);
+//             }
+//         }
+//     });
+// }, (60000 * 60) * 12);

@@ -26,17 +26,15 @@ module.exports = async function(app, con) {
             return;
         }
         const tagsList = req.body['tags'].slice().split(", ");
-        //convert...
-        con.query(`SELECT name FROM tags;`, function (err, rows) {
+        DB_Tagsfunction.getAllTag(con, function(err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else {
-                console.log(rows);
                 for (let i = 0; i < tagsList.length; ++i) {
-                    if (!existInList(rows, tagsList[i])) {
+                    if (!existInList(data, tagsList[i])) {
                         console.log("passed: ", tagsList[i]);
-                        con.query(`INSERT INTO tags(name) VALUES("${tagsList[i]}")`, function (err, rows) {
-                            if (err) {
+                        DB_Tagsfunction.createTag({"name": tagsList[i]}, con, function(err1) {
+                            if (err1) {
                                 res.status(500).json({ msg: "Internal server error" });
                                 return;
                             }
@@ -46,16 +44,14 @@ module.exports = async function(app, con) {
             }
             res.status(200).json({ msg: "Good" });
         });
-        //convert...
-        // DB_Tagsfunction.getTagById
     });
 
     app.get("/tags", async (req, res) => {
-        con.query(`SELECT * FROM tags;`, function (err, rows) {
+        DB_Tagsfunction.getAllTag(con, function(err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else
-                res.send(rows);
+                res.send(data);
         });
     });
 
@@ -67,11 +63,11 @@ module.exports = async function(app, con) {
         let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === -1)
             res.status(403).json({ msg: "Authorization denied" })
-        con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows) {
+        DB_Userfunction.getUserById(['permission_id'], token_id, con, function(err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
-            else if (token_id === -2 || rows[0]['permission_id'] === 2) {
-                con.query(`DELETE FROM tags WHERE id = "${req.params.id}";`, function (err2, result) {
+            else if (token_id === -2 || data['permission_id'] === 2) {
+                DB_Tagsfunction.deleteTag(req.params.id, con, function(err1) {
                     if (err2)
                         res.status(500).json({ msg: "Internal server error" });
                     else

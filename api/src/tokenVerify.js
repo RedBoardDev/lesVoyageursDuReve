@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const glob = require('./global');
+const DB_Userfunction = require('./DB/users');
 
 function checkFullAccessToken(token)
 {
@@ -22,12 +23,12 @@ function verifyToken(req, res, next) {
         }
         try {
             let decoded = jwt.verify(req.token, process.env.SECRET);
-            glob.   con.query(`SELECT id FROM users WHERE id = "${decoded.id}";`, function (err2, rows) {
-                if (err2) res.status(500).json({ msg: "Internal server error" });
-                if (rows[0] && rows[0].id == decoded.id)
+            DB_Userfunction.getUserById(["id"], decoded.id, glob.con, function(err, data) {
+                if (err) res.status(500).json({ msg: "Internal server error" });
+                if (data && data['id'] === decoded["id"])
                     next();
                 else
-                    res.status(403).json({ msg: "Token is not valid 1" });
+                    res.status(403).json({ msg: "Token is not valid" });
             });
         } catch (err) {
             console.log(err);
