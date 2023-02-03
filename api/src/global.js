@@ -39,14 +39,9 @@ function addProperty(queryString, property, value) {
     return queryString;
 }
 
-function is_num(id) {
-    return (/^\d+$/.test(id));
-}
-
 exports.app = app;
 exports.con = con;
 exports.Client = Client;
 exports.encryptString = encryptString;
 exports.decryptString = decryptString;
-exports.is_num = is_num;
 exports.addProperty = addProperty;

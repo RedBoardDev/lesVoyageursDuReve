@@ -160,27 +160,6 @@ module.exports = async function(app, con) {
         let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === -1)
             res.status(403).json({ msg: "Authorization denied" });
-        //convert...
-        con.query(`SELECT permission_id FROM users WHERE id ="${token_id}";`, function (err, rows1) {
-            if (err)
-                res.status(500).json({ msg: "Internal server error" });
-            else {
-                con.query(`SELECT admin_user_id FROM events WHERE id ="${req.params.id}";`, function (err1, rows) {
-                    if (err1)
-                        res.status(500).json({ msg: "Internal server error" });
-                    else if (token_id === -2 || rows1[0]['permission_id'] === 2 || (rows1[0]['permission_id'] >= 1 && parseInt(token_id) === rows[0]['admin_user_id'])) {
-                        con.query(`DELETE FROM events WHERE id = "${req.params.id}";`, function (err2, result) {
-                            if (err2) {
-                                res.status(500).json({ msg: "Internal server error" });
-                            } else
-                                res.status(200).json( {msg: "event removed"} );
-                        });
-                    } else
-                        res.status(403).json({ msg: "Authorization denied" });
-                });
-            }
-        });
-        //convert...
         DB_Userfunction.getUserById(['permission_id'], token_id, con, function(err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
