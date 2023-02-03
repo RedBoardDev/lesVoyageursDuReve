@@ -1,6 +1,6 @@
 const tokenVerify = require('../../tokenVerify');
 const DB_Userfunction = require('../../DB/users');
-const DB_Eventfunction = require('../../DB/event');
+const DB_Eventfunction = require('../../DB/events');
 
 module.exports = async function(app, con) {
     app.put("/event/unregister/:id", tokenVerify.verifyToken, async (req, res) => {
