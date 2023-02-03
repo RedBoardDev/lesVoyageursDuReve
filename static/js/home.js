@@ -11,7 +11,7 @@ function loadPage ()
     }
     $.ajax({
         type: "GET",
-        url: "/event/all",
+        url: API() + "/event/all",
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         success: function(result) {
@@ -32,7 +32,7 @@ function getGameType(callback)
 {
     $.ajax({
         type: "GET",
-        url: "/game/type/",
+        url: API() + "/game/type/",
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         success: function(result) {

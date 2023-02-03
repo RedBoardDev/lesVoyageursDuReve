@@ -25,7 +25,7 @@ function loadGameType(callback)
 {
     $.ajax({
         type: "GET",
-        url: "/game/type",
+        url: API() + "/game/type",
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         success: function(result) {
@@ -53,7 +53,7 @@ function loadGame()
 {
     $.ajax({
         type: "GET",
-        url: "/game",
+        url: API() + "/game",
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         success: function(result) {
@@ -83,7 +83,7 @@ function loadPlace()
 {
     $.ajax({
         type: "GET",
-        url: "/place",
+        url: API() + "/place",
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         success: function(result) {
@@ -213,7 +213,7 @@ function submit()
     
     $.ajax({
         type: "POST",
-        url: "/event",
+        url: API() + "/event",
         data: data,
         contentType: "application/json; charset=utf-8",
         dataType :"json",

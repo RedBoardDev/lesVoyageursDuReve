@@ -79,7 +79,7 @@ function validPassword(id)
 
     $.ajax({
         type: "POST",
-        url: "/user/login",
+        url: API() + "/user/login",
         data: data,
         contentType: "application/json; charset=utf-8",
         dataType :"json",
@@ -119,7 +119,7 @@ function validChange(id)
 
     $.ajax({
         type: "PUT",
-        url: "/user/id/" + userId,
+        url: API() + "/user/id/" + userId,
         data: data,
         contentType: "application/json; charset=utf-8",
         dataType :"json",

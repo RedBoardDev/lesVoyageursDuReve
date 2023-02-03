@@ -1,32 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="css/connect.css">
     <script src="js/connect.js"></script>
-    <title>Inscription</title>
+    <title>Connexion</title>
     <link rel="icon" type="image/x-icon" href="assets/logo.ico">
     <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 </head>
-<body onload="loadPage('register')">
+<body onload="loadPage('login')">
+
     <div class="mainDiv">
         <div class="left">
             <div class="logo">
                 <img src="assets/logo.png" onclick="window.location.href = '/'" style="cursor: pointer;">
             </div>
             <div class="formDiv">
-                <h2>Inscription</h2>
+                <h2>Connexion</h2>
                 <div class="form">
                     <div class="username champ">
-                        <label>identifiant</label>
-                        <div class="input">
-                            <input id="identifiant"  type="text" class="ininput">
-                        </div>
-                    </div>
-                    <div class="password champ">
                         <label>email</label>
                         <div class="input">
-                            <input id="email" type="email" class="ininput">
+                            <input id="identifiant" type="email" class="ininput">
                         </div>
                     </div>
                     <div class="password champ">
@@ -35,20 +31,14 @@
                             <input id="motDePasse" type="password" class="ininput">
                         </div>
                     </div>
-                    <div class="password champ">
-                        <label>confirmation mot de passe</label>
-                        <div class="input">
-                            <input id="confMotDePasse" type="password" class="ininput">
-                        </div>
-                    </div>
                     <div class="or">
-                        <p>Déjà inscrit ? <a onclick="goTo('login')" class="link">connecte toi</a></p>
+                        <p><a onclick="goTo('register')" class="link">Créer un nouveau compte</a></p>
                     </div>
                     <div class="error">
-                        <p id="errorBarReg"></p>
+                        <p id="errorBarLog"></p>
                     </div>
                     <div class="buttonDiv">
-                        <button class="sendButton" onclick="register()">inscription</button>
+                        <button class="sendButton" onclick="login()">connexion</button>
                     </div>
                 </div>
             </div>

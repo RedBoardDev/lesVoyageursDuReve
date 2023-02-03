@@ -28,7 +28,7 @@ function loadUsers()
 {
     $.ajax({
         type: "GET",
-        url: "/user",
+        url: API() + "/user",
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         headers: {
@@ -55,7 +55,7 @@ function loadGameType()
 {
     $.ajax({
         type: "GET",
-        url: "/game/type",
+        url: API() + "/game/type",
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         success: function(result) {
@@ -73,7 +73,7 @@ function loadGame()
 {
     $.ajax({
         type: "GET",
-        url: "/game",
+        url: API() + "/game",
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         success: function(result) {
@@ -90,7 +90,7 @@ function loadPlace()
 {
     $.ajax({
         type: "GET",
-        url: "/place",
+        url: API() + "/place",
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         success: function(result) {
@@ -124,7 +124,7 @@ function remove(selectorId, type)
 
     $.ajax({
         type: "DELETE",
-        url: "/" + type + "/" + valueToRM,
+        url: API() + "/" + type + "/" + valueToRM,
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         headers: {
@@ -155,7 +155,7 @@ function createGameType()
 
     $.ajax({
         type: "POST",
-        url: "/game/type",
+        url: API() + "/game/type",
         data: data,
         contentType: "application/json; charset=utf-8",
         dataType :"json",
@@ -186,7 +186,7 @@ function createGame()
 
     $.ajax({
         type: "POST",
-        url: "/game",
+        url: API() + "/game",
         data: data,
         contentType: "application/json; charset=utf-8",
         dataType :"json",
@@ -219,7 +219,7 @@ function createPlace ()
 
     $.ajax({
         type: "POST",
-        url: "/place",
+        url: API() + "/place",
         data: data,
         contentType: "application/json; charset=utf-8",
         dataType :"json",
@@ -259,7 +259,7 @@ function deleteUser()
         return
     $.ajax({
         type: "DELETE",
-        url: "/user/id/" + value,
+        url: API() + "/user/id/" + value,
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         headers: {
@@ -296,7 +296,7 @@ function updateUser()
 
     $.ajax({
         type: "PUT",
-        url: "/user/id/" + value,
+        url: API() + "/user/id/" + value,
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType :"json",

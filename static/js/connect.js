@@ -28,7 +28,7 @@ function putDiscordId(userId)
         let data = JSON.stringify({"discord_id" : discordID})
         $.ajax({
             type: "PUT",
-            url: "/user/id/" + userId,
+            url: API() + "/user/id/" + userId,
             data: data,
             contentType: "application/json; charset=utf-8",
             dataType :"json",
@@ -50,7 +50,7 @@ function login() {
     let data = JSON.stringify({"email" : username, "password" : password})
     $.ajax({
         type: "POST",
-        url: "/user/login",
+        url: API() + "/user/login",
         data: data,
         contentType: "application/json; charset=utf-8",
         dataType :"json",
@@ -98,7 +98,7 @@ function register() {
     let data = JSON.stringify({"username" : username, "password" : password, "email": email})
     $.ajax({
         type: "POST",
-        url: "/user/register",
+        url: API() + "/user/register",
         data: data,
         contentType: "application/json; charset=utf-8",
         dataType :"json",

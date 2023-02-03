@@ -41,7 +41,7 @@ function getgameType (data, callback)
     if (data.game_type_id != -1) {
         $.ajax({
             type: "GET",
-            url: "/game/type/" + data.game_type_id,
+            url: API() + "/game/type/" + data.game_type_id,
             contentType: "application/json; charset=utf-8",
             dataType :"json",
             success: function(result) {
@@ -61,7 +61,7 @@ function getgame (data, callback)
     if (data.game_id != -1) {
         $.ajax({
             type: "GET",
-            url: "/game/" + data.game_id,
+            url: API() + "/game/" + data.game_id,
             contentType: "application/json; charset=utf-8",
             dataType :"json",
             success: function(result) {
@@ -81,7 +81,7 @@ function getplace (data, callback)
     if (data.place_id != -1) {
         $.ajax({
             type: "GET",
-            url: "/place/" + data.place_id,
+            url: API() + "/place/" + data.place_id,
             contentType: "application/json; charset=utf-8",
             dataType :"json",
             success: function(result) {
@@ -100,7 +100,7 @@ function getAdmin(data, callback)
 {
     $.ajax({
         type: "GET",
-        url: "/user/id/" + data.admin_user_id,
+        url: API() + "/user/id/" + data.admin_user_id,
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         success: function(result) {
@@ -205,7 +205,7 @@ function loadEvent(callback)
 {
     $.ajax({
         type: "GET",
-        url: "event/" + urlParams.get('id'),
+        url: API() + "event/" + urlParams.get('id'),
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         success: function(result) {
@@ -274,7 +274,7 @@ function register(id)
 
     $.ajax({
         type: "PUT",
-        url: "/event/register/" + Event.id,
+        url: API() + "/event/register/" + Event.id,
         data: data,
         contentType: "application/json; charset=utf-8",
         dataType :"json",
@@ -296,7 +296,7 @@ function unregister(id)
 
     $.ajax({
         type: "PUT",
-        url: "/event/unregister/" + Event.id,
+        url: API() + "/event/unregister/" + Event.id,
         data: data,
         contentType: "application/json; charset=utf-8",
         dataType :"json",
@@ -318,7 +318,7 @@ function loadUsers(callback)
 {
     $.ajax({
         type: "GET",
-        url: "/user",
+        url: API() + "/user",
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         success: function(result) {
@@ -335,7 +335,7 @@ function loadChat(callback)
 {
     $.ajax({
         type: "GET",
-        url: "/comment/" + Event.id,
+        url: API() + "/comment/" + Event.id,
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         success: function(result) {
@@ -450,7 +450,7 @@ function sendComment()
 
     $.ajax({
         type: "POST",
-        url: "/comment",
+        url: API() + "/comment",
         data: data,
         contentType: "application/json; charset=utf-8",
         dataType :"json",

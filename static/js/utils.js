@@ -1,8 +1,13 @@
+function API()
+{
+    return ""
+}
+
 function getMe(token, callback)
 {
     $.ajax({
         type: "GET",
-        url: "/user/me",
+        url: API() + "/user/me",
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         headers: {
@@ -19,3 +24,4 @@ function getMe(token, callback)
         }
     });
 }
+
