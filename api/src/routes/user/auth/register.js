@@ -42,7 +42,7 @@ module.exports = async function(app, con) {
                     if (err1)
                     res.status(500).json({ msg: "Internal server error" });
                     else {
-                        //TODO doing getUserByEmail and getUserByUsername with queryAttributes in argument and do not return all information
+                        //TODO doing getUserByEmail with queryAttributes in argument and do not return all information
                         DB_function.getUserByEmail(req.body.email, con, function(err2, data2) {
                             if (err2)
                                 res.status(500).json({ msg: "Internal server error" });

@@ -49,15 +49,15 @@ function getUserByEmail(email, DB, callback)
     })
 }
 
-function getUserByUsername(username, DB, callback)
+function getUserByDiscordID(discordID, DB, callback)
 {
     var params = {
         ExpressionAttributeValues: {
             ":a": {
-                S: username
+                S: discord_id
             }
         },
-        FilterExpression: "username = :a",
+        FilterExpression: "discord_id = :a",
         TableName: "Users"
     };
     DB.scan(params, function (err, data) {
@@ -155,7 +155,7 @@ module.exports = {
     getAllUser,
     getUserById,
     getUserByEmail,
-    getUserByUsername,
+    getUserByDiscordID,
     createUser,
     updateUser,
     deleteUser

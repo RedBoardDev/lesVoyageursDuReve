@@ -43,6 +43,26 @@ module.exports = async function(app, con) {
         });
     });
 
+    app.get("/user/email/:email", async (req, res) => {
+        const queryString = (tokenVerify.checkFullAccessToken(req.token)) ? ["*"] : ["id", "username", "email", "discord_id", "permission_id", "discord_username", "discord_avatar", "created_at"];
+        DB_function.getUserByEmail(queryString, req.params.email, con, function(err, data) {
+            if (err)
+                res.status(500).json({ msg: "Internal server error" });
+            else
+                res.send(data);
+        });
+    });
+
+    app.get("/user/discordID/:discordID", async (req, res) => {
+        const queryString = (tokenVerify.checkFullAccessToken(req.token)) ? ["*"] : ["id", "username", "email", "discord_id", "permission_id", "discord_username", "discord_avatar", "created_at"];
+        DB_function.getUserByDiscordID(queryString, req.params.discordID, con, function(err, data) {
+            if (err)
+                res.status(500).json({ msg: "Internal server error" });
+            else
+                res.send(data);
+        });
+    });
+
     app.put("/user/id/:id", tokenVerify.verifyToken, async (req, res) => {
         let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === -1) {
