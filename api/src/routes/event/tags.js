@@ -1,5 +1,6 @@
-const glob = require('../../global');
 const tokenVerify = require('../../tokenVerify');
+const DB_Userfunction = require('../../DB/users');
+const DB_Tagsfunction = require('../../DB/tags');
 
 function error_handling_values(req) {
     if (!req.body.hasOwnProperty('tags')) {
@@ -25,7 +26,7 @@ module.exports = async function(app, con) {
             return;
         }
         const tagsList = req.body['tags'].slice().split(", ");
-        // var addedList = [];
+        //convert...
         con.query(`SELECT name FROM tags;`, function (err, rows) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
@@ -39,18 +40,14 @@ module.exports = async function(app, con) {
                                 res.status(500).json({ msg: "Internal server error" });
                                 return;
                             }
-                            // else {
-                            //     console.log("push");
-                            //     addedList.push(tagsList[i]);
-                            // }
                         });
                     }
                 }
             }
-            // console.log(addedList);
-            // res.status(200).json(addedList);
             res.status(200).json({ msg: "Good" });
         });
+        //convert...
+        // DB_Tagsfunction.getTagById
     });
 
     app.get("/tags", async (req, res) => {
@@ -63,10 +60,6 @@ module.exports = async function(app, con) {
     });
 
     app.delete("/tags/:id", tokenVerify.verifyToken, async (req, res) => {
-        if (!glob.is_num(req.params.id)) {
-            res.status(400).json({ msg: "Bad parameter" });
-            return;
-        }
         if (!tokenVerify.verifyAuth_without_id(req, res, true)) {
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
             return;
