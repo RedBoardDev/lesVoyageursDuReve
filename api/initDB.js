@@ -106,11 +106,6 @@ const {createEvent} = require("../api/src/DB/events")
 
 createUsers();
 createEvents(() => {
-    createEvent({
-        "date_start": "18"
-    }, DynamoDB, (err) => {
-        console.log(err)
-    })
 });
 createPlaces();
 createComments();

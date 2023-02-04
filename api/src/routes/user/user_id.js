@@ -17,7 +17,7 @@ function getUpdateQueryString(req, permission) {
     if (req.body.hasOwnProperty('discord_id'))
         updateQueryString = glob.addProperty(updateQueryString, 'discord_id', req.body.discord_id);
     if (permission === true && req.body.hasOwnProperty('permission_id'))
-    updateQueryString = glob.addProperty(updateQueryString, 'discord_id', req.body.discord_id);
+        updateQueryString = glob.addProperty(updateQueryString, 'discord_id', req.body.discord_id);
     return updateQueryString;
 }
 
@@ -32,12 +32,14 @@ async function fetchDiscordInfo(updateQueryString, discord_id_str) {
     return updateQueryString;
 }
 
-module.exports = async function(app, con) {
+module.exports = async function (app, con) {
     app.get("/user/id/:id", async (req, res) => { //TODO for email or discord_id ?
         const queryString = (tokenVerify.checkFullAccessToken(req.token)) ? ["*"] : ["id", "username", "email", "discord_id", "permission_id", "discord_username", "discord_avatar", "created_at"];
-        DB_function.getUserById(queryString, req.params.id, con, function(err, data) {
+        DB_function.getUserById(queryString, req.params.id, con, function (err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
+            else if (data == undefined)
+                res.status(404).json({ msg: "Not found" });
             else
                 res.send(data);
         });
@@ -45,9 +47,11 @@ module.exports = async function(app, con) {
 
     app.get("/user/email/:email", async (req, res) => {
         const queryString = (tokenVerify.checkFullAccessToken(req.token)) ? ["*"] : ["id", "username", "email", "discord_id", "permission_id", "discord_username", "discord_avatar", "created_at"];
-        DB_function.getUserByEmail(queryString, req.params.email, con, function(err, data) {
+        DB_function.getUserByEmail(queryString, req.params.email, con, function (err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
+            else if (data == undefined)
+                res.status(404).json({ msg: "Not found" });
             else
                 res.send(data);
         });
@@ -55,9 +59,11 @@ module.exports = async function(app, con) {
 
     app.get("/user/discordID/:discordID", async (req, res) => {
         const queryString = (tokenVerify.checkFullAccessToken(req.token)) ? ["*"] : ["id", "username", "email", "discord_id", "permission_id", "discord_username", "discord_avatar", "created_at"];
-        DB_function.getUserByDiscordID(queryString, req.params.discordID, con, function(err, data) {
+        DB_function.getUserByDiscordID(queryString, req.params.discordID, con, function (err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
+            else if (data == undefined)
+                res.status(404).json({ msg: "Not found" });
             else
                 res.send(data);
         });
@@ -69,7 +75,7 @@ module.exports = async function(app, con) {
             res.status(403).json({ msg: "Authorization denied" })
             return;
         }
-        DB_function.getUserById(["permission_id"], token_id, con, function(err, data) {
+        DB_function.getUserById(["permission_id"], token_id, con, function (err, data) {
             if (err) {
                 res.status(500).json({ msg: "Internal server error" });
                 return;
@@ -78,30 +84,30 @@ module.exports = async function(app, con) {
                 res.status(500).json({ msg: "User not found" });
                 return;
             }
-            if (data['permission_id'] === 2 || (data['permission_id'] === 1 && token_id === req.params.id)) {
-                DB_function.getUserById(["email", "discord_id", "discord_username", "discord_avatar"], req.params.id, con, async function(err1, data1) {
+            if ( parseInt(data['permission_id']) === 2 || ( parseInt(data['permission_id']) === 1 && token_id === req.params.id)) {
+                DB_function.getUserById(["email", "discord_id", "discord_username", "discord_avatar"], req.params.id, con, async function (err1, data1) {
                     if (err1)
                         res.status(500).json({ msg: "Internal server error" });
                     else if (data1) {
-                        var updateQueryString = getUpdateQueryString(req, rows1[0]['permission_id'] === 2);
+                        var updateQueryString = getUpdateQueryString(req, data1['permission_id'] === 2);
                         if (updateQueryString.length === 0) {
                             res.status(400).json({ msg: "Bad parameter" });
                             return;
                         }
                         if (data1['discord_username'] === "0" || data1['discord_avatar'] === "0")
-                            updateQueryString = await fetchDiscordInfo(updateQueryString, (oldRows[0]['discord_id']).toString());
-                        DB_function.updateUser(req.params.id, {}, con, function(err2) {
+                            // updateQueryString = await fetchDiscordInfo(updateQueryString, (data['discord_id']).toString());      //! uncomment
+                        DB_function.updateUser(req.params.id, req.body, con, function (err2) {
                             if (err2)
                                 res.status(500).json({ msg: "Internal server error" });
                             else {
                                 var selectQueryString = '';
                                 if (tokenVerify.checkFullAccessToken(req.token))
-                                    selectQueryString= ["*"];
-                                else if (data['permission_id'] === 2)
+                                    selectQueryString = ["*"];
+                                else if ( parseInt(data['permission_id']) === 2)
                                     selectQueryString = ["id", "username", "email", "discord_id", "permission_id", "discord_username", "discord_avatar", "created_at"];
                                 else
                                     selectQueryString = ["id", "username", "email", "discord_id", "discord_username", "discord_avatar", "created_at"];
-                                DB_function.getUserById(selectQueryString, req.params.id, con, function(err3, data3) {
+                                DB_function.getUserById(selectQueryString, req.params.id, con, function (err3, data3) {
                                     if (err3)
                                         res.status(500).json({ msg: "Internal server error" });
                                     else
@@ -128,7 +134,7 @@ module.exports = async function(app, con) {
             res.status(403).json({ msg: "Authorization denied" })
             return;
         }
-        DB_function.getUserById(["permission_id"], token_id, con, function(err, data) {
+        DB_function.getUserById(["permission_id"], token_id, con, function (err, data) {
             if (err) {
                 res.status(500).json({ msg: "Internal server error" });
                 return;
@@ -137,8 +143,8 @@ module.exports = async function(app, con) {
                 res.status(500).json({ msg: "User not found" });
                 return;
             }
-            if (data['permission_id'] === 2) {
-                DB_function.getUserById(["email"], req.params.id, con, function(err1, data1) {
+            if ( parseInt(data['permission_id']) === 2) {
+                DB_function.getUserById(["email"], req.params.id, con, function (err1, data1) {
                     if (err1) {
                         res.status(500).json({ msg: "Internal server error" });
                         return;
@@ -147,7 +153,7 @@ module.exports = async function(app, con) {
                         res.status(500).json({ msg: "User not found" });
                         return;
                     }
-                    DB_function.deleteUser(req.params.id, con, function(err1) {
+                    DB_function.deleteUser(req.params.id, con, function (err1) {
                         if (err1)
                             res.status(500).json({ msg: "Internal server error" });
                         else
@@ -157,6 +163,5 @@ module.exports = async function(app, con) {
             } else
                 res.status(403).json({ msg: "Authorization denied" });
         });
-
     });
 }

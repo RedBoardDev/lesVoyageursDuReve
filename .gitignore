@@ -6,3 +6,4 @@ logs/
 *.log
 package-lock.json
 data.json
+shared-local-instance.db

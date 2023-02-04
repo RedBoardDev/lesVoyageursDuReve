@@ -32,18 +32,18 @@ module.exports = async function(app, con) {
             return;
         }
         const passwordHash = bcrypt.hashSync(req.body['password']);
-        DB_function.getUserByEmail(req.body.email, con, function(err, data) {
+        DB_function.getUserByEmail(["*"], req.body.email, con, function(err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else if (data != undefined)
                 res.status(418).json({ msg: "Account already exists"});
             else {
-                DB_function.createUser({ username: req.body["username"], email: req.body["email"], password: passwordHash }, DynamoDB, function (err1, data1) {
+                DB_function.createUser({ username: req.body["username"], email: req.body["email"], password: passwordHash }, con, function (err1, data1) {
                     if (err1)
                     res.status(500).json({ msg: "Internal server error" });
                     else {
                         //TODO doing getUserByEmail with queryAttributes in argument and do not return all information
-                        DB_function.getUserByEmail(req.body.email, con, function(err2, data2) {
+                        DB_function.getUserByEmail(["*"],req.body.email, con, function(err2, data2) {
                             if (err2)
                                 res.status(500).json({ msg: "Internal server error" });
                             else {

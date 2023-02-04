@@ -2,22 +2,15 @@ const tokenVerify = require('../../tokenVerify');
 const DB_Userfunction = require('../../DB/users');
 const DB_Tagsfunction = require('../../DB/tags');
 
-function error_handling_values(req) {
-    if (!req.body.hasOwnProperty('tags')) {
-        return false;
-    }
-    return true;
-}
-
 function existInList(list, element) {
-    return list.some(function(e) {
+    return list.some(function (e) {
         return e['name'].toLowerCase() === element.toLowerCase();
     });
 }
 
-module.exports = async function(app, con) {
+module.exports = async function (app, con) {
     app.post("/tags", tokenVerify.verifyToken, async (req, res) => {
-        if (error_handling_values(req)) {
+        if (!req.body.hasOwnProperty('tags')) {
             res.status(400).json({ msg: "Bad parameter" });
             return;
         }
@@ -26,14 +19,13 @@ module.exports = async function(app, con) {
             return;
         }
         const tagsList = req.body['tags'].slice().split(", ");
-        DB_Tagsfunction.getAllTag(con, function(err, data) {
+        DB_Tagsfunction.getAllTag(con, function (err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else {
                 for (let i = 0; i < tagsList.length; ++i) {
-                    if (!existInList(data, tagsList[i])) {
-                        console.log("passed: ", tagsList[i]);
-                        DB_Tagsfunction.createTag({"name": tagsList[i]}, con, function(err1) {
+                    if (!data || !existInList(data, tagsList[i])) {
+                        DB_Tagsfunction.createTag({ "name": tagsList[i] }, con, function (err1) {
                             if (err1) {
                                 res.status(500).json({ msg: "Internal server error" });
                                 return;
@@ -42,14 +34,16 @@ module.exports = async function(app, con) {
                     }
                 }
             }
-            res.status(200).json({ msg: "Good" });
+            res.status(201).json({ msg: "Created" });
         });
     });
 
     app.get("/tags", async (req, res) => {
-        DB_Tagsfunction.getAllTag(con, function(err, data) {
+        DB_Tagsfunction.getAllTag(con, function (err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
+            else if (data == undefined)
+                res.send([]);
             else
                 res.send(data);
         });
@@ -63,15 +57,15 @@ module.exports = async function(app, con) {
         let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === -1)
             res.status(403).json({ msg: "Authorization denied" })
-        DB_Userfunction.getUserById(['permission_id'], token_id, con, function(err, data) {
+        DB_Userfunction.getUserById(['permission_id'], token_id, con, function (err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
-            else if (token_id === -2 || data['permission_id'] === 2) {
-                DB_Tagsfunction.deleteTag(req.params.id, con, function(err1) {
-                    if (err2)
+            else if (token_id === -2 || parseInt( data['permission_id']) === 2) {
+                DB_Tagsfunction.deleteTag(req.params.id, con, function (err1) {
+                    if (err1)
                         res.status(500).json({ msg: "Internal server error" });
                     else
-                        res.status(200).json( {msg: "tags removed"} );
+                        res.status(200).json({ msg: "tags removed" });
                 });
             } else
                 res.status(403).json({ msg: "Authorization denied" });

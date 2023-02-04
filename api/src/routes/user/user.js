@@ -13,10 +13,10 @@ function get_id_user_route(req) {
     }
 }
 
-module.exports = async function(app, con) {
+module.exports = async function (app, con) {
     app.get("/user", tokenVerify.verifyToken_without_error, async (req, res) => {
         let token_id = get_id_user_route(req);
-        DB_function.getUserById(["permission_id"], token_id, con, function(err, data) {
+        DB_function.getUserById(["permission_id"], token_id, con, function (err, data) {
             var queryString = '';
             if (err) {
                 res.status(500).json({ msg: "Internal server error" });
@@ -32,9 +32,11 @@ module.exports = async function(app, con) {
                 queryString = ["id", "username", "email", "discord_id", "discord_username", "discord_avatar", "permission_id", "created_at"];
             else
                 queryString = ["id", "username", "discord_username", "discord_avatar", "created_at"];
-            DB_function.getAllUser(queryString, con, function(err1, data1) {
+            DB_function.getAllUser(queryString, con, function (err1, data1) {
                 if (err1)
                     res.status(500).json({ msg: "Internal server error" });
+                else if (data1 == undefined)
+                    res.status(404).json({ msg: "Not found" });
                 else
                     res.send(data1);
             });
@@ -46,11 +48,11 @@ module.exports = async function(app, con) {
         if (token_id === - 1)
             return;
         const queryString = (tokenVerify.checkFullAccessToken(req.token)) ? ["*"] : ["id", "username", "email", "discord_id", "permission_id", "discord_username", "discord_avatar", "created_at"];
-        DB_function.getUserById(queryString, token_id, con, function(err, data) {
+        DB_function.getUserById(queryString, token_id, con, function (err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else if (!data)
-                res.sendStatus(404);
+                res.status(404).json({ msg: "Not found" });
             else
                 res.send(data);
         });

@@ -18,7 +18,7 @@ else
     AWS.config.update({ region: 'eu-west-3', accessKeyId: process.env.DB_ACCESS_KEY, secretAccessKey: process.env.DB_SECRET_KEY});
 
 
-const con = new AWS.DynamoDB();
+const con = new AWS.DynamoDB.DocumentClient();
 
 function encryptString(text) {
     const iv = crypto.randomBytes(16);

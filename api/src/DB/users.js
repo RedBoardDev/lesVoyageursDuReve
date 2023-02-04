@@ -1,74 +1,88 @@
 let { v1: uuidv1 } = require("uuid")
 
-function getAllUser(queryAttributes, DB, callback)
-{
+function getAllUser(queryAttributes, DB, callback) {
     const params = {
         TableName: "Users",
     };
     if (!(queryAttributes && queryAttributes.length === 1 && queryAttributes[0] === "*"))
         params.ProjectionExpression = queryAttributes.join(", ");
 
-    DB.getItem(params, function (err, data) {
-        if (callback)
-            callback(err, data.Item)
+    DB.scan(params, function (err, data) {
+        if (callback) {
+            if (data && data.Count >= 1)
+                callback(err, data.Items)
+            else
+                callback(err, undefined)
+        }
     });
 }
 
-function getUserById(queryAttributes, id, DB, callback)
-{
+function getUserById(queryAttributes, id, DB, callback) {
     const params = {
         TableName: "Users",
         Key: {
-            id: { S: id },
+            id: id,
         }
     };
     if (!(queryAttributes && queryAttributes.length === 1 && queryAttributes[0] === "*"))
         params.ProjectionExpression = queryAttributes.join(", ");
 
-    DB.getItem(params, function (err, data) {
-        if (callback)
-            callback(err, data)
+    DB.get(params, function (err, data) {
+        if (callback) {
+            if (data)
+                callback(err, data.Item)
+            else
+                callback(err, undefined)
+        }
     });
 }
 
-function getUserByEmail(email, DB, callback)
-{
+function getUserByEmail(queryAttributes, email, DB, callback) {
     var params = {
         ExpressionAttributeValues: {
-            ":a": {
-                S: email
-            }
+            ":a": email
         },
         FilterExpression: "email = :a",
         TableName: "Users"
     };
+    if (!(queryAttributes && queryAttributes.length === 1 && queryAttributes[0] === "*"))
+        params.ProjectionExpression = queryAttributes.join(", ");
+
     DB.scan(params, function (err, data) {
         if (callback) {
-            callback(err, data.Items[0])
+            if (data && data.Count >= 1) {
+                callback(err, data.Items[0])
+            } else {
+                callback(err, undefined)
+            }
         }
     })
 }
 
-function getUserByDiscordID(discordID, DB, callback)
-{
+function getUserByDiscordID(queryAttributes, discordID, DB, callback) {
     var params = {
         ExpressionAttributeValues: {
-            ":a": {
-                S: discord_id
-            }
+            ":a": discordID
         },
         FilterExpression: "discord_id = :a",
         TableName: "Users"
     };
+
+    if (!(queryAttributes && queryAttributes.length === 1 && queryAttributes[0] === "*"))
+        params.ProjectionExpression = queryAttributes.join(", ");
+
     DB.scan(params, function (err, data) {
         if (callback) {
-            callback(err, data.Items[0])
+            if (data && data.Count >= 1) {
+                callback(err, data.Items[0])
+            } else {
+                callback(err, undefined)
+            }
         }
     })
 }
 
-function createUser(obj, DB, callback)
-{
+function createUser(obj, DB, callback) {
 
     if (!obj.username)
         obj["username"] = "0"
@@ -83,69 +97,66 @@ function createUser(obj, DB, callback)
     if (!obj.discord_avatar)
         obj["discord_avatar"] = "0"
     if (!obj.permission_id)
-        obj["permission_id"] = "0"
+        obj["permission_id"] = "2"          //! set good default perm
+
+    obj.id = uuidv1();
+    obj.created_at = new Date().getTime().toString();
 
     const params = {
         TableName: "Users",
-        Item: {
-            id: { S: uuidv1() },
-            username: { S: obj.username },
-            email: { S: obj.email },
-            password: { S: obj.password },
-            discord_id: { S: obj.discord_id },
-            discord_username: { S: obj.discord_username },
-            discord_avatar: { S: obj.discord_avatar },
-            permission_id: { S: obj.permission_id },
-            created_at: { N: new Date().getTime().toString() },
-        },
+        Item: obj,
     };
 
-    DB.putItem(params, function (err) {
+    DB.put(params, function (err) {
         if (callback)
             callback(err)
     });
 }
 
-function updateUser(id, obj, DB, callback)
-{
-    let params = {
-        TableName: "Users",
-        Item: {
-            id: { S: id }
-        },
-    };
+function updateUser(id, obj, DB, callback) {
 
-    if (obj.username)
-        params.Item["username"] = { S: obj.username };
-    if (obj.email)
-        params.Item["email"] = { S: obj.email };
-    if (obj.password)
-        params.Item["password"] = { S: obj.password };
-    if (obj.discord_id)
-        params.Item["discord_id"] = { S: obj.discord_id };
-    if (obj.discord_username)
-        params.Item["discord_username"] = { S: obj.discord_username };
-    if (obj.discord_avatar)
-        params.Item["discord_avatar"] = { S: obj.discord_avatar };
-    if (obj.permission_id)
-        params.Item["permission_id"] = { S: obj.permission_id };
-
-    DB.putItem(params, function (err) {
-        if (callback)
+    getUserById(["*"], id, DB, (err, data) => {
+        if (err)
             callback(err)
-    });
+        else {
+            if (!obj.username)
+                obj.username = data.username
+            if (!obj.email)
+                obj.email = data.email
+            if (!obj.password)
+                obj.password = data.password
+            if (!obj.discord_id)
+                obj.discord_id = data.discord_id
+            if (!obj.discord_username)
+                obj.discord_username = data.discord_username
+            if (!obj.discord_avatar)
+                obj.discord_avatar = data.discord_avatar
+            if (!obj.permission_id)
+                obj.permission_id = data.permission_id
+            obj.created_at = data.created_at
+            obj.id = id
+            let params = {
+                TableName: "Users",
+                Item: obj
+            };
+
+            DB.put(params, function (err) {
+                if (callback)
+                    callback(err)
+            });
+        }
+    })
 }
 
-function deleteUser(id, DB, callback)
-{
+function deleteUser(id, DB, callback) {
     const params = {
         TableName: "Users",
         Key: {
-            id: { S: id },
+            "id": id,
         },
     };
 
-    DB.deleteItem(params, function (err) {
+    DB.delete(params, function (err) {
         if (callback)
             callback(err)
     });
