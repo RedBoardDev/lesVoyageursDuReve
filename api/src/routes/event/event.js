@@ -1,9 +1,11 @@
 const DB_Userfunction = require('../../DB/users');
 const DB_Eventfunction = require('../../DB/events');
 const tokenVerify = require('../../tokenVerify');
+const {addProperty} = require("../../global");
+const { parse } = require('dotenv');
 
 function getUpdateQueryString(req) {
-    let updateQueryString = "";
+    let updateQueryString = {};
 
     if (req.body.hasOwnProperty('title')) {
         updateQueryString = addProperty(updateQueryString, 'title', req.body.title);
@@ -60,7 +62,7 @@ function error_handling_values(req) {
     return true;
 }
 
-module.exports = async function(app, con) {
+module.exports = async function (app, con) {
     app.post("/event", tokenVerify.verifyToken, async (req, res) => {
         if (!error_handling_values(req)) {
             res.status(400).json({ msg: "Bad parameter" });
@@ -73,10 +75,10 @@ module.exports = async function(app, con) {
         let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === -1)
             res.status(403).json({ msg: "Authorization denied" });
-        DB_Userfunction.getUserById(['permission_id'], token_id, con, function(err, data) {
+        DB_Userfunction.getUserById(['permission_id'], token_id, con, function (err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
-            else if (token_id === -2 || data['permission_id'] >= 1) {
+            else if (token_id === -2 || parseInt(data['permission_id']) >= 1) {
                 DB_Eventfunction.createEvent({
                     "title": req.body["title"],
                     "description": req.body["description"],
@@ -89,11 +91,11 @@ module.exports = async function(app, con) {
                     "register_max": req.body["register_max"],
                     "date_start": req.body["date_start"],
                     "date_end": req.body["date_end"]
-                }, con, function(err1) {
+                }, con, function (err1) {
                     if (err1) {
                         res.status(500).json({ msg: "Internal server error" });
                     } else
-                        res.status(200).json( {msg: "event added"} );
+                        res.status(200).json({ msg: "event added" });
                 });
             } else
                 res.status(403).json({ msg: "Authorization denied" });
@@ -101,18 +103,22 @@ module.exports = async function(app, con) {
     });
 
     app.get("/event/all", async (req, res) => {
-        DB_Eventfunction.getAllEvent(con, function(err, data) {
+        DB_Eventfunction.getAllEvent(con, function (err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
+            else if (data == undefined)
+                res.send([]);
             else
                 res.send(data);
         });
     });
 
     app.get("/event/:id", async (req, res) => {
-        DB_Eventfunction.getEventById(["*"], req.params.id, con, function(err, data) {
+        DB_Eventfunction.getEventById(["*"], req.params.id, con, function (err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
+            else if (!data)
+                res.status(404).json({ msg: "Not found" });
             else
                 res.send(data);
         });
@@ -123,27 +129,22 @@ module.exports = async function(app, con) {
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
             return;
         }
-        const updateQueryString = getUpdateQueryString(req);
-        if (updateQueryString.length === 0) {
-            res.status(400).json({ msg: "Bad parameter" });
-            return;
-        }
         let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === -1)
             !res.headersSent ? res.status(403).json({ msg: "Authorization denied" }) : 0;
-        DB_Userfunction.getUserById(['permission_id'], token_id, con, function(err, data) {
+        DB_Userfunction.getUserById(['permission_id'], token_id, con, function (err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else {
-                DB_Eventfunction.getEventById(["admin_user_id"], req.params.id, con, function(err1, data1) {
+                DB_Eventfunction.getEventById(["admin_user_id"], req.params.id, con, function (err1, data1) {
                     if (err1)
                         res.status(500).json({ msg: "Internal server error" });
-                    else if (token_id === -2 || data['permission_id'] === 2 || (data['permission_id'] >= 1 && token_id === data1['admin_user_id'])) {
-                        DB_Eventfunction.updateEvent(req.params.id, updateQueryString, con, function(err2) {
+                    else if (token_id === -2 || parseInt(data['permission_id']) === 2 || (parseInt(data['permission_id']) >= 1 && token_id === data1['admin_user_id'])) {
+                        DB_Eventfunction.updateEvent(req.params.id, getUpdateQueryString(req), con, function (err2) {
                             if (err2) {
                                 res.status(500).json({ msg: "Internal server error" });
                             } else
-                                res.status(200).json( {msg: "event changed"} );
+                                res.status(200).json({ msg: "event changed" });
                         });
                     } else
                         res.status(403).json({ msg: "Authorization denied" });
@@ -160,19 +161,19 @@ module.exports = async function(app, con) {
         let token_id = tokenVerify.get_id_with_token(req, res);
         if (token_id === -1)
             res.status(403).json({ msg: "Authorization denied" });
-        DB_Userfunction.getUserById(['permission_id'], token_id, con, function(err, data) {
+        DB_Userfunction.getUserById(['permission_id'], token_id, con, function (err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
             else {
-                DB_Eventfunction.getEventById(["admin_user_id"], req.params.id, con, function(err1, data1) {
+                DB_Eventfunction.getEventById(["admin_user_id"], req.params.id, con, function (err1, data1) {
                     if (err1)
                         res.status(500).json({ msg: "Internal server error" });
-                    else if (token_id === -2 || data['permission_id'] === 2 || (data['permission_id'] >= 1 && token_id === data1['admin_user_id'])) {
-                        DB_Eventfunction.deleteEvent(req.params.id, con, function(err2) {
+                    else if (token_id === -2 || parseInt(data['permission_id']) === 2 || (parseInt(data['permission_id']) >= 1 && token_id === data1['admin_user_id'])) {
+                        DB_Eventfunction.deleteEvent(req.params.id, con, function (err2) {
                             if (err2) {
                                 res.status(500).json({ msg: "Internal server error" });
                             } else
-                                res.status(200).json( {msg: "event removed"} );
+                                res.status(200).json({ msg: "event removed" });
                         });
                     } else
                         res.status(403).json({ msg: "Authorization denied" });

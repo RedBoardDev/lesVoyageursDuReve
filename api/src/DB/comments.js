@@ -31,7 +31,7 @@ function getCommentByEventId(EventId, DB, callback) {
     DB.scan(params, function (err, data) {
         if (callback) {
             if (data && data.Count >= 1) {
-                callback(err, data.Items[0])
+                callback(err, data.Items)
             } else {
                 callback(err, undefined)
             }

@@ -31,7 +31,6 @@ function verifyToken(req, res, next) {
                     res.status(403).json({ msg: "Token is not valid" });
             });
         } catch (err) {
-            console.log(err);
             res.status(403).json({ msg: "Token is not valid 2" });
         }
     } else {

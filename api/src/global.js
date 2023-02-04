@@ -33,9 +33,8 @@ function decryptString(text) {
 }
 
 function addProperty(queryString, property, value) {
-    if (queryString.length > 0)
-        queryString += ", ";
-    queryString += `${property} = '${value}'`;
+
+    queryString[property] = value
     return queryString;
 }
 

@@ -18,7 +18,7 @@ module.exports = async function(app, con) {
         DB_Userfunction.getUserById(['permission_id'], token_id, con, function(err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
-            else if (token_id === -2 || data['permission_id'] === 2 || token_id === req.body.user) {
+            else if (token_id === -2 || parseInt(data['permission_id']) === 2 || token_id === req.body.user) {
                 DB_Eventfunction.getEventById(['user_registered_array'], req.params.id, con, function(err1, data1) {
                     if (err1)
                         res.status(500).json({ msg: "Internal server error" });

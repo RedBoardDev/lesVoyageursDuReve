@@ -36,9 +36,11 @@ module.exports = async function(app, con) {
     });
 
     app.get("/comment/:event_id", async (req, res) => {
-        DB_Commentsfunction.getCommentById(req.params.event_id, con, function(err, data) {
+        DB_Commentsfunction.getCommentByEventId(req.params.event_id, con, function(err, data) {
             if (err)
                 res.status(500).json({ msg: "Internal server error" });
+            else if (data == undefined)
+                res.send([]);
             else
                 res.send(data);
         });
@@ -59,9 +61,11 @@ module.exports = async function(app, con) {
                 res.status(500).json({ msg: "Internal server error" });
             else {
                 DB_Commentsfunction.getCommentById(req.params.comment_id, con, function (err1, data1) {
-                    if (err1 || data1 === undefined)
+                    if (err1)
                         res.status(500).json({ msg: "Internal server error" });
-                    else if ((token_id === -2 || data['permission_id'] === 2) || token_id === data1['user_id']) {
+                    else if (data1 === undefined)
+                        res.status(404).json({ msg: "Not found" });
+                    else if ((token_id === -2 || parseInt(data['permission_id']) === 2) || token_id === data1['user_id']) {
                         DB_Commentsfunction.deleteComment(data1['id'], con, function (err2) {
                             if (err2)
                                 res.status(500).json({ msg: "Internal server error" });

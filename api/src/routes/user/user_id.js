@@ -4,7 +4,7 @@ const tokenVerify = require('../../tokenVerify');
 const DB_function = require('../../DB/users');
 
 function getUpdateQueryString(req, permission) {
-    let updateQueryString = "";
+    let updateQueryString = {};
 
     if (req.body.hasOwnProperty('password')) {
         const passwordHash = bcrypt.hashSync(req.body.password);
@@ -90,13 +90,10 @@ module.exports = async function (app, con) {
                         res.status(500).json({ msg: "Internal server error" });
                     else if (data1) {
                         var updateQueryString = getUpdateQueryString(req, data1['permission_id'] === 2);
-                        if (updateQueryString.length === 0) {
-                            res.status(400).json({ msg: "Bad parameter" });
-                            return;
-                        }
                         if (data1['discord_username'] === "0" || data1['discord_avatar'] === "0")
                             // updateQueryString = await fetchDiscordInfo(updateQueryString, (data['discord_id']).toString());      //! uncomment
-                        DB_function.updateUser(req.params.id, req.body, con, function (err2) {
+                        
+                        DB_function.updateUser(req.params.id, updateQueryString, con, function (err2) {
                             if (err2)
                                 res.status(500).json({ msg: "Internal server error" });
                             else {

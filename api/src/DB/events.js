@@ -17,7 +17,7 @@ function getAllEvent(DB, callback) {
 
 function getEventById(queryAttributes, id, DB, callback) {
     const params = {
-        TableName: "Users",
+        TableName: "Events",
         Key: {
             id: id,
         }
@@ -68,7 +68,7 @@ function createEvent(obj, DB, callback) {
     if (!obj.admin_user_id)
         obj["admin_user_id"] = "0"
     if (!obj.user_registered_array)
-        obj["user_registered_array"] = "0"
+        obj["user_registered_array"] = "[]"
     if (!obj.register_max)
         obj["register_max"] = "0"
     if (!obj.date_start)
@@ -116,7 +116,7 @@ function updateEvent(id, obj, DB, callback) {
             if (!obj.date_end)
                 obj.date_end = data.date_end
             obj.created_at = data.created_at
-            obj.id = id
+            obj.id = data.id
 
             let params = {
                 TableName: "Events",
