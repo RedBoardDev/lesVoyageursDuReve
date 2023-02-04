@@ -18,17 +18,9 @@ module.exports = async function (app, con) {
         let token_id = get_id_user_route(req);
         DB_function.getUserById(["permission_id"], token_id, con, function (err, data) {
             var queryString = '';
-            if (err) {
-                res.status(500).json({ msg: "Internal server error" });
-                return;
-            }
-            if (data === undefined) {
-                res.status(500).json({ msg: "User not found" });
-                return;
-            }
             if (token_id === -2)
                 queryString = ["*"];
-            else if (data['permission_id'] === 2)
+            else if (data && data['permission_id'] === 2)
                 queryString = ["id", "username", "email", "discord_id", "discord_username", "discord_avatar", "permission_id", "created_at"];
             else
                 queryString = ["id", "username", "discord_username", "discord_avatar", "created_at"];

@@ -5,8 +5,8 @@ function loadPage ()
     getMe(sessionStorage.getItem("lvdrToken"), (user) => {
         if (user) {
             if (user.permission_id >= 2) {
-                loadGameType()
-                loadGame()
+                // loadGameType()
+                loadTag()
                 loadPlace()
                 loadUsers()
             } else {
@@ -19,8 +19,8 @@ function loadPage ()
     })
 }
 
-var GameType
-var Game
+// var GameType
+var Tag
 var Place
 var Users
 
@@ -51,34 +51,16 @@ function loadUsers()
     });
 }
 
-function loadGameType()
+function loadTag()
 {
     $.ajax({
         type: "GET",
-        url: API() + "/game/type",
+        url: API() + "/tags",
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         success: function(result) {
-           GameType = result
-           AddSelect("delGameType", result)
-           AddSelect("GameTypeSelect", result)
-        },
-        error: function(e){
-            console.log(e)
-        }
-    });
-}
-
-function loadGame()
-{
-    $.ajax({
-        type: "GET",
-        url: API() + "/game",
-        contentType: "application/json; charset=utf-8",
-        dataType :"json",
-        success: function(result) {
-            Game = result
-            AddSelect("delGame", result)
+            Tag = result
+            AddSelect("delTag", result)
         },
         error: function(e){
             console.log(e)
@@ -95,12 +77,24 @@ function loadPlace()
         dataType :"json",
         success: function(result) {
             Place = result
-            AddSelect("delPlace", result)
+            AddSelectPlace("delPlace", result)
         },
         error: function(e){
             console.log(e)
         }
     });
+}
+
+function AddSelectPlace(selectorId, data)
+{
+    let selector = document.getElementById(selectorId)
+
+    for (let i = 0; i < data.length; ++i) {
+        let option = document.createElement("option")
+        option.setAttribute("value" , data[i].id)
+        option.textContent = data[i].place_name
+        selector.append(option)
+    }
 }
 
 function AddSelect(selectorId, data)
@@ -140,69 +134,9 @@ function remove(selectorId, type)
     });
 }
 
-function createGameType()
-{
-    let name = document.getElementById("AddGameTypeInput").value
-    let color = document.getElementById("color").value
 
-    if (name == "")
-        return
 
-    let data = JSON.stringify({
-        "name" : name,
-        "color" : color
-    })
-
-    $.ajax({
-        type: "POST",
-        url: API() + "/game/type",
-        data: data,
-        contentType: "application/json; charset=utf-8",
-        dataType :"json",
-        headers: {
-            "Authorization":"Bearer " + sessionStorage.getItem("lvdrToken")
-        },
-        success: function(result) {
-            window.location.reload()
-        },
-        error: function(e){
-            console.log(e)
-        }
-    });
-}
-
-function createGame()
-{
-    let name = document.getElementById("AddGameInput").value
-    let gameType = document.getElementById("GameTypeSelect").value
-
-    if (name == "" && gameType != -1)
-        return
-
-    let data = JSON.stringify({
-        "name" : name,
-        "game_type_id" : gameType
-    })
-
-    $.ajax({
-        type: "POST",
-        url: API() + "/game",
-        data: data,
-        contentType: "application/json; charset=utf-8",
-        dataType :"json",
-        headers: {
-            "Authorization":"Bearer " + sessionStorage.getItem("lvdrToken")
-        },
-        success: function(result) {
-            window.location.reload()
-        },
-        error: function(e){
-            console.log(e)
-        }
-    });
-}
-
-function createPlace ()
+function createPlace()
 {
     let name = document.getElementById("AddPlaceInputName").value
     let city = document.getElementById("AddPlaceInputCity").value

@@ -36,45 +36,45 @@ function loadPage ()
 }
 
 
-function getgameType (data, callback)
-{
-    if (data.game_type_id != -1) {
-        $.ajax({
-            type: "GET",
-            url: API() + "/game/type/" + data.game_type_id,
-            contentType: "application/json; charset=utf-8",
-            dataType :"json",
-            success: function(result) {
-                callback(result)
-            },
-            error: function(e){
-                console.log(e)
-            }
-        });
-    } else {
-        callback({"name" : data.game_type_custom, "color" : "#e0b1cb"})
-    }
-}
+// function getgameType (data, callback)
+// {
+//     if (data.game_type_id != -1) {
+//         $.ajax({
+//             type: "GET",
+//             url: API() + "/game/type/" + data.game_type_id,
+//             contentType: "application/json; charset=utf-8",
+//             dataType :"json",
+//             success: function(result) {
+//                 callback(result)
+//             },
+//             error: function(e){
+//                 console.log(e)
+//             }
+//         });
+//     } else {
+//         callback({"name" : data.game_type_custom, "color" : "#e0b1cb"})
+//     }
+// }
 
-function getgame (data, callback)
-{
-    if (data.game_id != -1) {
-        $.ajax({
-            type: "GET",
-            url: API() + "/game/" + data.game_id,
-            contentType: "application/json; charset=utf-8",
-            dataType :"json",
-            success: function(result) {
-                callback(result[0])
-            },
-            error: function(e){
-                console.log(e)
-            }
-        });
-    } else {
-        callback({"name" : data.game_custom})
-    }
-}
+// function getgame (data, callback)
+// {
+//     if (data.game_id != -1) {
+//         $.ajax({
+//             type: "GET",
+//             url: API() + "/game/" + data.game_id,
+//             contentType: "application/json; charset=utf-8",
+//             dataType :"json",
+//             success: function(result) {
+//                 callback(result[0])
+//             },
+//             error: function(e){
+//                 console.log(e)
+//             }
+//         });
+//     } else {
+//         callback({"name" : data.game_custom})
+//     }
+// }
 
 function getplace (data, callback)
 {
@@ -85,7 +85,7 @@ function getplace (data, callback)
             contentType: "application/json; charset=utf-8",
             dataType :"json",
             success: function(result) {
-                callback(result[0])
+                callback(result)
             },
             error: function(e){
                 console.log(e)
@@ -105,7 +105,7 @@ function getAdmin(data, callback)
         dataType :"json",
         success: function(result) {
             let discord = result.discord_avatar
-            if (discord == null || discord == "")
+            if (discord == null || discord == "0")
                 discord = "assets/user.png"
             callback({"username" : result.username, "discord_avatar" : discord})
         },
@@ -118,9 +118,9 @@ function getAdmin(data, callback)
 
 function fillEvent(data)
 {
-    document.getElementById("PageTitle").textContent = data.title;
-    let start = new Date(data.date_start)
-    let end = new Date(data.date_end)
+    // document.getElementById("PageTitle").textContent = data.title;
+    let start = new Date(parseInt(data.date_start))
+    let end = new Date(parseInt(data.date_end))
     document.getElementById("titleInput").value = data.title
     document.getElementById("descrInput").textContent = data.description
 
@@ -155,25 +155,15 @@ function fillEvent(data)
 
     end = dayEnd + "/"+ monthEnd + "/" + end.getFullYear() + " " + endhour + "H" + endMinute
 
-    
-
     document.getElementById("startInput").value = start
     document.getElementById("endInput").value = end
-    getgameType(data ,(out) => {
-        document.getElementById("typeColor").setAttribute("style" , "background-color :" + out.color + ";")
-        document.getElementById("typeName").textContent = out.name
-    })
-
-    getgame(data, (out) => {
-        document.getElementById("gameInput").value = out.name
-    })
-    
     getplace(data, (out) => {
         try {
-            document.getElementById("placeInput").value = out.name
+            console.log(out)
+            document.getElementById("placeInput").value = out.place_name
             if (out.city && out.adresse) {
                 document.getElementById("adresse").textContent = out.city + "," + out.adresse
-                document.getElementById("adresse").setAttribute("onclick" , "window.open( 'https://www.google.fr/maps/place/" + out.adresse + "," + out.city + "')")
+                document.getElementById("adresse").setAttribute("onclick" , "window.open( `https://www.google.fr/maps/place/" + out.adresse + "," + out.city + "`)")
             }
         } catch {}
     })
@@ -189,14 +179,14 @@ function fillEvent(data)
             players = JSON.parse(Event.user_registered_array)
         }
         let register = document.getElementById("registerButton")
-        if (players.length < Event.register_max && players.indexOf(out.id) == -1 && Event.admin_user_id != out.id) {
+        if (players.length < parseInt(Event.register_max) && players.indexOf(out.id) == -1 && Event.admin_user_id != out.id) {
             register.setAttribute("style", "display: block;")
-            register.setAttribute("onclick", "register(" + out.id + ")")
+            register.setAttribute("onclick", "register('" + out.id + "')")
         }
         let unregister = document.getElementById("unregisterButton")
         if (players.indexOf(out.id) != -1) {
             unregister.setAttribute("style", "display: block;")
-            unregister.setAttribute("onclick", "unregister(" + out.id + ")")
+            unregister.setAttribute("onclick", "unregister('" + out.id + "')")
         }
     })
     }
@@ -225,7 +215,7 @@ function CreatePLayer (player)
     let playerPicture = document.createElement("div")
     let playerName = document.createElement("div")
     let img = document.createElement("img")
-    if (player.discord_avatar != null && player.discord_avatar != "")
+    if (player.discord_avatar != null && player.discord_avatar != "0")
         img.setAttribute("src", player.discord_avatar)
     else
         img.setAttribute("src", "assets/user.png")
@@ -310,7 +300,6 @@ function unregister(id)
             console.log(e)
         }
     });
-    console.log(id, Event.id)
 }
 
 
@@ -373,7 +362,7 @@ function genComment(comment)
     ChatPicture.setAttribute("class" , "ChatPicture")
     let img = document.createElement("img")
 
-    if (commentUser.discord_avatar == "")
+    if (commentUser.discord_avatar == "0")
         img.setAttribute("src" , "assets/user.png")
     else
         img.setAttribute("src" , commentUser.discord_avatar)
@@ -391,7 +380,7 @@ function genComment(comment)
     let ChatDate = document.createElement("div")
     ChatDate.setAttribute("class" , "ChatDate")
     let p2 = document.createElement("p")
-    let date = new Date(comment.created_at)
+    let date = new Date(parseInt(comment.created_at))
 
     let starthour = date.getHours()
     let startMinute = date.getMinutes()

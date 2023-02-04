@@ -45,59 +45,16 @@
     <div class="mainDiv">
         <div class="left">
             <div class="formLeft">
-                <div class="GameType">
-                    <label>supprimer un type de jeu</label>
-                    <div class="Delete">
-                        <div class="delSelect">
-                            <select id="delGameType">
-                                <option value="-1" >N/A</option>
-                            </select>
-                        </div>
-                        <button class="delButton" onclick="remove('delGameType', 'game/type')">Supprimer</button>
-                    </div>
-                    <label>ajouter un type de jeu</label>
-                    <div class="Add">
-                        <div class="input">
-                            <div class="name">
-                                <input type="text" id="AddGameTypeInput" placeholder="Nom">
-                            </div>
-                        </div>
-                        <div class="color">
-                            <input type="color" id="color">
-                        </div>
-                        <button class="addButton" onclick="createGameType()">Créer</button>
-                    </div>
-                </div>
 
-                <div class="Game">
-                    <label>supprimer un jeu</label>
-                    <div class="Delete">
-                        <div class="delSelect">
-                            <select id="delGame">
-                                <option value="-1">N/A</option>
-                            </select>
-                        </div>
-                        <button class="delButton" onclick="remove('delGame', 'game')">Supprimer</button>
+                <label>supprimer un tag</label>
+                <div class="Delete">
+                    <div class="delSelect">
+                        <select id="delTag">
+                            <option value="-1">N/A</option>
+                        </select>
                     </div>
-                    <label>ajouter un jeu</label>
-                    <div class="Add">
-                        <div class="GameSelectgameType">
-                            <select id="GameTypeSelect" class="basicSelector">
-                                <option value="-1">N/A</option>
-                            </select>
-                        </div>
-                        <div class="input">
-                            <div class="name">
-                                <input type="text" id="AddGameInput"placeholder="Nom" >
-                            </div>
-                        </div>
-                        <button class="addButton" onclick="createGame()" >Créer</button>
-                    </div>
+                    <button class="delButton" onclick="remove('delTag', 'tags')">Supprimer</button>
                 </div>
-            </div>
-        </div>
-        <div class="right">
-            <div class="formRight">
                 <div class="Place">
                     <label>supprimer un lieu</label>
                     <div class="Delete">
@@ -128,6 +85,92 @@
                         <button class="addButton" onclick="createPlace()" >Créer</button>
                     </div>
                 </div>
+                <!-- <div class="GameType">
+                    <label>supprimer un type de jeu</label>
+                    <div class="Delete">
+                        <div class="delSelect">
+                            <select id="delGameType">
+                                <option value="-1" >N/A</option>
+                            </select>
+                        </div>
+                        <button class="delButton" onclick="remove('delGameType', 'game/type')">Supprimer</button>
+                    </div>
+                    <label>ajouter un type de jeu</label>
+                    <div class="Add">
+                        <div class="input">
+                            <div class="name">
+                                <input type="text" id="AddGameTypeInput" placeholder="Nom">
+                            </div>
+                        </div>
+                        <div class="color">
+                            <input type="color" id="color">
+                        </div>
+                        <button class="addButton" onclick="createGameType()">Créer</button>
+                    </div>
+                </div> -->
+
+                <!-- <div class="Game">
+                    <label>supprimer un jeu</label>
+                    <div class="Delete">
+                        <div class="delSelect">
+                            <select id="delGame">
+                                <option value="-1">N/A</option>
+                            </select>
+                        </div>
+                        <button class="delButton" onclick="remove('delGame', 'game')">Supprimer</button>
+                    </div>
+                    <label>ajouter un jeu</label>
+                    <div class="Add">
+                        <div class="GameSelectgameType">
+                            <select id="GameTypeSelect" class="basicSelector">
+                                <option value="-1">N/A</option>
+                            </select>
+                        </div>
+                        <div class="input">
+                            <div class="name">
+                                <input type="text" id="AddGameInput"placeholder="Nom" >
+                            </div>
+                        </div>
+                        <button class="addButton" onclick="createGame()" >Créer</button>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+
+
+
+        <div class="right">
+            <div class="formRight">
+                <!-- <div class="Place">
+                    <label>supprimer un lieu</label>
+                    <div class="Delete">
+                        <div class="delSelect">
+                            <select id="delPlace">
+                                <option value="-1">N/A</option>
+                            </select>
+                        </div>
+                        <button class="delButton" onclick="remove('delPlace', 'place')">Supprimer</button>
+                    </div>
+                    <label>ajouter un lieu</label>
+                    <div class="Add">
+                        <div class="input">
+                            <div class="name">
+                                <input type="text" id="AddPlaceInputName" placeholder="Nom">
+                            </div>
+                        </div>
+                        <div class="input">
+                            <div class="name">
+                                <input type="text" id="AddPlaceInputCity" placeholder="Ville">
+                            </div>
+                        </div>
+                        <div class="input">
+                            <div class="name">
+                                <input type="text" id="AddPlaceInputAdresse" placeholder="Adresse">
+                            </div>
+                        </div>
+                        <button class="addButton" onclick="createPlace()" >Créer</button>
+                    </div>
+                </div> -->
                 <div class="User">
                     <label>éditer un utilisateur</label>
                     <div class="Add">

@@ -21,7 +21,7 @@ function getUserById(queryAttributes, id, DB, callback) {
     const params = {
         TableName: "Users",
         Key: {
-            id: id,
+            "id": id,
         }
     };
     if (!(queryAttributes && queryAttributes.length === 1 && queryAttributes[0] === "*"))

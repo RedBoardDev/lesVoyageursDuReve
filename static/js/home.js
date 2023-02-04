@@ -25,47 +25,48 @@ function loadPage ()
 
 function openEvent(eventId)
 {
+    console.log(eventId)
     window.location.href = "/event.html?id=" + eventId
 }
 
-function getGameType(callback)
-{
-    $.ajax({
-        type: "GET",
-        url: API() + "/game/type/",
-        contentType: "application/json; charset=utf-8",
-        dataType :"json",
-        success: function(result) {
-            gameTypes = result
-            console.log(gameTypes)
-            callback()
-        },
-        error: function(e){
-            console.log(e)
-        }
-    });
-}
+// function getGameType(callback)
+// {
+//     $.ajax({
+//         type: "GET",
+//         url: API() + "/game/type/",
+//         contentType: "application/json; charset=utf-8",
+//         dataType :"json",
+//         success: function(result) {
+//             gameTypes = result
+//             console.log(gameTypes)
+//             callback()
+//         },
+//         error: function(e){
+//             console.log(e)
+//         }
+//     });
+// }
 
 function getColor(id)
 {
-    if (id == -1) {
-        return "#e0b1cb"
-    } else {
-        for (let i  = 0; i < gameTypes.length; ++ i) {
-            if (gameTypes[i].id == id) {
-                return gameTypes[i].color
-            }
-        }
-    }
+    // if (id == -1) {
+    //     return "#e0b1cb"
+    // } else {
+    //     for (let i  = 0; i < gameTypes.length; ++ i) {
+    //         if (gameTypes[i].id == id) {
+    //             return gameTypes[i].color
+    //         }
+    //     }
+    // }
     return "#e0b1cb"
 }
 
 function addNow(obj)
 {
-    let end = new Date(obj.date_end)
+    let end = new Date(parseInt(obj.date_end))
     let out = document.createElement("div")
     out.setAttribute("class", "event")
-    out.setAttribute("onclick", "openEvent(" + obj.id + ")")
+    out.setAttribute("onclick", "openEvent('" + obj.id + "')")
     let color = document.createElement("div")
     color.setAttribute("class", "Color")
     color.setAttribute("style", "background-color : " + getColor(obj.game_type_id) + ";")
@@ -93,10 +94,10 @@ function addNow(obj)
 
 function addToday(obj)
 {
-    let end = new Date(obj.date_end)
-    let start = new Date(obj.date_start)
+    let end = new Date(parseInt(obj.date_end))
+    let start = new Date(parseInt(obj.date_start))
     let out = document.createElement("div")
-    out.setAttribute("onclick", "openEvent(" + obj.id + ")")
+    out.setAttribute("onclick", "openEvent('" + obj.id + "')")
     out.setAttribute("class", "event")
     let color = document.createElement("div")
     color.setAttribute("class", "Color")
@@ -130,10 +131,10 @@ function addToday(obj)
 
 function addNext(obj)
 {
-    let end = new Date(obj.date_end)
-    let start = new Date(obj.date_start)
+    let end = new Date(parseInt(obj.date_end))
+    let start = new Date(parseInt(obj.date_start))
     let out = document.createElement("div")
-    out.setAttribute("onclick", "openEvent(" + obj.id + ")")
+    out.setAttribute("onclick", "openEvent('" + obj.id + "' )")
     out.setAttribute("class", "event")
     let color = document.createElement("div")
     color.setAttribute("class", "Color")
@@ -185,8 +186,8 @@ function addNext(obj)
 
 function createEvent(obj) {
     let now = new Date()
-    let start = new Date(obj.date_start)
-    let end = new Date(obj.date_end)
+    let start = new Date(parseInt(obj.date_start))
+    let end = new Date(parseInt(obj.date_end))
 
     let nowStr = now.getFullYear() + "."+  now.getMonth() + "."+ now.getDate()
     let startStr = start.getFullYear() + "."+  start.getMonth() + "."+ start.getDate()
@@ -202,20 +203,19 @@ function createEvent(obj) {
 
 function fillContent(data)
 {
-    getGameType(() => {
-        data = data.sort((o1, o2) => {
-            if (o1.date_start > o2.date_start) {
-                return 1;
-            }
-            if (o1.date_start < o2.date_start) {
-                return -1;
-            }
-            return 0;
-        });
-        for (let i = 0; i < data.length; ++i) {
-            createEvent(data[i])
+    
+    data = data.sort((o1, o2) => {
+        if (parseInt(o1.date_start) > parseInt(o2.date_start)) {
+            return 1;
         }
-    })
+        if (parseInt(o1.date_start) < parseInt(o2.date_start)) {
+            return -1;
+        }
+        return 0;
+    });
+    for (let i = 0; i < data.length; ++i) {
+        createEvent(data[i])
+    }
 }
 
 function addEvent()

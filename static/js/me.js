@@ -42,7 +42,7 @@ function fillData(user)
     if (user.discord_username != null && user.discord_username && user.discord_username != "") {
         document.getElementById("discord").value = user.discord_username
     } 
-    if (user.discord_avatar != null && user.discord_avatar && user.discord_avatar != ""){
+    if (user.discord_avatar != null && user.discord_avatar && user.discord_avatar != "0"){
         document.getElementById("profilePicture").setAttribute("src", user.discord_avatar)
     } else {
         document.getElementById("profilePicture").setAttribute("src", "assets/user.png")

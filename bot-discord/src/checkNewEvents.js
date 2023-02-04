@@ -34,7 +34,6 @@ export async function checkNewEvents(client) {
                 writeDataJson(data);
             }
         }).catch((err) => {
-            console.log(err);
         });
         await asyncSleep(30000);
     }

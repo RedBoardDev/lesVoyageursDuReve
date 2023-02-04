@@ -71,25 +71,22 @@
                         <textarea class="descrArea" id="descrInput"></textarea>
                     </div>
                 </div>
-
             </div>
         </div>
         <div class="right">
             <div class="formRight">
                 <div class="gameType">
-                    <label>type de jeu</label>
-                    <div class="inGameType SelectInput">
-                        <select name="inGameType" id="inGameType" onchange="changeGameTypeSelect('inGameType', 'inputGameType')">
+                    <label>tags</label>
+                    <div class="tagsDiv SelectInput">
+                        <select name="intags" id="intags"  onchange="changeSelect('intags', 'tagInput'); selectTag();">
                         </select>
-                        <input class="selectInput" disabled id="inputGameType">
-                    </div>
-                </div>
-                <div class="game ">
-                    <label>jeu</label>
-                    <div class="inGame SelectInput">
-                        <select name="inGame" id="inGame" onchange="changeSelect('inGame', 'inputGame')">
-                        </select>
-                        <input class="selectInput" disabled id="inputGame">
+                        <div class="tagInputDiv">
+                            <input class="selectInput" disabled id="tagInput" onfocus="tagInputFocused = true" onfocusout="tagInputFocused = false">
+                            <div class="buttonAddTagDiv">
+                                <button class="addTagButton" onclick="addTag()"><img src="./assets/add.png" width="40px" > </button>
+                            </div>
+                        </div>
+                        <div class="taglist" id="tagsList"></div>
                     </div>
                 </div>
                 <div class="place">

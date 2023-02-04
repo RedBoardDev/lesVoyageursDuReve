@@ -54,6 +54,7 @@ function getPlaceByName(place_name, DB, callback) {
 }
 
 function createPlace(obj, DB, callback) {
+    console.log(obj)
     if (!obj.place_name)
         obj["place_name"] = "0"         //place_name et pas name parcque name etre reservé...¯\_(ツ)_/¯
     if (!obj.city)

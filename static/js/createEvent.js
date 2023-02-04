@@ -4,10 +4,16 @@ function loadPage ()
     getMe(sessionStorage.getItem("lvdrToken"), (user) => {
         if (user) {
             if (user.permission_id >= 1) {
-                loadGameType(() => {
-                    loadGame()
-                })
+                loadTags()
                 loadPlace()
+                addEventListener('keypress', (event) => {
+                    if (event.code == "Enter") {
+                        if (tagInputFocused) {
+                            addTag()
+                        }
+                    }
+                });
+
             } else {
                 window.location.href = "/"
             }
@@ -17,56 +23,26 @@ function loadPage ()
     })
 }
 
-var GameType
-var Game
+var Tags
+var outTagList = []
 var Place
+var tagInputFocused = false
 
-function loadGameType(callback)
+function loadTags()
 {
     $.ajax({
         type: "GET",
-        url: API() + "/game/type",
+        url: API() + "/tags",
         contentType: "application/json; charset=utf-8",
         dataType :"json",
         success: function(result) {
-            GameType = result
-            let select = document.getElementById("inGameType")
-            for (let i = 0; i < GameType.length; ++i) {
+            Tags = result
+            let select = document.getElementById("intags")
+            for (let i = 0; i < Tags.length; ++i) {
                 let option = document.createElement("option")
-                option.value = GameType[i].id
-                option.textContent = GameType[i].name
+                option.value = Tags[i].name
+                option.textContent = Tags[i].name
                 select.append(option)
-            }
-            let option = document.createElement("option")
-            option.value = "-1"
-            option.textContent = "Autre"
-            select.append(option)
-            callback()
-        },
-        error: function(e){
-            console.log(e)
-        }
-    });
-}
-
-function loadGame()
-{
-    $.ajax({
-        type: "GET",
-        url: API() + "/game",
-        contentType: "application/json; charset=utf-8",
-        dataType :"json",
-        success: function(result) {
-            Game = result
-            let select = document.getElementById("inGame")
-            let selected = document.getElementById("inGameType").value
-            for (let i = 0; i < Game.length; ++i) {
-                if (Game[i].game_type_id == selected) {
-                    let option = document.createElement("option")
-                    option.value = Game[i].id
-                    option.textContent = Game[i].name
-                    select.append(option)
-                }
             }
             let option = document.createElement("option")
             option.value = "-1"
@@ -92,7 +68,7 @@ function loadPlace()
             for (let i = 0; i < Place.length; ++i) {
                 let option = document.createElement("option")
                 option.value = Place[i].id
-                option.textContent = Place[i].name
+                option.textContent = Place[i].place_name
                 select.append(option)
             }
             let option = document.createElement("option")
@@ -104,38 +80,6 @@ function loadPlace()
             console.log(e)
         }
     });
-}
-
-function changeGameTypeSelect(selectId, fieldId)
-{
-    let selectValue = document.getElementById(selectId).value
-    let game = document.getElementById("inGame")
-    game.textContent = ""
-    if (selectValue == -1) {
-        document.getElementById(fieldId).disabled = false
-        let option = document.createElement("option")
-        option.value = "-1"
-        option.textContent = "Autre"
-        game.append(option)
-        changeSelect("inGame", "inputGame")
-    } else {
-        document.getElementById(fieldId).disabled = true
-        let select = document.getElementById("inGame")
-        let selected = document.getElementById("inGameType").value
-        for (let i = 0; i < Game.length; ++i) {
-            if (Game[i].game_type_id == selected) {
-                let option = document.createElement("option")
-                option.value = Game[i].id
-                option.textContent = Game[i].name
-                select.append(option)
-            }
-        }
-        let option = document.createElement("option")
-        option.value = "-1"
-        option.textContent = "Autre"
-        select.append(option)
-        changeSelect("inGame", "inputGame")
-    }
 }
 
 function changeSelect(selectId, fieldId)
@@ -162,22 +106,103 @@ function err(id)
         error.textContent = "Erreur interne merci de réessayer plus tard"
 }
 
+
+
+function creatTag(name)
+{
+    let tagBal = document.createElement('div')
+    tagBal.setAttribute("class" , "tagBal")
+    tagBal.setAttribute("name" , "TAG" + name)
+    let delTag = document.createElement("div")
+    delTag.setAttribute("class", "delTag")
+    let img = document.createElement("img")
+    img.setAttribute("src" , "./assets/close.png")
+    img.setAttribute("onclick" , "delTag(`" + name + "`)" )
+    delTag.append(img)
+    tagBal.append(delTag)
+    let textTag = document.createElement("div")
+    textTag.setAttribute("class", "textTag")
+    textTag.textContent = name
+    tagBal.append(textTag)
+    return tagBal
+}
+
+function delTag(name)
+{
+    document.getElementsByName("TAG" + name)[0].remove()
+    let indexCurrent = outTagList.findIndex((elem) => elem == name)
+    delete outTagList[indexCurrent]
+}
+
+function addTag()
+{
+    let select = document.getElementById("intags")
+    let tagName = ""
+    
+    if(select.value == "-1")
+        tagName = document.getElementById("tagInput").value
+    else
+        tagName = select.value
+
+    tagName =  tagName.replaceAll("`", "'")
+    let indexCurrent = outTagList.findIndex((elem) => elem == tagName)
+    if (indexCurrent == -1) {
+        document.getElementById("tagsList").append(creatTag(tagName))
+
+        outTagList.push(tagName)
+        document.getElementById("tagInput").value = ""
+    }
+}
+
+function selectTag()
+{
+    let select = document.getElementById("intags")
+    
+    if(select.value != "-1") {
+        let tagName = select.value
+        let indexCurrent = outTagList.findIndex((elem) => elem == tagName)
+        if (indexCurrent == -1) {
+            document.getElementById("tagsList").append(creatTag(tagName))
+            outTagList.push(tagName)
+        }
+    }
+}
+
+function PostTag(tag)
+{
+    let data = JSON.stringify({"tags" : tag})
+    $.ajax({
+        type: "POST",
+        url: API() + "/tags",
+        data: data,
+        contentType: "application/json; charset=utf-8",
+        dataType :"json",
+        headers: {
+            "Authorization":"Bearer " + sessionStorage.getItem("lvdrToken")
+        }
+    });
+}
+
 function submit()
 {
     let title = document.getElementById("titleInput").value
     let start = document.getElementById("startInput").value
     let end = document.getElementById("endInput").value
     let descr = document.getElementById("descrInput").value
-    let gameTypeV = document.getElementById("inGameType").value
-    let gameType = document.getElementById("inputGameType").value
-    let gameV = document.getElementById("inGame").value
-    let game = document.getElementById("inputGame").value
     let placeV = document.getElementById("inPlace").value
     let place = document.getElementById("inputPlace").value
     let nb = document.getElementById("inputNb").value
 
-    let startStamp = new Date(start).getTime()
-    let endStamp = new Date(end).getTime()
+    let startStamp = new Date(start).getTime().toString()
+    let endStamp = new Date(end).getTime().toString()
+
+
+    // console.log(outTagList.length)
+    // for (let i = 0; i < outTagList.length; ++i) {
+    //     if (Tags.findIndex((elem) => elem == outTagList[i]) == -1) {
+    //         console.log("PostTag")
+    //     }
+    // }
 
     if (!startStamp || !endStamp || !title || !descr || !nb) {
         err("notFill")
@@ -194,21 +219,17 @@ function submit()
         return
     }
 
-    let startOut = start.replace("T", " ") + ":00"
-    let endOut = end.replace("T", " ") + ":00"
+    
 
     let data = JSON.stringify({
         "title" : title,
         "description" : descr,
         "place_id" : placeV,
         "place_custom" : place,
-        "game_custom" : game,
-        "game_type_custom" : gameType,
         "register_max" : nb,
-        "game_id" : gameV,
-        "game_type_id" : gameTypeV,
-        "date_start" : startOut,
-        "date_end" : endOut
+        "date_start" : startStamp,
+        "date_end" : endStamp,
+        "tags" : JSON.stringify(outTagList)
     })
     
     $.ajax({
@@ -221,6 +242,11 @@ function submit()
             "Authorization":"Bearer " + sessionStorage.getItem("lvdrToken")
         },
         success: function(result) {
+            for (let i = 0; i < outTagList.length; ++i) {
+                if (Tags.findIndex((elem) => elem == outTagList[i]) == -1) {
+                    PostTag(outTagList[i])
+                }
+            }
             window.location.href = "/"
         },
         error: function(e){

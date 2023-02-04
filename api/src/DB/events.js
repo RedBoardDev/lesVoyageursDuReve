@@ -64,7 +64,7 @@ function createEvent(obj, DB, callback) {
     if (!obj.place_custom)
         obj["place_custom"] = "0"
     if (!obj.tags)
-        obj["tags"] = "0";
+        obj["tags"] = "[]";
     if (!obj.admin_user_id)
         obj["admin_user_id"] = "0"
     if (!obj.user_registered_array)

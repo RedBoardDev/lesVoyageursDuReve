@@ -7,7 +7,7 @@ function loadNav (){
                 document.getElementById("NavHello").children[0].textContent = "Bonjour " + user.username
                 document.getElementById("NavUser").setAttribute("onclick", "window.location.href='/me.html'")
                 document.getElementById("NavDisconnect").setAttribute("class", "NavDisconnect")
-                if (user.discord_avatar != null && user.discord_avatar != "") {
+                if (user.discord_avatar != null && user.discord_avatar != "0") {
                     document.getElementById("NavProfilePicture").setAttribute("src", user.discord_avatar)
                 }
                 if (user.permission_id >= 2)
