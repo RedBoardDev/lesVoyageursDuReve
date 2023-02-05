@@ -465,3 +465,39 @@ label {
 .changeSensButton>img {
     height: 100%;
 }
+
+.taglist {
+    border: solid;
+    border-color: #353941;
+    border-width: 1px;
+    border-radius: 1em;
+    height: 3em;
+    width: 41em;
+    overflow: scroll;
+    display: flex;
+    align-items:center;
+}
+
+.taglist::-webkit-scrollbar {
+    display: none;
+}
+
+.tagBal {
+    position: relative;
+    margin-left: 1em;
+    display: flex;
+    border-radius: 5px;
+    height: 1.6em;
+    background-color: #D9D9D9;;
+}
+
+.textTag {
+    position: relative;
+    display: flex;
+    align-items:center;
+    margin-left: 8px;
+    margin-right: 8px;
+    font: 0.9em "Fira Sans", sans-serif;
+    color: #353941;
+    white-space : nowrap;
+}

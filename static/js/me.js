@@ -38,7 +38,6 @@ function fillData(user)
     document.getElementById("identifiant").value = user.username
     document.getElementById("password").value = "aaaaaaaaaaaaa"
     document.getElementById("perm").value = "Joueur"
-    console.log(user.discord_username)
     if (user.discord_username != null && user.discord_username && user.discord_username != "") {
         document.getElementById("discord").value = user.discord_username
     } 

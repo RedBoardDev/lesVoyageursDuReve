@@ -25,27 +25,8 @@ function loadPage ()
 
 function openEvent(eventId)
 {
-    console.log(eventId)
     window.location.href = "/event.html?id=" + eventId
 }
-
-// function getGameType(callback)
-// {
-//     $.ajax({
-//         type: "GET",
-//         url: API() + "/game/type/",
-//         contentType: "application/json; charset=utf-8",
-//         dataType :"json",
-//         success: function(result) {
-//             gameTypes = result
-//             console.log(gameTypes)
-//             callback()
-//         },
-//         error: function(e){
-//             console.log(e)
-//         }
-//     });
-// }
 
 function getColor(id)
 {

@@ -128,6 +128,7 @@
 }
 
 .taglist {
+    position: relative;
     border: solid;
     border-color: #353941;
     border-width: 1px;
@@ -161,6 +162,7 @@
     margin-right: 8px;
     font: 0.9em "Fira Sans", sans-serif;
     color: #353941;
+    white-space : nowrap;
 }
 .delTag {
     position: relative;

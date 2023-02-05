@@ -48,6 +48,7 @@ function loadTags()
             option.value = "-1"
             option.textContent = "Autre"
             select.append(option)
+            changeSelect("intags", "tagInput")
         },
         error: function(e){
             console.log(e)
@@ -75,6 +76,7 @@ function loadPlace()
             option.value = "-1"
             option.textContent = "Autre"
             select.append(option)
+            changeSelect("inPlace", "inputPlace")
         },
         error: function(e){
             console.log(e)
@@ -196,13 +198,6 @@ function submit()
     let startStamp = new Date(start).getTime().toString()
     let endStamp = new Date(end).getTime().toString()
 
-
-    // console.log(outTagList.length)
-    // for (let i = 0; i < outTagList.length; ++i) {
-    //     if (Tags.findIndex((elem) => elem == outTagList[i]) == -1) {
-    //         console.log("PostTag")
-    //     }
-    // }
 
     if (!startStamp || !endStamp || !title || !descr || !nb) {
         err("notFill")

@@ -35,47 +35,6 @@ function loadPage ()
 
 }
 
-
-// function getgameType (data, callback)
-// {
-//     if (data.game_type_id != -1) {
-//         $.ajax({
-//             type: "GET",
-//             url: API() + "/game/type/" + data.game_type_id,
-//             contentType: "application/json; charset=utf-8",
-//             dataType :"json",
-//             success: function(result) {
-//                 callback(result)
-//             },
-//             error: function(e){
-//                 console.log(e)
-//             }
-//         });
-//     } else {
-//         callback({"name" : data.game_type_custom, "color" : "#e0b1cb"})
-//     }
-// }
-
-// function getgame (data, callback)
-// {
-//     if (data.game_id != -1) {
-//         $.ajax({
-//             type: "GET",
-//             url: API() + "/game/" + data.game_id,
-//             contentType: "application/json; charset=utf-8",
-//             dataType :"json",
-//             success: function(result) {
-//                 callback(result[0])
-//             },
-//             error: function(e){
-//                 console.log(e)
-//             }
-//         });
-//     } else {
-//         callback({"name" : data.game_custom})
-//     }
-// }
-
 function getplace (data, callback)
 {
     if (data.place_id != -1) {
@@ -92,7 +51,7 @@ function getplace (data, callback)
             }
         });
     } else {
-        callback({"name" : data.place_custom})
+        callback({"place_name" : data.place_custom})
     }
 }
 
@@ -113,6 +72,25 @@ function getAdmin(data, callback)
             console.log(e)
         }
     });
+}
+
+function creatTag(name)
+{
+    let tagBal = document.createElement('div')
+    tagBal.setAttribute("class" , "tagBal")
+    tagBal.setAttribute("name" , "TAG" + name)
+    // let delTag = document.createElement("div")
+    // delTag.setAttribute("class", "delTag")
+    // let img = document.createElement("img")
+    // img.setAttribute("src" , "./assets/close.png")
+    // img.setAttribute("onclick" , "delTag(`" + name + "`)" )
+    // delTag.append(img)
+    // tagBal.append(delTag)
+    let textTag = document.createElement("div")
+    textTag.setAttribute("class", "textTag")
+    textTag.textContent = name
+    tagBal.append(textTag)
+    return tagBal
 }
 
 
@@ -159,7 +137,6 @@ function fillEvent(data)
     document.getElementById("endInput").value = end
     getplace(data, (out) => {
         try {
-            console.log(out)
             document.getElementById("placeInput").value = out.place_name
             if (out.city && out.adresse) {
                 document.getElementById("adresse").textContent = out.city + "," + out.adresse
@@ -167,6 +144,14 @@ function fillEvent(data)
             }
         } catch {}
     })
+
+
+    let tagTmp = JSON.parse(data.tags)
+    let tagListDiv = document.getElementById("tagsList")
+    for (let i = 0; i < tagTmp.length; ++i) {
+        tagListDiv.append(creatTag(tagTmp[i]))
+    }
+
 
     getAdmin(data, (out) => {
         document.getElementById("adminHead").setAttribute("src", out.discord_avatar)
